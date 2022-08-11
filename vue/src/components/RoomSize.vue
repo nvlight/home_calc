@@ -6,7 +6,7 @@
             <div class="rounded-md shadow-sm flex">
                 <div class="mr-2">
                     <label for="s1" class="">Сторона 1</label>
-                    <input @change="updatePerimeter" id="s1" name="s1" v-model="room.sizes.s1" type="text" autocomplete="s1" required
+                    <input @change="updatePerimeterAndSquares" id="s1" name="s1" v-model="room.sizes.s1" type="text" autocomplete="s1" required
                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                            rounded-b-md rounded-t-md
                            focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -14,7 +14,7 @@
                 </div>
                 <div class="mr-2">
                     <label for="s2" class="">Сторона 2</label>
-                    <input @change="updatePerimeter" id="s2" name="s2" v-model="room.sizes.s2" type="text" autocomplete="s2" required
+                    <input @change="updatePerimeterAndSquares" id="s2" name="s2" v-model="room.sizes.s2" type="text" autocomplete="s2" required
                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                            rounded-b-md rounded-t-md
                            focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -22,7 +22,7 @@
                 </div>
                 <div class="mr-2">
                     <label for="s3" class="">Сторона 3</label>
-                    <input @change="updatePerimeter" id="s3" name="s3" v-model="room.sizes.s3" type="text" autocomplete="s3" required
+                    <input @change="updatePerimeterAndSquares" id="s3" name="s3" v-model="room.sizes.s3" type="text" autocomplete="s3" required
                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                            rounded-b-md rounded-t-md
                            focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -30,7 +30,7 @@
                 </div>
                 <div class="mr-2">
                     <label for="s4" class="">Сторона 4</label>
-                    <input @change="updatePerimeter" id="s4" name="s4" v-model="room.sizes.s4" type="text" autocomplete="current-password" required
+                    <input @change="updatePerimeterAndSquares" id="s4" name="s4" v-model="room.sizes.s4" type="text" autocomplete="current-password" required
                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                            rounded-b-md rounded-t-md
                            focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -39,7 +39,7 @@
 
                 <div class="mr-2">
                     <label for="room_height" class="">Высота</label>
-                    <input @change="updateSquaresHanlder" id="room_height" name="room_height" v-model="room.height" type="text" autocomplete="current-password" required
+                    <input @change="updatePerimeterAndSquares" id="room_height" name="room_height" v-model="room.height" type="text" autocomplete="current-password" required
                            class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                            rounded-md focus:outline-none
                            focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -67,25 +67,25 @@
     <div class="min-h-full flex items-center justify-center pt-4 pb-4 px-4 sm:px-6 lg:px-8">
         <div class="col-span-9 sm:col-span-3 w-5/12" style="">
             <label for="job_type" class="block text-sm font-medium text-gray-700">Наименование работы</label>
-            <select v-if="work_types?.length" id="job_type" name="job_type" autocomplete="job name" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+            <select v-model="currentPickedJob" @change="jobTypeChanged" v-if="work_types?.length" id="job_type" name="job_type" autocomplete="job name"
+                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
+                    sm:text-sm mb-3"
+            >
+                <option :value="null" selected>Выберите вид работы</option>
                 <option v-for="(wt,index) in work_types"
                     :key="index"
+                    :value="wt.id"
                     class="text-1xl"
                 >{{wt.title}} - от {{wt.cost}}&nbsp;<span class="font-semibold">₽</span></option>
             </select>
-            <button
-                    class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                  <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                    <!-- Heroicon name: solid/lock-closed -->
-                    <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg"
-                         viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                      <path fill-rule="evenodd"
-                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                            clip-rule="evenodd"/>
-                    </svg>
-                  </span>
-                Добавить
-            </button>
+            <div>
+<!--                {{currentPickedJob}}-->
+            </div>
+            <div v-if="currentPickedJob == 1" class="ceiling_calc_wrapper">
+                <CeilingCalc :square="room.square.ceiling">
+                </CeilingCalc>
+            </div>
+
         </div>
     </div>
     <div class="min-h-full flex items-center justify-center pt-4 pb-4 px-4 sm:px-6 lg:px-8">
@@ -134,15 +134,19 @@
 
     <h1 class="font-normal text-2xl text-center">Стоимость работ</h1>
     <div class="min-h-full flex items-center justify-center pt-4 pb-4 px-4 sm:px-6 lg:px-8">
+        <h3>IM here</h3>
     </div>
 </template>
 
 <script >
+import CeilingCalc from "../components/CeilingCalc.vue";
 
 export default {
     name: "RoomSize",
+    components: { CeilingCalc },
     data(){
         return {
+            currentPickedJob: null,
             room: {
                 sizes : {
                     s1: "4",
@@ -166,7 +170,7 @@ export default {
                     cost: 500,
                 },
                 {
-                    id: 2,
+                    id: 7,
                     title: "Натяжная стена",
                     description: '',
                     cost: 500,
@@ -230,6 +234,11 @@ export default {
             this.updateCeilingSquare();
             this.updateStenaSquare();
         },
+        updatePerimeterAndSquares(){
+            this.updatePerimeter();
+            this.updateCeilingSquare();
+            this.updateStenaSquare();
+        },
         getJobTitleById(id){
             let find = "";
             for (let i in this.work_types){
@@ -258,11 +267,13 @@ export default {
                 }
             }
             return find;
+        },
+        jobTypeChanged(ev){
+            //console.log(ev)
         }
     },
     created() {
-        this.updatePerimeter();
-        this.updateSquaresHanlder();
+        this.updatePerimeterAndSquares();
     },
 }
 </script>

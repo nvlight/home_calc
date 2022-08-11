@@ -87,8 +87,13 @@
                     <div class="border-4 border-dashed border-gray-200 rounded-lg" >
                         <div class="px-6 py-6">
                             <RoomSize>
-                                <slot></slot>
                             </RoomSize>
+                        </div>
+                        <div class="px-6 py-6 pt-0">
+                            <h1 class="font-light text-xl text-center">Tru lala</h1>
+                            <div class="min-h-full flex items-center justify-center pt-4 pb-4 px-4 sm:px-6 lg:px-8">
+                                <h3>Im here</h3>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -102,6 +107,7 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import RoomSize from "../components/RoomSize.vue"
+import CeilingCalc from "../components/CeilingCalc.vue";
 
 const user = {
     name: 'Tom Cook',
