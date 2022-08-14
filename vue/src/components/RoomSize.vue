@@ -82,7 +82,9 @@
 <!--                {{currentPickedJob}}-->
             </div>
             <div v-if="currentPickedJob == 1" class="ceiling_calc_wrapper">
-                <CeilingCalc :square="room.square.ceiling">
+                <CeilingCalc
+                    @addCalcedVal="addCalcedValHandler"
+                    :square="room.square.ceiling">
                 </CeilingCalc>
             </div>
 
@@ -101,8 +103,10 @@
                          class="flex justify-between mt-2"
                     >{{index+1}}. {{getJobTitleById(job.id)}}
                         <div class="flex self-center">
-                            {{ getJobCostById(job.id) }}&nbsp;<span class="font-semibold"> ₽</span>
+                            {{ job.summ }}
+                            <span class="font-semibold"> ₽</span>
                             <button
+                                @click="deleteAddedJob(job.iid)"
                                 type="button"
                                 class="h-6 w-6 ml-2
                             flex items-center justify-center
@@ -131,11 +135,6 @@
 
         </div>
     </div>
-
-    <h1 class="font-normal text-2xl text-center">Стоимость работ</h1>
-    <div class="min-h-full flex items-center justify-center pt-4 pb-4 px-4 sm:px-6 lg:px-8">
-        <h3>IM here</h3>
-    </div>
 </template>
 
 <script >
@@ -144,15 +143,17 @@ import CeilingCalc from "../components/CeilingCalc.vue";
 export default {
     name: "RoomSize",
     components: { CeilingCalc },
+    emits: ['testEmit'],
     data(){
         return {
+            added_jobs_i : 0,
             currentPickedJob: null,
             room: {
                 sizes : {
                     s1: "4",
-                    s2: "3.5",
+                    s2: "3",
                     s3: "4",
-                    s4: "3.5",
+                    s4: "3",
                 },
                 height: "2.6",
                 perimeter: "",
@@ -200,17 +201,7 @@ export default {
                     cost: 250,
                 },
             ],
-            added_jobs:[
-                {
-                    id: 1,
-                },
-                {
-                    id: 3,
-                },
-                {
-                    id: 4,
-                },
-            ],
+            added_jobs:[],
         }
     },
     methods: {
@@ -222,7 +213,7 @@ export default {
         },
         updateCeilingSquare(){
             this.room.square.ceiling =
-                +(this.room.sizes.s1) +
+                +(this.room.sizes.s1) *
                 +(this.room.sizes.s2)
 
             this.room.square.floor = this.room.square.ceiling
@@ -270,10 +261,27 @@ export default {
         },
         jobTypeChanged(ev){
             //console.log(ev)
-        }
+        },
+        addCalcedValHandler(res){
+            this.added_jobs_i++;
+
+            let tmp_job = {}
+            tmp_job.id = 1; // nat pot
+            tmp_job.selected_id = res.selected_id;
+            tmp_job.summ = res.price;
+            tmp_job.iid = this.added_jobs_i;
+            this.added_jobs.push(tmp_job);
+        },
+        deleteAddedJob(del_id){
+            //console.log(del_id)
+            this.added_jobs = this.added_jobs.filter(
+                t => t.iid != del_id
+            )
+        },
     },
     created() {
         this.updatePerimeterAndSquares();
+        this.added_jobs_i++;
     },
 }
 </script>

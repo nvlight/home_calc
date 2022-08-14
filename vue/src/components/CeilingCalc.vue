@@ -15,7 +15,8 @@
             </ol>
         </div>
         <select
-            v-model="choosedCeiling"
+            @change="calcCeil(square)"
+            v-model="choosedCeiling.selected_id"
             name="ceiling_type" id="ceiling_type"
             multiple
             class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
@@ -27,12 +28,16 @@
             </option>
         </select>
         <div>
-            {{choosedCeiling}}
+            Выбранный элемент select-а
+            <strong>{{choosedCeiling.selected_id}}</strong>
         </div>
         <div>
-            {{square}}
+            Потолок - {{square}} кв.м.
         </div>
-        <button @click="calcChoosedCeiling"
+        <div>
+            Стоимость выбранного потолка - <strong>{{choosedCeiling.price}}</strong> ₽.
+        </div>
+        <button @click="$emit('addCalcedVal', choosedCeiling)"
             class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               <span class="absolute left-0 inset-y-0 flex items-center pl-3">
                 <!-- Heroicon name: solid/lock-closed -->
@@ -54,7 +59,11 @@ export default {
     props: ['square'],
     data(){
         return{
-            choosedCeiling: [],
+            choosedCeiling: {
+                selected_id: [],
+                price: 0,
+            },
+            //square: 0,
             prices: [
                 {
                     id : 1,
@@ -132,15 +141,27 @@ export default {
         }
     },
     methods:{
-        calcChoosedCeiling(ev){
-            let s = 0;
-
-            if (!this.choosedCeiling.length){
+        addCalcedVal(ev){
+            if (!this.choosedCeiling.selected_id.length){
                 alert('Сначала выберите потолок!')
             }
+        },
+        calcCeil(square, ev){
+            let seil_select_id = this.choosedCeiling.selected_id;
+            if (seil_select_id.length){
+                let index = seil_select_id[0];
+                let summ  = 0;
 
+                for ( let price in this.prices){
+                    //console.log(price)
+                    let iteam = this.prices[price];
+                    if (iteam.id === index){
+                        this.choosedCeiling.price = square * iteam.price;
+                    }
+                }
 
-            return s;
+                //console.log('summ: '+summ);
+            }
         }
     },
     created(){

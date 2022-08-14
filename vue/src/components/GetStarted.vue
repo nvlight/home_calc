@@ -89,12 +89,6 @@
                             <RoomSize>
                             </RoomSize>
                         </div>
-                        <div class="px-6 py-6 pt-0">
-                            <h1 class="font-light text-xl text-center">Tru lala</h1>
-                            <div class="min-h-full flex items-center justify-center pt-4 pb-4 px-4 sm:px-6 lg:px-8">
-                                <h3>Im here</h3>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <!-- /End replace -->
