@@ -76,16 +76,33 @@
                     :key="index"
                     :value="wt.id"
                     class="text-1xl"
-                >{{wt.title}} - от {{wt.cost}}&nbsp;<span class="font-semibold">₽</span></option>
+                >{{wt.id}}.  {{wt.title}} - от {{wt.cost}}&nbsp;<span class="font-semibold">₽</span></option>
             </select>
             <div>
-<!--                {{currentPickedJob}}-->
+                currentPickedJob:
+                {{(currentPickedJob)}}
+                {{Boolean(currentPickedJob)}}
             </div>
             <div v-if="currentPickedJob == 1" class="ceiling_calc_wrapper">
                 <CeilingCalc
-                    @addCalcedVal="addCalcedValHandler"
+                    @addCalcedCeiling="addCalcedCeilingHandler"
                     :square="room.square.ceiling">
                 </CeilingCalc>
+            </div>
+            <div v-else-if="Boolean(currentPickedJob) !== false">
+                <button @click="addCalcedJob"
+                        class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                      <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <!-- Heroicon name: solid/lock-closed -->
+                        <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd"
+                                d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                                clip-rule="evenodd"/>
+                        </svg>
+                      </span>
+                    Добавить
+                </button>
             </div>
 
         </div>
@@ -165,23 +182,36 @@ export default {
             },
             work_types: [
                 {
+                    id: 8,
+                    title: "Гипсокартон (потолок)",
+                    description: '',
+                    cost: 350,
+                },
+                {
+                    id: 9,
+                    title: "Гипсокартон (стены)",
+                    description: '',
+                    cost: 300,
+                },
+                {
                     id: 1,
                     title: "Натяжной потолок",
                     description: '',
-                    cost: 500,
+                    cost: 400,
                 },
                 {
-                    id: 7,
-                    title: "Натяжная стена",
+                    id: 2,
+                    title: "Карнизы - установка",
                     description: '',
-                    cost: 500,
+                    cost: 100,
                 },
                 {
                     id: 3,
-                    title: "Шпатлевка под обои (все стены)",
+                    title: "Карнизы - покраска",
                     description: '',
-                    cost: 200,
+                    cost: 100,
                 },
+
                 {
                     id: 4,
                     title: "Шпатлевка под обои (потолок)",
@@ -190,15 +220,29 @@ export default {
                 },
                 {
                     id: 5,
-                    title: "Гипсокартон (все стены потолок)",
+                    title: "Шпатлевка под обои (все стены)",
                     description: '',
                     cost: 200,
                 },
                 {
                     id: 6,
-                    title: "Гипсокартон (потолок)",
+                    title: "Обои поклейка (потолок)",
                     description: '',
                     cost: 250,
+                },
+                {
+                    id: 7,
+                    title: "Обои поклейка (все стены)",
+                    description: '',
+                    cost: 200,
+                },
+
+
+                {
+                    id: 27,
+                    title: "Натяжная стена",
+                    description: '',
+                    cost: 400,
                 },
             ],
             added_jobs:[],
@@ -242,16 +286,21 @@ export default {
             return find;
         },
         getJobCostById(id){
-            let find = "";
+            let find = 0;
             for (let i in this.work_types){
                 if (this.work_types[i].id === (id)){
                     find = this.work_types[i].cost;
 
                     switch (id){
-                        case 1: find *= this.room.square.ceiling; break;
-                        case 2: find *= this.room.square.sten; break;
-                        case 3: find *= this.room.square.sten; break;
+                        case 2: find *= this.room.perimeter; break;
+                        case 3: find *= this.room.perimeter; break;
                         case 4: find *= this.room.square.ceiling; break;
+                        case 5: find *= this.room.square.sten; break;
+                        case 6: find *= this.square.ceiling; break;
+                        case 7: find *= this.room.square.sten; break;
+                        case 8: find *= this.square.ceiling; break;
+                        case 9: find *= this.room.square.sten; break;
+                        case 27: find *= this.room.square.ceiling; break;
                     }
 
                     break;
@@ -262,7 +311,20 @@ export default {
         jobTypeChanged(ev){
             //console.log(ev)
         },
-        addCalcedValHandler(res){
+
+        addCalcedJob(){
+            //console.log('addCalcedJob');
+            let jobCost = this.getJobCostById(this.currentPickedJob);
+
+            this.added_jobs_i++;
+
+            let tmp_job = {}
+            tmp_job.id = this.currentPickedJob; // choosed id
+            tmp_job.summ = jobCost;
+            tmp_job.iid = this.added_jobs_i;
+            this.added_jobs.push(tmp_job);
+        },
+        addCalcedCeilingHandler(res){
             this.added_jobs_i++;
 
             let tmp_job = {}
