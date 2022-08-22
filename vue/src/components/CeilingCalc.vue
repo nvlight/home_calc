@@ -28,15 +28,66 @@
             </option>
         </select>
         <div>
-            Выбранный элемент select-а
+            Выбранный элемент select
             <strong>{{choosedCeiling.selected_id}}</strong>
         </div>
         <div>
             Потолок - {{square}} кв.м.
         </div>
-        <div>
-            Стоимость выбранного потолка - <strong>{{choosedCeiling.price}}</strong> ₽.
+        <hr class="mt-3">
+        <div class="flex justify-between mt-5">
+            Натяжной потолок + установка
+            <span>
+                <strong>{{choosedCeiling.price}}</strong> ₽
+            </span>
         </div>
+        <div class="flex justify-between items-center mt-3">
+            <span class="w-1/3">Багет (м.)</span>
+             <input
+                 class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                           rounded-b-md rounded-t-md
+                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    type="text" v-model="baget.count" placeholder="0">
+            <strong class="w-1/3 text-right">{{bagetSumm}} ₽</strong>
+        </div>
+        <div class="flex justify-between items-center mt-3">
+            <span class="w-1/3" >Подлюстренники (шт)</span>
+            <input
+                class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                           rounded-b-md rounded-t-md
+                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                type="text" v-model="chandeliers.count" placeholder="0">
+            <strong class="w-1/3 text-right">{{chandeliersSumm}} ₽</strong>
+        </div>
+        <div class="flex justify-between items-center mt-3">
+            <span class="w-1/3" >Светильники (шт)</span>
+            <input
+                class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                           rounded-b-md rounded-t-md
+                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                type="text" v-model="luminaire.count" placeholder="0">
+            <strong class="w-1/3 text-right">{{luminaireSumm}} ₽</strong>
+        </div>
+
+        <div class="flex justify-between items-center mt-3">
+            <span class="w-1/3" >Трубы (шт)</span>
+            <input
+                class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                           rounded-b-md rounded-t-md
+                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                type="text" v-model="pipes.count" placeholder="0">
+            <strong class="w-1/3 text-right">{{pipesSumm}} ₽</strong>
+        </div>
+
+        <div class="flex justify-between mt-3">
+            Доставка  <strong>{{ deliveryPrice }} ₽</strong>
+        </div>
+
+        <hr class="mt-3">
+        <div class="flex justify-between mt-3">
+            Итоговая сумма  <strong>{{ totalAmount }} ₽</strong>
+        </div>
+
         <button @click="$emit('addCalcedCeiling', choosedCeiling)"
             class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               <span class="absolute left-0 inset-y-0 flex items-center pl-3">
@@ -56,7 +107,7 @@
 <script>
 export default {
     name: 'CeilingCalc',
-    props: ['square'],
+    props: ['square', 'perimeter'],
     data(){
         return{
             choosedCeiling: {
@@ -64,6 +115,29 @@ export default {
                 price: 0,
             },
             //square: 0,
+            baget: {
+                count: 0,
+                price: 100,
+                summ: 0,
+            },
+            chandeliers: {
+                count: 1,
+                price: 200,
+                summ: 0,
+            },
+            luminaire: {
+                count: 0,
+                price: 100,
+                summ: 0,
+            },
+            pipes: {
+                count: 0,
+                price: 100,
+                summ: 0,
+            },
+            deliveryPrice: 1000,
+            //totalAmount: 0,
+            //this.baget.summ + this.chandeliers.summ + this.luminaire.summ + this.deliveryPrice,
             prices: [
                 {
                     id : 1,
@@ -159,13 +233,43 @@ export default {
                         this.choosedCeiling.price = square * iteam.price;
                     }
                 }
-
                 //console.log('summ: '+summ);
             }
         }
     },
+    computed:{
+        bagetSumm() {
+            return this.baget.count * this.baget.price;
+        },
+        chandeliersSumm() {
+            return this.chandeliers.count * this.chandeliers.price;
+        },
+        luminaireSumm() {
+            return this.luminaire.count * this.luminaire.price;
+        },
+        pipesSumm() {
+            return this.pipes.count * this.pipes.price;
+        },
+        totalAmount() {
+          return this.choosedCeiling.price
+            + this.bagetSumm
+            + this.chandeliersSumm
+            + this.luminaireSumm
+            + this.deliveryPrice
+        },
+    },
     created(){
-         console.log('created')
+        console.log('created: ');
+        this.baget.count = this.perimeter;
+        //console.log(this.perimeter);
+    },
+    beforeMount() {
+        console.log('beforeMount: ');
+        //console.log(this.perimeter);
+    },
+    mounted() {
+        console.log('mounted: ');
+        //console.log(this.perimeter);
     }
 }
 

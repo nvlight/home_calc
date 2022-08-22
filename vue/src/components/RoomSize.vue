@@ -86,7 +86,9 @@
             <div v-if="currentPickedJob == 1" class="ceiling_calc_wrapper">
                 <CeilingCalc
                     @addCalcedCeiling="addCalcedCeilingHandler"
-                    :square="room.square.ceiling">
+                    :square="room.square.ceiling"
+                    :perimeter="room.perimeter"
+                >
                 </CeilingCalc>
             </div>
             <div v-else-if="Boolean(currentPickedJob) !== false">
