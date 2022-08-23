@@ -15,7 +15,7 @@
             </ol>
         </div>
         <select
-            @change="calcCeil(square)"
+            @change="calcCeil()"
             v-model="choosedCeiling.selected_id"
             name="ceiling_type" id="ceiling_type"
             multiple
@@ -27,13 +27,84 @@
                 :value="pot.id">{{pot.name}} - ({{ pot.price }} ₽)
             </option>
         </select>
-        <div>
+        <div v-if="choosedCeiling.selected_id.length">
             Выбранный элемент select
             <strong>{{choosedCeiling.selected_id}}</strong>
+            <br>
+
         </div>
+        <div v-else>
+            <strong>Натяжной потолок не выбран!</strong>
+        </div>
+
         <div>
             Потолок - {{square}} кв.м.
         </div>
+        <div v-if="isCustomSizes">
+            <button
+                @click="toggleCustomSizes"
+                class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >Запретить кастомные размеры потолка</button>
+        </div>
+        <div v-else>
+            <button
+                @click="toggleCustomSizes"
+                class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >Установить кастомные размеры потолка</button>
+        </div>
+        <div
+            v-if="isCustomSizes"
+        >
+            <div class="mr-2">
+                <label for="a1" class="">Сторона 1</label>
+                <input
+                    @change="updatePerimeterAndSquares"
+                    id="a1" name="a1" v-model="customSizes.s1" type="text" autocomplete="s1" required
+                       class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                           rounded-b-md rounded-t-md
+                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                       placeholder="Сторона 1">
+            </div>
+            <div class="mr-2">
+                <label for="a2" class="">Сторона 2</label>
+                <input
+                    @change="updatePerimeterAndSquares"
+                    id="a2" name="a2" v-model="customSizes.s2" type="text" autocomplete="s2" required
+                       class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                           rounded-b-md rounded-t-md
+                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                       placeholder="Сторона 2">
+            </div>
+            <div class="mr-2">
+                <label for="a3" class="">Сторона 3</label>
+                <input
+                    @change="updatePerimeterAndSquares"
+                    id="a3" name="a3" v-model="customSizes.s3" type="text" autocomplete="s3" required
+                       class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                           rounded-b-md rounded-t-md
+                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                       placeholder="Сторона 3">
+            </div>
+            <div class="mr-2">
+                <label for="a4" class="">Сторона 4</label>
+                <input
+                    @change="updatePerimeterAndSquares"
+                    id="a4" name="a4" v-model="customSizes.s4" type="text" autocomplete="current-password" required
+                       class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                           rounded-b-md rounded-t-md
+                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                       placeholder="Сторона 4">
+            </div>
+
+            <div v-if="customPerimeter" class="pt-3">
+                Периметр: <span >{{customPerimeter}} м.</span>
+            </div>
+            <div v-if="customSquare" class="pt-3">
+                Площадь потолка: <span >{{customSquare}} кв.м.</span>
+            </div>
+
+        </div>
+
         <hr class="mt-3">
         <div class="flex justify-between mt-5">
             Натяжной потолок + установка
@@ -85,10 +156,10 @@
 
         <hr class="mt-3">
         <div class="flex justify-between mt-3">
-            Итоговая сумма  <strong>{{ totalAmount }} ₽</strong>
+            Итоговая сумма  <strong>{{ totalAmount.price }} ₽</strong>
         </div>
 
-        <button @click="$emit('addCalcedCeiling', choosedCeiling)"
+        <button @click="addCalcedCeil"
             class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               <span class="absolute left-0 inset-y-0 flex items-center pl-3">
                 <!-- Heroicon name: solid/lock-closed -->
@@ -110,6 +181,16 @@ export default {
     props: ['square', 'perimeter'],
     data(){
         return{
+            isCustomSizes: false,
+            customSizes : {
+                s1: 0,
+                s2: 0,
+                s3: 0,
+                s4: 0,
+            },
+            customSquare: 0,
+            customPerimeter: 0,
+
             choosedCeiling: {
                 selected_id: [],
                 price: 0,
@@ -215,12 +296,55 @@ export default {
         }
     },
     methods:{
-        addCalcedVal(ev){
+        updatePerimeter() {
+            this.customPerimeter = +(this.customSizes.s1) +
+                +(this.customSizes.s2) +
+                +(this.customSizes.s3) +
+                +(this.customSizes.s4);
+        },
+        updateCeilingSquare(){
+            this.customSquare =
+                +(this.customSizes.s1) *
+                +(this.customSizes.s2)
+        },
+        updatePerimeterAndSquares(){
+            this.updatePerimeter();
+            this.updateCeilingSquare();
+            this.calcCeil();
+            this.updateCustomPerimeter();
+        },
+        updateCustomPerimeter(){
+            this.baget.count = this.calcCustomPerimeter();
+        },
+        calcCustomPerimeter(){
+            let per = this.perimeter;
+
+            if (this.isCustomSizes){
+                per = (+this.customSizes.s1 + +this.customSizes.s2) * 2;
+            }
+
+            return per;
+        },
+        toggleCustomSizes(){
+            this.isCustomSizes = this.isCustomSizes ? false : true;
+
+            this.updateCustomPerimeter();
+            this.calcCeil();
+        },
+        addCalcedCeil(){
             if (!this.choosedCeiling.selected_id.length){
                 alert('Сначала выберите потолок!')
+                return;
             }
+
+            this.$emit('addCalcedCeiling', this.totalAmount)
         },
-        calcCeil(square, ev){
+        calcCeil(){
+            let realSquare = this.square;
+            if (this.isCustomSizes){
+                realSquare = this.customSquare;
+            }
+
             let seil_select_id = this.choosedCeiling.selected_id;
             if (seil_select_id.length){
                 let index = seil_select_id[0];
@@ -230,7 +354,7 @@ export default {
                     //console.log(price)
                     let iteam = this.prices[price];
                     if (iteam.id === index){
-                        this.choosedCeiling.price = square * iteam.price;
+                        this.choosedCeiling.price = realSquare * iteam.price;
                     }
                 }
                 //console.log('summ: '+summ);
@@ -251,11 +375,15 @@ export default {
             return this.pipes.count * this.pipes.price;
         },
         totalAmount() {
-          return this.choosedCeiling.price
+          let summ = this.choosedCeiling.price
             + this.bagetSumm
             + this.chandeliersSumm
             + this.luminaireSumm
-            + this.deliveryPrice
+            + this.deliveryPrice;
+          return {
+              selected_id: this.choosedCeiling.selected_id,
+              price: summ,
+          }
         },
     },
     created(){

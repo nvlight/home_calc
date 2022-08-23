@@ -163,11 +163,11 @@ import CeilingCalc from "../components/CeilingCalc.vue";
 export default {
     name: "RoomSize",
     components: { CeilingCalc },
-    emits: ['testEmit'],
+    emits: ['addCalcedCeiling'],
     data(){
         return {
             added_jobs_i : 0,
-            currentPickedJob: null,
+            currentPickedJob: 1,
             room: {
                 sizes : {
                     s1: "4",
@@ -206,13 +206,13 @@ export default {
                     id: 2,
                     title: "Карнизы - установка",
                     description: '',
-                    cost: 100,
+                    cost: 75,
                 },
                 {
                     id: 3,
                     title: "Карнизы - покраска",
                     description: '',
-                    cost: 100,
+                    cost: 75,
                 },
 
                 {
@@ -328,6 +328,7 @@ export default {
             this.added_jobs.push(tmp_job);
         },
         addCalcedCeilingHandler(res){
+            console.log(res);
             this.added_jobs_i++;
 
             let tmp_job = {}
