@@ -170,15 +170,22 @@
                         clip-rule="evenodd"/>
                 </svg>
               </span>
-            Добавить
+            Добавить всю сумму
         </button>
+
+        <BuildingMaterial>
+        </BuildingMaterial>
+
     </div>
 </template>
 
 <script>
+import BuildingMaterial from "../components/BuildingMaterial.vue";
+
 export default {
     name: 'CeilingCalc',
     props: ['square', 'perimeter'],
+    components: { BuildingMaterial },
     data(){
         return{
             isCustomSizes: false,
