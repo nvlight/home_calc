@@ -1,5 +1,5 @@
 <template>
-    <h1 class="mt-3 font-light  text-center">Добавление расходных материалов для натяжного потолка</h1>
+    <h1 class="mt-3 font-light  text-center">Добавление материалов</h1>
     <div class="min-h-full flex items-center justify-center pt-1 px-4 sm:px-6 lg:px-8">
         <div class="col-span-9 sm:col-span-3 w-full" style="">
             <label for="material_name" class="block text-sm font-medium text-gray-700">Наименование</label>

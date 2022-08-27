@@ -173,18 +173,79 @@
             Добавить всю сумму
         </button>
 
+        <div>
+            <h1 class="mt-3 font-light  text-center"
+                >Подсчет и добавление расходных материалов для натяжного потолка</h1>
+            <p>
+                Периметр багетов: <strong>{{ getCustomPerimeter }}</strong> метров
+            </p>
+            <p>
+                Требуется крепежа: <strong>{{getFastenerUnitsNumber}}</strong> единиц
+            </p>
+
+            <div class="mt-3">
+                <strong>Выберите нужные крепежи</strong>
+
+                <div>
+                    <template
+                        v-for="(fastener, index) in fasteners"
+                    >
+                        <label :for="'ch_'+fastener.id"
+                           class="block"
+                        >
+                            <input type="checkbox" name="CeilingCalcMaterialsCalced[]"
+                                   :value="fastener.id"
+                                   :id="'ch_'+fastener.id"
+                                   :checked="index == 0 "
+                            >
+                            {{ fastener.name }}; ( {{ fastener.price }} {{ fastener.current }} / {{ fastener.measure }});
+                            <br>
+                            Требуется <strong>{{ fastenerNeedWeight(getFastenerUnitsNumber, fastener.unit_count) }}</strong> {{ fastener.measure }}
+                            стоимостью <strong>{{ fastenerPriceForWeigth(
+                                fastenerNeedWeight(getFastenerUnitsNumber,
+                                    fastener.unit_count), fastener.price) }} </strong> {{ fastener.current }}
+                        </label>
+                    </template>
+                </div>
+            </div>
+
+            <button @click=""
+                    class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Добавить выбранные крепежи
+            </button>
+
+            <hr>
+        </div>
+
         <BuildingMaterial>
         </BuildingMaterial>
+
+        <div class="mt-3">
+            <p>store count: {{storeCount}}</p>
+            <div class="mt-3 flex justify-around">
+                <button
+                    class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500"
+                    @click="storeIncrement"
+                >increment</button>
+                <button class=" pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500"
+                    @click="storeDecrement"
+                >decrement</button>
+            </div>
+        </div>
+
+
 
     </div>
 </template>
 
 <script>
 import BuildingMaterial from "../components/BuildingMaterial.vue";
+import store from "../store/index.js";
+import { mapState } from "vuex";
 
 export default {
     name: 'CeilingCalc',
-    props: ['square', 'perimeter'],
+    props: ['square', 'perimeter', 'roomSizes'],
     components: { BuildingMaterial },
     data(){
         return{
@@ -300,9 +361,24 @@ export default {
                     price: 3500,
                 },
             ],
+            fastenersCals: null,
         }
     },
     methods:{
+        fastenerNeedWeight(needFastenerCount, unitCount){
+            return (needFastenerCount / unitCount).toFixed(2);
+        },
+        fastenerPriceForWeigth(needWeight, price){
+            return (needWeight * price).toFixed(2);
+        },
+        storeIncrement(){
+            //this.$store.commit('increment');
+            store.commit('increment');
+        },
+        storeDecrement(){
+            this.$store.commit('decrement');
+            //store.commit('decrement');
+        },
         updatePerimeter() {
             this.customPerimeter = +(this.customSizes.s1) +
                 +(this.customSizes.s2) +
@@ -321,7 +397,9 @@ export default {
             this.updateCustomPerimeter();
         },
         updateCustomPerimeter(){
-            this.baget.count = this.calcCustomPerimeter();
+            let customPer = this.calcCustomPerimeter();
+            this.baget.count = customPer;
+            return customPer;
         },
         calcCustomPerimeter(){
             let per = this.perimeter;
@@ -336,7 +414,17 @@ export default {
             this.isCustomSizes = this.isCustomSizes ? false : true;
 
             this.updateCustomPerimeter();
+
+            //
+            if (this.isCustomSizes){
+                this.setCustomSizesFromParent();
+            }
+
             this.calcCeil();
+        },
+        setCustomSizesFromParent(){
+            // roomSizes
+            this.customSizes = this.roomSizes;
         },
         addCalcedCeil(){
             if (!this.choosedCeiling.selected_id.length){
@@ -366,9 +454,24 @@ export default {
                 }
                 //console.log('summ: '+summ);
             }
-        }
+        },
+
     },
     computed:{
+        ...mapState({
+            storeCount: state => state.count,
+        }),
+        // storeCount() {
+        //     //return this.$store.state.count;
+        //     return store.state.count;
+        // },
+
+        fasteners(){
+            return this.$store.state.buildingMaterials.filter(
+                mt => mt.category === 'fasteners'
+            );
+        },
+
         bagetSumm() {
             return this.baget.count * this.baget.price;
         },
@@ -392,19 +495,24 @@ export default {
               price: summ,
           }
         },
+        getCustomPerimeter(){
+            return this.updateCustomPerimeter();
+        },
+        getFastenerUnitsNumber(){
+            let per = this.getCustomPerimeter;
+            let widthDiff = 10; // sm
+            return per * widthDiff;
+        },
     },
     created(){
-        console.log('created: ');
+        //console.log('created: ');
         this.baget.count = this.perimeter;
-        //console.log(this.perimeter);
     },
     beforeMount() {
-        console.log('beforeMount: ');
-        //console.log(this.perimeter);
+        //console.log('beforeMount: ');
     },
     mounted() {
-        console.log('mounted: ');
-        //console.log(this.perimeter);
+        //console.log('mounted: ');
     }
 }
 

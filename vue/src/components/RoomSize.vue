@@ -88,6 +88,7 @@
                     @addCalcedCeiling="addCalcedCeilingHandler"
                     :square="room.square.ceiling"
                     :perimeter="room.perimeter"
+                    :roomSizes="room.sizes"
                 >
                 </CeilingCalc>
             </div>
