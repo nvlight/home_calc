@@ -1,7 +1,8 @@
 <template>
-    <h1 class="font-light text-xl text-center">Шаг 1. Введите размеры комнаты</h1>
-    <div class="min-h-full flex items-center justify-center pt-4 pb-4 px-4 sm:px-6 lg:px-8">
+    <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-2">
+
+            <h1 class="font-light text-xl text-center">Шаг 1. Введите размеры комнаты</h1>
 
             <div class="rounded-md shadow-sm flex">
                 <div class="mr-2">
@@ -63,9 +64,10 @@
         </div>
     </div>
 
-    <h1 class="font-light text-xl text-center">Шаг 2. Добавьте виды работ</h1>
-    <div class="min-h-full flex items-center justify-center pt-4 pb-4 px-4 sm:px-6 lg:px-8">
-        <div class="col-span-9 sm:col-span-3 w-5/12" style="">
+    <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-2">
+            <h1 class="font-light text-xl text-center">Шаг 2. Добавьте виды работ</h1>
+
             <label for="job_type" class="block text-sm font-medium text-gray-700">Наименование работы</label>
             <select v-model="currentPickedJob" @change="jobTypeChanged" v-if="work_types?.length" id="job_type" name="job_type" autocomplete="job name"
                     class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
@@ -110,9 +112,11 @@
 
         </div>
     </div>
-    <div class="min-h-full flex items-center justify-center pt-4 pb-4 px-4 sm:px-6 lg:px-8">
-        <div class="col-span-9 sm:col-span-3 w-5/12" style="">
+
+    <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-2">
             <h2 class="font-light text-xl text-center">Уже добавленные виды работ:</h2>
+
             <div v-if="!added_jobs?.length">
                 <span class="block text-center">Пока еще нет добавленых работ</span>
             </div>
@@ -157,9 +161,10 @@
         </div>
     </div>
 
-    <div class="min-h-full flex items-center justify-center pt-4 pb-4 px-4 sm:px-6 lg:px-8">
-        <div class="col-span-9 sm:col-span-3 w-5/12" style="">
+    <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-2">
             <h2 class="font-light text-xl text-center">Уже добавленные строительные материалы:</h2>
+
             <div v-if="!added_materials?.length">
                 <span class="block text-center">Пока еще нет добавленных сроительных материалов</span>
             </div>

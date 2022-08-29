@@ -186,7 +186,7 @@
             <div class="mt-3">
                 <strong>Выберите нужные крепежи</strong>
 
-                <div>
+                <div class="fasteners_wrapper">
                     <template
                         v-for="(fastener, index) in fasteners"
                     >
@@ -194,19 +194,35 @@
                            class="block"
                         >
                             <input type="checkbox" name="CeilingCalcMaterialsCalced[]"
+                                   v-model="pickedFasteners"
                                    :value="fastener.id"
                                    :id="'ch_'+fastener.id"
-                                   :checked="index == 0 "
+                                   :checked="index == 0"
                             >
                             {{ fastener.name }}; ( {{ fastener.price }} {{ fastener.current }} / {{ fastener.measure }});
                             <br>
-                            Требуется <strong>{{ fastenerNeedWeight(getFastenerUnitsNumber, fastener.unit_count) }}</strong> {{ fastener.measure }}
+                            Требуется <strong>
+                            <!-- :value="fastenerNeedWeight(getFastenerUnitsNumber, fastener.unit_count)"-->
+                                <input type="text"
+                                       :name="'input_'+fastener.id"
+                                       :data-price="fastener.price"
+                                       :data-unit_count="fastener.unit_count"
+                                       class="w-1/6 text-right appearance-none relative inline-block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                       value=""
+                                >
+                                </strong> {{ fastener.measure }}
                             стоимостью <strong>{{ fastenerPriceForWeigth(
                                 fastenerNeedWeight(getFastenerUnitsNumber,
                                     fastener.unit_count), fastener.price) }} </strong> {{ fastener.current }}
                         </label>
                     </template>
                 </div>
+            </div>
+
+            <div>
+                <hr>
+                <p>pickedFasteners</p>
+                {{ pickedFasteners }}
             </div>
 
             <button @click=""
@@ -362,6 +378,8 @@ export default {
                 },
             ],
             fastenersCals: null,
+            pickedFasteners: [],
+            fastenersCustomUnitSet: [],
         }
     },
     methods:{
@@ -503,6 +521,32 @@ export default {
             let widthDiff = 10; // sm
             return per * widthDiff;
         },
+    },
+    watch:{
+        baget:{
+            handler(val) {
+                //console.log(val);
+                const rs = document.querySelectorAll('.fasteners_wrapper input[name^="input_"]');
+                if (!rs.length) return;
+
+                for(let i=0; i<rs.length; i++){
+                    let price = +rs[i].dataset.price;
+                    let unit_count = +rs[i].dataset.unit_count;
+
+                    let needWeight = this.fastenerNeedWeight(this.getFastenerUnitsNumber, unit_count);
+                    let needPrice  = this.fastenerPriceForWeigth(needWeight, price);
+                    //console.log(price);
+                    //console.log(unit_count);
+                    //console.log(needWeight);
+                    //console.log(needPrice);
+
+                    rs[i].setAttribute('value', needWeight);
+
+                    //break;
+                }
+            },
+            deep: true,
+        }
     },
     created(){
         //console.log('created: ');
