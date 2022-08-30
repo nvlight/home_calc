@@ -190,13 +190,13 @@
                     <template
                         v-for="(fastener, index) in fasteners"
                     >
-                        <label :for="'ch_'+fastener.id"
-                           class="block"
+                        <label :for="'lb_'+fastener.id"
+                           :class="['block', 'cl_'+fastener.id]"
                         >
                             <input type="checkbox" name="CeilingCalcMaterialsCalced[]"
                                    v-model="pickedFasteners"
                                    :value="fastener.id"
-                                   :id="'ch_'+fastener.id"
+                                   :id="'lb_'+fastener.id"
                                    :checked="index == 0"
                             >
                             {{ fastener.name }}; ( {{ fastener.price }} {{ fastener.current }} / {{ fastener.measure }});
@@ -207,13 +207,14 @@
                                        :name="'input_'+fastener.id"
                                        :data-price="fastener.price"
                                        :data-unit_count="fastener.unit_count"
+                                       :data-fastener_id="fastener.id"
                                        class="w-1/6 text-right appearance-none relative inline-block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                                        value=""
+                                       :ref="'r'+fastener.id"
+                                       @change="recalcPriceWithWeight('r'+fastener.id, 'g'+fastener.id, fastener.price)"
                                 >
                                 </strong> {{ fastener.measure }}
-                            стоимостью <strong>{{ fastenerPriceForWeigth(
-                                fastenerNeedWeight(getFastenerUnitsNumber,
-                                    fastener.unit_count), fastener.price) }} </strong> {{ fastener.current }}
+                            стоимостью <strong :ref="'g'+fastener.id" class="calced_weight_price"> </strong> {{ fastener.current }}
                         </label>
                     </template>
                 </div>
@@ -249,8 +250,6 @@
             </div>
         </div>
 
-
-
     </div>
 </template>
 
@@ -258,6 +257,7 @@
 import BuildingMaterial from "../components/BuildingMaterial.vue";
 import store from "../store/index.js";
 import { mapState } from "vuex";
+import {ref} from "vue";
 
 export default {
     name: 'CeilingCalc',
@@ -279,7 +279,6 @@ export default {
                 selected_id: [],
                 price: 0,
             },
-            //square: 0,
             baget: {
                 count: 0,
                 price: 100,
@@ -380,6 +379,7 @@ export default {
             fastenersCals: null,
             pickedFasteners: [],
             fastenersCustomUnitSet: [],
+            fastenersModel: {},
         }
     },
     methods:{
@@ -388,6 +388,47 @@ export default {
         },
         fastenerPriceForWeigth(needWeight, price){
             return (needWeight * price).toFixed(2);
+        },
+        recalcPriceWithWeight(weight_input, price_strong, price){
+            console.log('im here: ' +weight_input)
+            console.log('new_price: ' +price)
+            console.log(this.$refs[weight_input] );
+            console.log(this.$refs[weight_input][0].value );
+            console.log(this.$refs[price_strong] );
+            console.log(this.$refs[price_strong][0].innerHTML );
+
+            this.$refs[weight_input].value = this.$refs[weight_input][0].value;
+            this.$refs[price_strong].value = this.fastenerPriceForWeigth(this.$refs[weight_input].value, price);
+            this.$refs[price_strong][0].innerHTML = this.$refs[price_strong].value;
+
+            console.log(this.$refs[weight_input] );
+            console.log(this.$refs[weight_input][0].value );
+            console.log(this.$refs[price_strong] );
+            console.log(this.$refs[price_strong][0].innerHTML );
+
+            //this.$refs[weight_input].value = price;
+            //this.$refs[price_strong].value = price;
+            // this.$vm.refs.r82239108;
+            // this.$vm.refs.g82239108;
+            // r82239108
+
+            return;
+            // const inp = document.querySelector(`input[name=${weight_input}]`);
+            // if (!inp) return;
+            // //console.log(inp);
+            //
+            // // finde closest label, and priceWithWeight
+            // const clos = inp.closest('label[for^=lb_]');
+            // if (!clos) return;
+            // //console.log(clos);
+            // const weightStr = clos.querySelector('.calced_weight_price');
+            // if (!weightStr) return;
+            //
+            // const inputValue = +inp.getAttribute('value');
+            // //console.log('inputValue: '+inputValue);
+            // console.log('price: '+price);
+            //
+            // weightStr.innerHTML = price;
         },
         storeIncrement(){
             //this.$store.commit('increment');
@@ -525,23 +566,39 @@ export default {
     watch:{
         baget:{
             handler(val) {
-                //console.log(val);
+                console.log(val);
+                console.log(val.count);
                 const rs = document.querySelectorAll('.fasteners_wrapper input[name^="input_"]');
                 if (!rs.length) return;
 
                 for(let i=0; i<rs.length; i++){
                     let price = +rs[i].dataset.price;
                     let unit_count = +rs[i].dataset.unit_count;
+                    let fastener_id = rs[i].dataset.fastener_id;
 
-                    let needWeight = this.fastenerNeedWeight(this.getFastenerUnitsNumber, unit_count);
-                    let needPrice  = this.fastenerPriceForWeigth(needWeight, price);
-                    //console.log(price);
-                    //console.log(unit_count);
-                    //console.log(needWeight);
-                    //console.log(needPrice);
+                    // r34980454544 - ref_weight
+                    // g34980454544 - ref_price
+                    let ref_weight_name = 'r'+fastener_id;
+                    let ref_price_name  = 'g'+fastener_id;
+                    console.log('ref_weight_name: ' + ref_weight_name);
+                    console.log('ref_price_name: ' + ref_price_name);
 
-                    rs[i].setAttribute('value', needWeight);
-
+                    // this.$vm.refs['r82239108']
+                    // this.$vm.refs['g82239108']
+                    // this.$vm.refs['r82239108'].value;
+                    // this.$vm.refs['g82239108'].value;
+                    let ref_weight = this.$refs[ref_weight_name];
+                    let ref_price  = this.$refs[ref_price_name];
+                    console.log(ref_weight);
+                    console.log(ref_price);
+                    if (ref_weight){
+                        ref_weight.value = this.fastenerNeedWeight(this.getFastenerUnitsNumber, unit_count);
+                        ref_weight[0].value = ref_weight.value;
+                    }
+                    if (ref_price){
+                        ref_price.value = this.fastenerPriceForWeigth(ref_weight.value, price);
+                        ref_price[0].innerHTML = ref_price.value;
+                    }
                     //break;
                 }
             },
@@ -557,6 +614,7 @@ export default {
     },
     mounted() {
         //console.log('mounted: ');
+        this.baget.count = this.baget.count;
     }
 }
 

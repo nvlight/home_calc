@@ -321,10 +321,6 @@ export default {
         updateStenaSquare(){
             this.room.square.sten = this.room.perimeter * +(this.room.height)
         },
-        updateSquaresHanlder(){
-            this.updateCeilingSquare();
-            this.updateStenaSquare();
-        },
         updatePerimeterAndSquares(){
             this.updatePerimeter();
             this.updateCeilingSquare();
