@@ -165,17 +165,17 @@
         <div class="max-w-md w-full space-y-2">
             <h2 class="font-light text-xl text-center">Уже добавленные строительные материалы:</h2>
 
-            <div v-if="!added_materials?.length">
+            <div v-if="!addedMaterial?.length">
                 <span class="block text-center">Пока еще нет добавленных сроительных материалов</span>
             </div>
             <div v-else>
-                <div v-for="(material,index) in added_materials"
+                <div v-for="(material,index) in addedMaterial"
                      :key="index"
                      class="flex justify-between mt-2"
                 >{{index+1}}. {{getJobTitleById(material.id)}}
                     <div class="flex self-center">
-                        {{ material.summ }}
-                        <span class="font-semibold"> ₽</span>
+                        <span>{{ material.name }}, вес/количество: <strong>{{ material.weight }}</strong></span>
+                        <span class="font-semibold">{{ material.price }} <strong>₽</strong></span>
                         <button
                             type="button"
                             class="h-6 w-6 ml-2
@@ -200,7 +200,7 @@
                 </div>
                 <!-- MaterialSumm -->
                 <div class="mt-3">
-                    <span class="text-2xl">Сумма стоимости строительных материалов: {{jobsSumm}}</span>
+                    <span class="text-xl">Сумма стоимости строительных материалов: {{jobsSumm}}</span>
                 </div>
                 <!--/ MaterialSumm -->
             </div>
@@ -211,6 +211,7 @@
 
 <script >
 import CeilingCalc from "../components/CeilingCalc.vue";
+import {mapState} from "vuex";
 
 export default {
     name: "RoomSize",
@@ -400,7 +401,11 @@ export default {
                 (previousValue, currentValue) => previousValue + currentValue.summ,
                 0
             );
-        }
+        },
+
+        addedMaterial(){
+            return this.$store.state.materialsForBuy;
+        },
     },
     created() {
         this.updatePerimeterAndSquares();

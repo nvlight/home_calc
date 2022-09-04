@@ -203,6 +203,7 @@
                                        :data-price="fastener.price"
                                        :data-unit_count="fastener.unit_count"
                                        :data-fastener_id="fastener.id"
+                                       :data-name="fastener.name"
                                        class="w-1/6 text-right appearance-none relative inline-block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                                        value=""
                                        :ref="'r'+fastener.id"
@@ -220,20 +221,7 @@
                 {{ pickedFasteners }}
             </div>
 
-            <div>
-                <strong>fasteneresWeightInputsRefs</strong>
-                <br>
-                {{ fasteneresWeightInputsRefs }}
-            </div>
-
-            <div>
-                <strong>fasteneresSummByWeightRefs</strong>
-                <br>
-                {{ fasteneresSummByWeightRefs }}
-            </div>
-
-
-            <button @click=""
+            <button @click="addPickedFasteners"
                     class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                 Добавить выбранные крепежи
             </button>
@@ -534,6 +522,36 @@ export default {
                 }
                 //break;
             }
+        },
+        addPickedFasteners(){
+            const pf = this.pickedFasteners;
+            for (let i=0; i<pf.length; i++){
+                const refById = this.getFastenerRef(pf[i]);
+                console.log(refById);
+                const weight = refById['refWeight'];
+                const price  = refById['refPrice'];
+                const name = refById['dataset'].name;
+                const materialUnit = {
+                    weight,
+                    price,
+                    name,
+                };
+
+                console.log(materialUnit);
+                store.commit('addMaterial', materialUnit)
+            }
+        },
+        getFastenerRef(id) {
+            const refName = 'r' + id;
+            const refPrice  = this.$refs['g' + id].value;
+            const refWeight = this.$refs[refName].value;
+            const dataset = this.$refs[refName][0].dataset;
+
+            return {
+                refWeight,
+                refPrice,
+                dataset,
+            };
         }
     },
     computed:{

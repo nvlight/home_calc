@@ -91,6 +91,9 @@ const store = createStore({
             },
 
         ],
+        materialsForBuy: [
+
+        ],
     },
     getters:{
 
@@ -128,7 +131,7 @@ const store = createStore({
             }
             //console.log(needMaterials);
             return needMaterials;
-        }
+        },
     },
     mutations:{
         increment (state){
@@ -142,6 +145,9 @@ const store = createStore({
         },
         setCurrentSurvey: (state, survey) => {
             state.currentSurvey.data = survey.data;
+        },
+        addMaterial(state, material){
+            state.materialsForBuy.push(material);
         },
     },
     modules:{},
