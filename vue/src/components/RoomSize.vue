@@ -127,7 +127,7 @@
                 >{{index+1}}. {{getJobTitleById(job.id)}}
                     <div class="flex self-center">
                         {{ job.summ }}
-                        <span class="font-semibold"> ₽</span>
+                        <span class="font-semibold">&nbsp;₽</span>
                         <button
                             @click="deleteAddedJob(job.iid)"
                             type="button"
@@ -153,7 +153,7 @@
                 </div>
                 <!-- jobsSumm -->
                 <div class="mt-3">
-                    <span class="text-2xl">Сумма работ: {{jobsSumm}}</span>
+                    <span class="text-2xl">Стоимость работ: {{jobsSumm}}&nbsp;₽</span>
                 </div>
                 <!--/ jobsSumm -->
             </div>
@@ -165,42 +165,34 @@
         <div class="max-w-md w-full space-y-2">
             <h2 class="font-light text-xl text-center">Уже добавленные строительные материалы:</h2>
 
-            <div v-if="!addedMaterial?.length">
+            <div v-if="!addedMaterials?.length">
                 <span class="block text-center">Пока еще нет добавленных сроительных материалов</span>
             </div>
             <div v-else>
-                <div v-for="(material,index) in addedMaterial"
+                <div v-for="(material,index) in addedMaterials"
                      :key="index"
                      class="flex justify-between mt-2"
-                >{{index+1}}. {{getJobTitleById(material.id)}}
+                >{{index+1}}.&nbsp;
                     <div class="flex self-center">
-                        <span>{{ material.name }}, вес/количество: <strong>{{ material.weight }}</strong></span>
+                        <span>{{ material.name }}, вес/количество: <strong>{{ material.weight }}</strong>
+                            [{{material.itemId}}] id: {{material.id}}
+                        </span>
                         <span class="font-semibold">{{ material.price }} <strong>₽</strong></span>
-                        <button
-                            type="button"
-                            class="h-6 w-6 ml-2
-                        flex items-center justify-center
-                        rounded-full
-                        border border-transparent
-                        text-sm text-red-500
-                        focus:ring-2
-                        focus:ring-offset-2
-                        focus:ring-red-500
-                    ">
+                        <button type="button"
+                            @click="deleteAddedMaterial(material.id)"
+                            class="h-6 w-6 ml-2 flex items-center justify-center rounded-full border border-transparent text-sm text-red-500
+                                focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ">
                             <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5 -mt-1 inline-block
-                                self-end"
-                                 fill="none" viewBox="0 0 24 24"
-                                 stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                 class="h-5 w-5 -mt-1 inline-block self-end"
+                                 fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                             </svg>
                         </button>
                     </div>
                 </div>
                 <!-- MaterialSumm -->
                 <div class="mt-3">
-                    <span class="text-xl">Сумма стоимости строительных материалов: {{jobsSumm}}</span>
+                    <span class="text-2xl">Стоимость строительных материалов: {{materialsSumm}}&nbsp;₽</span>
                 </div>
                 <!--/ MaterialSumm -->
             </div>
@@ -223,12 +215,12 @@ export default {
             currentPickedJob: 1,
             room: {
                 sizes : {
-                    s1: "4",
-                    s2: "3",
-                    s3: "4",
-                    s4: "3",
+                    s1: "5.8",
+                    s2: "5.1",
+                    s3: "5.8",
+                    s4: "5.1",
                 },
-                height: "2.6",
+                height: "3",
                 perimeter: "",
                 square: {
                     ceiling: 0,
@@ -307,10 +299,13 @@ export default {
     },
     methods: {
         updatePerimeter() {
-            this.room.perimeter = +(this.room.sizes.s1) +
-                +(this.room.sizes.s2) +
-                +(this.room.sizes.s3) +
-                +(this.room.sizes.s4);
+            this.room.perimeter =
+                Math.ceil(
+                    +(this.room.sizes.s1) +
+                    +(this.room.sizes.s2) +
+                    +(this.room.sizes.s3) +
+                    +(this.room.sizes.s4)
+                );
         },
         updateCeilingSquare(){
             this.room.square.ceiling =
@@ -394,6 +389,9 @@ export default {
                 t => t.iid != del_id
             )
         },
+        deleteAddedMaterial(material_id){
+            this.$store.commit('deleteMaterial', material_id);
+        }
     },
     computed:{
         jobsSumm(){
@@ -403,7 +401,14 @@ export default {
             );
         },
 
-        addedMaterial(){
+        materialsSumm(){
+            return this.$store.state.materialsForBuy.reduce(
+                (previousValue, currentValue) => previousValue + +currentValue.price,
+                0
+            );
+        },
+
+        addedMaterials(){
             return this.$store.state.materialsForBuy;
         },
     },

@@ -91,9 +91,8 @@ const store = createStore({
             },
 
         ],
-        materialsForBuy: [
-
-        ],
+        materialsForBuyCount: 0,
+        materialsForBuy: [],
     },
     getters:{
 
@@ -147,8 +146,18 @@ const store = createStore({
             state.currentSurvey.data = survey.data;
         },
         addMaterial(state, material){
+            state.materialsForBuyCount++;
+            material.id = state.materialsForBuyCount;
             state.materialsForBuy.push(material);
         },
+        deleteMaterial(state, materialId){
+
+            state.materialsForBuy = state.materialsForBuy.filter(
+                mt => mt.id !== materialId
+            );
+
+            state.materialsForBuyCount--;
+        }
     },
     modules:{},
 })

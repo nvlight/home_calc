@@ -418,10 +418,10 @@ export default {
             //store.commit('decrement');
         },
         updatePerimeter() {
-            this.customPerimeter = +(this.customSizes.s1) +
+            this.customPerimeter = Math.ceil( +(this.customSizes.s1) +
                 +(this.customSizes.s2) +
                 +(this.customSizes.s3) +
-                +(this.customSizes.s4);
+                +(this.customSizes.s4));
         },
         updateCeilingSquare(){
             this.customSquare =
@@ -436,14 +436,14 @@ export default {
         },
         updateCustomPerimeter(){
             let customPer = this.calcCustomPerimeter();
-            this.baget.count = customPer;
+            this.baget.count = Math.ceil(customPer);
             return customPer;
         },
         calcCustomPerimeter(){
-            let per = this.perimeter;
+            let per = Math.ceil(this.perimeter);
 
             if (this.isCustomSizes){
-                per = (+this.customSizes.s1 + +this.customSizes.s2) * 2;
+                per = Math.ceil(+this.customSizes.s1 + +this.customSizes.s2) * 2;
             }
 
             return per;
@@ -531,14 +531,16 @@ export default {
                 const weight = refById['refWeight'];
                 const price  = refById['refPrice'];
                 const name = refById['dataset'].name;
+                const itemId = refById['dataset'].fastener_id;
                 const materialUnit = {
+                    itemId,
                     weight,
                     price,
                     name,
                 };
 
                 console.log(materialUnit);
-                store.commit('addMaterial', materialUnit)
+                this.$store.commit('addMaterial', materialUnit)
             }
         },
         getFastenerRef(id) {
@@ -594,7 +596,7 @@ export default {
         },
 
         bagetSumm() {
-            return this.baget.count * this.baget.price;
+            return Math.ceil( this.baget.count * this.baget.price);
         },
         chandeliersSumm() {
             return this.chandeliers.count * this.chandeliers.price;
@@ -617,7 +619,7 @@ export default {
           }
         },
         getCustomPerimeter(){
-            return this.updateCustomPerimeter();
+            return Math.ceil(this.updateCustomPerimeter());
         },
         getFastenerUnitsNumber(){
             let per = this.getCustomPerimeter;
@@ -714,7 +716,7 @@ export default {
     },
     created(){
         //console.log('created: ');
-        this.baget.count = this.perimeter;
+        this.baget.count = Math.ceil(this.perimeter);
     },
     beforeMount() {
         //console.log('beforeMount: ');
