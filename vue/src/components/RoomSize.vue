@@ -227,6 +227,8 @@ export default {
                     floor: 0,
                     sten: 0,
                 },
+                doorstep_count: 1,
+                windows_count: 1,
             },
             work_types: [
                 {
@@ -284,7 +286,30 @@ export default {
                     description: '',
                     cost: 200,
                 },
-
+                {
+                    id: 10,
+                    title: "Ламинат. (Ширина от 200 мм)",
+                    description: '',
+                    cost: 150,
+                },
+                {
+                    id: 11,
+                    title: "Ламинат. (Ширина до 160 мм)",
+                    description: '',
+                    cost: 200
+                },
+                {
+                    id: 12,
+                    title: "Плинтуса, установка",
+                    description: '',
+                    cost: 50
+                },
+                {
+                    id: 13,
+                    title: "Порог, установка",
+                    description: '',
+                    cost: 150
+                },
 
                 {
                     id: 27,
@@ -348,6 +373,10 @@ export default {
                         case 7: find *= this.room.square.sten; break;
                         case 8: find *= this.room.square.ceiling; break;
                         case 9: find *= this.room.square.sten; break;
+                        case 10: find *= this.room.square.floor; break;
+                        case 11: find *= this.room.square.floor; break;
+                        case 12: find *= this.room.perimeter; break;
+                        case 13: find *= this.room.doorstep_count; break;
                         case 27: find *= this.room.square.ceiling; break;
                     }
 

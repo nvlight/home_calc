@@ -101,7 +101,6 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import RoomSize from "../components/RoomSize.vue"
-import CeilingCalc from "../components/CeilingCalc.vue";
 
 const user = {
     name: 'Tom Cook',
