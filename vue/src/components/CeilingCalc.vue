@@ -41,16 +41,46 @@
             Потолок - {{square}} кв.м.
         </div>
         <div v-if="isCustomSizes">
-            <button
-                @click="toggleCustomSizes"
-                class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >Запретить кастомные размеры потолка</button>
+            <fieldset>
+                <div class="mt-4 space-y-4">
+                    <div class="flex items-start">
+                        <div class="flex h-5 items-center">
+                            <input id="comments" name="comments" type="checkbox"
+                                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500
+                                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                                   focus:border"
+                                   @click="toggleCustomSizes"
+                                   checked
+                            >
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="comments" class="font-medium text-gray-700">Запретить кастомные размеры потолка</label>
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
         </div>
         <div v-else>
-            <button
-                @click="toggleCustomSizes"
-                class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >Установить кастомные размеры потолка</button>
+            <fieldset>
+                <div class="mt-4 space-y-4">
+                    <div class="flex items-start">
+                        <div class="flex h-5 items-center">
+                            <input id="comments" name="comments" type="checkbox"
+                                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500
+                                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                                   focus:border"
+                                   @click="toggleCustomSizes"
+                                   checked
+                            >
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="comments" class="font-medium text-gray-700">Установить кастомные размеры потолка</label>
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
         </div>
         <div
             v-if="isCustomSizes"
