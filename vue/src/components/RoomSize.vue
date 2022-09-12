@@ -1,4 +1,5 @@
 <template>
+    <!-- Шаг 1. Введите размеры комнаты -->
     <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-2">
 
@@ -64,6 +65,7 @@
         </div>
     </div>
 
+    <!-- Шаг 2. Добавьте виды работ -->
     <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-2">
             <h1 class="font-light text-xl text-center">Шаг 2. Добавьте виды работ</h1>
@@ -73,17 +75,15 @@
                     class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
                     sm:text-sm mb-3"
             >
-                <option :value="null" selected>Выберите вид работы</option>
+                <option :value="0" selected>Выберите вид работы</option>
                 <option v-for="(wt,index) in work_types"
                     :key="index"
                     :value="wt.id"
                     class="text-1xl"
                 >{{wt.id}}.  {{wt.title}} - от {{wt.cost}}&nbsp;<span class="font-semibold">₽</span></option>
             </select>
-            <div>
-                currentPickedJob:
-                {{(currentPickedJob)}}
-                {{Boolean(currentPickedJob)}}
+            <div v-if="this.$store.state.debug" class="border-dotted border-2 p-3 border-red-400">
+                currentPickedJob: {{(currentPickedJob)}} {{Boolean(currentPickedJob)}}
             </div>
             <div v-if="currentPickedJob == 1" class="ceiling_calc_wrapper">
                 <CeilingCalc
@@ -113,18 +113,20 @@
         </div>
     </div>
 
+    <!-- Результаты подсчетов -->
     <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-2">
-            <h2 class="font-light text-xl text-center">Уже добавленные виды работ:</h2>
+            <h1 class="font-semibold text-2xl text-center">Результаты подсчетов</h1>
+            <h2 class="font-semibold text-xl text-center">1. Виды работ:</h2>
 
             <div v-if="!added_jobs?.length">
-                <span class="block text-center">Пока еще нет добавленых работ</span>
+                <span class="block text-center">Список пуст</span>
             </div>
             <div v-else>
                 <div v-for="(job,index) in added_jobs"
                     :key="index"
                      class="flex justify-between mt-2"
-                >{{index+1}}. {{getJobTitleById(job.id)}}
+                >{{index+1}}. {{ job.title }}
                     <div class="flex self-center">
                         {{ job.summ }}
                         <span class="font-semibold">&nbsp;₽</span>
@@ -161,12 +163,13 @@
         </div>
     </div>
 
+    <!-- -->
     <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-2">
-            <h2 class="font-light text-xl text-center">Уже добавленные строительные материалы:</h2>
+            <h2 class="font-semibold text-xl text-center">Строительные материалы:</h2>
 
             <div v-if="!addedMaterials?.length">
-                <span class="block text-center">Пока еще нет добавленных сроительных материалов</span>
+                <span class="block text-center">Список пуст</span>
             </div>
             <div v-else>
                 <div v-for="(material,index) in addedMaterials"
@@ -212,7 +215,7 @@ export default {
     data(){
         return {
             added_jobs_i : 0, // index
-            currentPickedJob: 1,
+            currentPickedJob: 0,
             room: {
                 sizes : {
                     s1: "5.8",
@@ -391,18 +394,19 @@ export default {
 
         addCalcedJob(){
             //console.log('addCalcedJob');
-            let jobCost = this.getJobCostById(this.currentPickedJob);
-
             this.added_jobs_i++;
 
             let tmp_job = {}
             tmp_job.id = this.currentPickedJob; // choosed id
-            tmp_job.summ = jobCost;
+            tmp_job.summ = this.getJobCostById(this.currentPickedJob);
             tmp_job.iid = this.added_jobs_i;
+            tmp_job.title = this.getJobTitleById(tmp_job.id);
+            console.log(tmp_job);
+
             this.added_jobs.push(tmp_job);
         },
         addCalcedCeilingHandler(res){
-            console.log(res);
+            //console.log(res);
             this.added_jobs_i++;
 
             let tmp_job = {}
@@ -410,6 +414,9 @@ export default {
             tmp_job.selected_id = res.selected_id;
             tmp_job.summ = res.price;
             tmp_job.iid = this.added_jobs_i;
+            tmp_job.title = this.getJobTitleById(tmp_job.id);
+            console.log(tmp_job);
+
             this.added_jobs.push(tmp_job);
         },
         deleteAddedJob(del_id){

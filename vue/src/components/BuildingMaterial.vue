@@ -1,8 +1,8 @@
 <template>
-    <h1 class="mt-3 font-light  text-center">Добавление материалов</h1>
-    <div class="min-h-full flex items-center justify-center pt-1 px-4 sm:px-6 lg:px-8">
-        <div class="col-span-9 sm:col-span-3 w-full" style="">
-            <label for="material_name" class="block text-sm font-medium text-gray-700">Наименование</label>
+    <h1 class="mt-3 font-semibold text-2xl text-center">Добавление материалов</h1>
+    <div class="min-h-full flex items-center justify-center pt-1 ">
+        <div class=" w-full">
+            <label for="material_name" class="block text-sm text-center font-medium text-gray-700">Наименование</label>
             <select
                 v-if="buildingMaterials.length"
                 v-model="currentPickedMaterial"
@@ -29,12 +29,12 @@
         </div>
     </div>
 
-    <div class="mb-3">
+    <div v-if="this.$store.state.debug" class="border-dotted border-2 p-3 border-red-400">
         currentPickedMaterial <strong>{{currentPickedMaterial}}</strong>
     </div>
 
     <button @click=""
-            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+        class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               <span class="absolute left-0 inset-y-0 flex items-center pl-3">
                 <!-- Heroicon name: solid/lock-closed -->
                 <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg"

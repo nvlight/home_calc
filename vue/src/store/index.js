@@ -2,7 +2,7 @@ import {createStore} from "vuex";
 
 const store = createStore({
     state:{
-        count: 0,
+        debug: true,
         user:{
             data: {},
             token: sessionStorage.getItem('TOKEN'),
@@ -133,12 +133,6 @@ const store = createStore({
         },
     },
     mutations:{
-        increment (state){
-            state.count++;
-        },
-        decrement (state){
-            state.count--;
-        },
         setCurrentSurveyLoading: (state, loading) => {
             state.currentSurvey.loading = loading;
         },

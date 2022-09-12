@@ -27,14 +27,9 @@
                 :value="pot.id">{{pot.name}} - ({{ pot.price }} ₽)
             </option>
         </select>
-        <div v-if="choosedCeiling.selected_id.length">
-            Выбранный элемент select
-            <strong>{{choosedCeiling.selected_id}}</strong>
-            <br>
 
-        </div>
-        <div v-else>
-            <strong>Натяжной потолок не выбран!</strong>
+        <div v-if="this.$store.state.debug" class="border-dotted border-2 p-3 border-red-400" >
+            Выбранный элемент select <strong>{{choosedCeiling.selected_id}}</strong>
         </div>
 
         <div>
@@ -139,7 +134,8 @@
         <div class="flex justify-between mt-5">
             Натяжной потолок + установка
             <span>
-                <strong>{{choosedCeiling.price}}</strong> ₽
+                <!-- <strong>{{choosedCeiling.price}}</strong> ₽-->
+                <strong>{{choosedCeilingPrice }}</strong> ₽
             </span>
         </div>
         <div class="flex justify-between items-center mt-3">
@@ -245,10 +241,9 @@
                 </div>
             </div>
 
-            <div>
-                <hr>
-                <p>pickedFasteners</p>
-                {{ pickedFasteners }}
+            <div v-if="this.$store.state.debug"
+                 class="border-dotted border-2 p-3 border-red-400">
+                pickedFasteners: {{ pickedFasteners }}
             </div>
 
             <button @click="addPickedFasteners"
@@ -261,19 +256,6 @@
 
         <BuildingMaterial>
         </BuildingMaterial>
-
-        <div class="mt-3">
-            <p>store count: {{storeCount}}</p>
-            <div class="mt-3 flex justify-around">
-                <button
-                    class="pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500"
-                    @click="storeIncrement"
-                >increment</button>
-                <button class=" pointer-events-auto rounded-md bg-indigo-600 py-2 px-3 text-[0.8125rem] font-semibold leading-5 text-white hover:bg-indigo-500"
-                    @click="storeDecrement"
-                >decrement</button>
-            </div>
-        </div>
 
     </div>
 </template>
@@ -415,37 +397,10 @@ export default {
             return (needWeight * price).toFixed(2);
         },
         recalcPriceWithWeight(weight_input, price_strong, price){
-            //console.log('im here: ' +weight_input)
-            //console.log('new_price: ' +price)
-            //console.log(this.$refs[weight_input] );
-            //console.log(this.$refs[price_strong] );
-            //console.log(this.$refs[weight_input][0].value );
-            //console.log(this.$refs[price_strong][0].innerHTML );
-
             this.$refs[weight_input].value = this.$refs[weight_input][0].value;
             this.$refs[price_strong].value = this.fastenerPriceForWeigth(this.$refs[weight_input].value, price);
             this.$refs[price_strong][0].innerHTML = this.$refs[price_strong].value;
-
-            //console.log(this.$refs[weight_input] );
-            //console.log(this.$refs[price_strong] );
-            //console.log(this.$refs[weight_input][0].value );
-            //console.log(this.$refs[price_strong][0].innerHTML );
-
-            //this.$refs[weight_input].value = price;
-            //this.$refs[price_strong].value = price;
-            // this.$vm.refs.r82239108;
-            // this.$vm.refs.g82239108;
-            // r82239108
-
             return;
-        },
-        storeIncrement(){
-            //this.$store.commit('increment');
-            store.commit('increment');
-        },
-        storeDecrement(){
-            this.$store.commit('decrement');
-            //store.commit('decrement');
         },
         updatePerimeter() {
             this.customPerimeter = Math.ceil( +(this.customSizes.s1) +
@@ -656,6 +611,9 @@ export default {
             let widthDiff = 10; // sm
             return per * widthDiff;
         },
+        choosedCeilingPrice(){
+          return Math.ceil(this.choosedCeiling.price);
+        },
     },
     watch:{
         baget0:{
@@ -670,17 +628,11 @@ export default {
                     let unit_count = +rs[i].dataset.unit_count;
                     let fastener_id = rs[i].dataset.fastener_id;
 
-                    // r34980454544 - ref_weight
-                    // g34980454544 - ref_price
                     let ref_weight_name = 'r'+fastener_id;
                     let ref_price_name  = 'g'+fastener_id;
                     console.log('ref_weight_name: ' + ref_weight_name);
                     console.log('ref_price_name: ' + ref_price_name);
 
-                    // this.$vm.refs['r82239108']
-                    // this.$vm.refs['g82239108']
-                    // this.$vm.refs['r82239108'].value;
-                    // this.$vm.refs['g82239108'].value;
                     let ref_weight = this.$refs[ref_weight_name];
                     let ref_price  = this.$refs[ref_price_name];
                     console.log(ref_weight);
