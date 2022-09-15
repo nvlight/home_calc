@@ -94,6 +94,12 @@
                 >
                 </CeilingCalc>
             </div>
+            <div v-else-if="currentPickedJob == 10">
+                <LaminateCalc
+                    :room="room"
+                >
+                </LaminateCalc>
+            </div>
             <div v-else-if="Boolean(currentPickedJob) !== false">
                 <button @click="addCalcedJob"
                         class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -206,16 +212,17 @@
 
 <script >
 import CeilingCalc from "../components/CeilingCalc.vue";
+import LaminateCalc from "../components/LaminateCalc.vue";
 import {mapState} from "vuex";
 
 export default {
     name: "RoomSize",
-    components: { CeilingCalc },
+    components: { CeilingCalc, LaminateCalc },
     emits: ['addCalcedCeiling'],
     data(){
         return {
             added_jobs_i : 0, // index
-            currentPickedJob: 0,
+            currentPickedJob: 10,
             room: {
                 sizes : {
                     s1: "5.8",
@@ -230,8 +237,26 @@ export default {
                     floor: 0,
                     sten: 0,
                 },
-                doorstep_count: 1,
-                windows_count: 1,
+                doorstep_count: 0, // пороги
+                windows: [
+                    {
+                        // проем - opening
+                        // meter
+                        width: 3,
+                        height: 1.5,
+                    },
+                ],
+                doors: [
+                    {
+                        width: 1,
+                        height: 2,
+                    },
+                    {
+                        // meter
+                        width: 1,
+                        height: 2,
+                    },
+                ],
             },
             work_types: [
                 {
@@ -451,6 +476,10 @@ export default {
     created() {
         this.updatePerimeterAndSquares();
         this.added_jobs_i++;
+        this.room.doorstep_count = this.room.doors.length;
+    },
+    mounted() {
+
     },
 }
 </script>
