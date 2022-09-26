@@ -81,17 +81,57 @@
             </div>
         </header>
         <main>
-            <div class="max-w-full mx-auto py-6 sm:px-6 lg:px-8">
-                <!-- Replace with your content -->
-                <div class="px-4 py-6 ">
-                    <div class="border-4 border-dashed border-gray-200 rounded-lg" >
-                        <div class="px-6 py-6">
-                            <RoomSize>
-                            </RoomSize>
+            <div>
+                {{rooms}}
+            </div>
+            <div class="buttons mt-3 text-center">
+                <button class="plus" @click="roomIncrement">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                </button>
+                <button class="minus" @click="roomDecrement">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
+                    </svg>
+                </button>
+            </div>
+            <div class="main_wrapper">
+                <div class="flex py-6 sm:px-6 lg:px-8">
+                    <!-- Replace with your content -->
+                    <div
+                        v-for="(room,key) in rooms.length"
+                        class="max-w-2xl px-4 py-6"
+                    >
+                        <div class="border-4 border-dashed border-gray-200 rounded-lg" >
+                            <div class="px-6 py-6">
+                                <RoomSize
+                                    :number="key"
+                                >
+                                </RoomSize>
+                            </div>
                         </div>
                     </div>
+
+<!--                    <div class="max-w-2xl px-4 py-6 ">-->
+<!--                        <div class="border-4 border-dashed border-gray-200 rounded-lg" >-->
+<!--                            <div class="px-6 py-6">-->
+<!--                                <RoomSize>-->
+<!--                                </RoomSize>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="max-w-2xl px-4 py-6 ">-->
+<!--                        <div class="border-4 border-dashed border-gray-200 rounded-lg" >-->
+<!--                            <div class="px-6 py-6">-->
+<!--                                <RoomSize>-->
+<!--                                </RoomSize>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <!-- /End replace -->
                 </div>
-                <!-- /End replace -->
+
             </div>
         </main>
     </div>
@@ -101,6 +141,7 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import RoomSize from "../components/RoomSize.vue"
+import {reactive} from "vue";
 
 const user = {
     name: 'Tom Cook',
@@ -120,4 +161,17 @@ const userNavigation = [
     { name: 'Settings', href: '#' },
     { name: 'Sign out', href: '#' },
 ]
+
+const rooms = reactive({length: 1,});
+
+function roomIncrement() {
+    rooms.length++;
+}
+
+function roomDecrement() {
+    if ( (rooms.length-1) >= 1 ){
+        rooms.length--;
+    }
+}
+
 </script>

@@ -3,7 +3,30 @@
     <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-2">
 
-            <h1 class="font-light text-xl text-center">Шаг 1. Введите размеры комнаты</h1>
+            <h1 class="font-semibold text-xl text-center">Комната {{number+1}}</h1>
+            <h1 class="font-light text-xl">Шаг 1. Введите размеры комнаты</h1>
+
+            <div v-if="this.$store.state.debug" class="border-dotted border-2 p-3 border-red-400">
+                isSimpleSidesCounting: {{(isSimpleSidesCounting)}}
+            </div>
+            <fieldset>
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="flex h-5 items-center">
+                            <input id="isSimpleSidesCountingId" name="comments" type="checkbox"
+                                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500
+                                   focus:outline-none  focus:ring-offset-2 focus:ring-indigo-500                                   "
+                                   @click="isSimpleSidesCountingChange"
+                                   checked
+                            >
+                        </div>
+                        <div class="ml-3 text-sm">
+                            <label for="isSimpleSidesCountingId" class="font-medium text-gray-700">Простой подсчет сторон</label>
+                        </div>
+                    </div>
+
+                </div>
+            </fieldset>
 
             <div class="rounded-md shadow-sm flex">
                 <div class="mr-2">
@@ -22,22 +45,25 @@
                            focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                            placeholder="Сторона 2">
                 </div>
-                <div class="mr-2">
-                    <label for="s3" class="">Сторона 3</label>
-                    <input @change="updatePerimeterAndSquares" id="s3" name="s3" v-model="room.sizes.s3" type="text" autocomplete="s3" required
-                           class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+
+                <template v-if="!isSimpleSidesCounting">
+                    <div class="mr-2">
+                        <label for="s3" class="">Сторона 3</label>
+                        <input @change="updatePerimeterAndSquares" id="s3" name="s3" v-model="room.sizes.s3" type="text" autocomplete="s3" required
+                               class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                            rounded-b-md rounded-t-md
                            focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                           placeholder="Сторона 3">
-                </div>
-                <div class="mr-2">
-                    <label for="s4" class="">Сторона 4</label>
-                    <input @change="updatePerimeterAndSquares" id="s4" name="s4" v-model="room.sizes.s4" type="text" autocomplete="current-password" required
-                           class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                               placeholder="Сторона 3">
+                    </div>
+                    <div class="mr-2">
+                        <label for="s4" class="">Сторона 4</label>
+                        <input @change="updatePerimeterAndSquares" id="s4" name="s4" v-model="room.sizes.s4" type="text" autocomplete="current-password" required
+                               class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                            rounded-b-md rounded-t-md
                            focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                           placeholder="Сторона 4">
-                </div>
+                               placeholder="Сторона 4">
+                    </div>
+                </template>
 
                 <div class="mr-2">
                     <label for="room_height" class="">Высота</label>
@@ -57,8 +83,8 @@
                     <br>
                     Площадь пола: <span >{{room.square.floor}} кв.м.</span>
                 </div>
-                <div v-if="room.square.sten" class="pt-3">
-                    Площадь стен: <span >{{room.square.sten}} кв.м.</span>
+                <div v-if="room.square.walls" class="pt-3">
+                    Площадь стен: <span >{{room.square.walls}} кв.м.</span>
                 </div>
             </div>
 
@@ -218,20 +244,24 @@ import {mapState} from "vuex";
 export default {
     name: "RoomSize",
     components: { CeilingCalc, LaminateCalc },
+    props: {
+        number: Number,
+    },
     emits: ['addCalcedCeiling'],
     data(){
         return {
             added_jobs_i : 0, // index
-            currentPickedJob: 10,
+            currentPickedJob: 0,
+            isSimpleSidesCounting: true,
             room: {
                 sizes : {
-                    s1: "5.8",
-                    s2: "5.1",
-                    s3: "5.8",
-                    s4: "5.1",
+                    s1: 0,
+                    s2: 0,
+                    s3: 0,
+                    s4: 0,
                 },
-                height: "3",
-                perimeter: "",
+                height: 0,
+                perimeter: 0,
                 square: {
                     ceiling: 0,
                     floor: 0,
@@ -351,7 +381,11 @@ export default {
         }
     },
     methods: {
-        updatePerimeter() {
+        isSimpleSidesCountingChange(){
+            this.isSimpleSidesCounting = !(this.isSimpleSidesCounting);
+            this.updatePerimeterAndSquares();
+        },
+        updatePerimeterChich() {
             this.room.perimeter =
                 Math.ceil(
                     +(this.room.sizes.s1) +
@@ -360,20 +394,68 @@ export default {
                     +(this.room.sizes.s4)
                 );
         },
-        updateCeilingSquare(){
+        updatePerimeterHandler(sidesArr) {
+            let res = 0;
+            for(let i=0; i<sidesArr.length; i++){
+                res += +(sidesArr[i]);
+            }
+            return res;
+        },
+        updatePerimeter() {
+            if (this.isSimpleSidesCounting){
+                this.room.perimeter = this.updatePerimeterHandler([
+                    (this.room.sizes.s1),
+                    (this.room.sizes.s2),
+                    (this.room.sizes.s1),
+                    (this.room.sizes.s2),
+                ]);
+            }else{
+                this.room.perimeter = this.updatePerimeterHandler([
+                    (this.room.sizes.s1),
+                    (this.room.sizes.s2),
+                    (this.room.sizes.s3),
+                    (this.room.sizes.s4),
+                ]);
+            }
+        },
+
+        updateCeilingSquareChich(){
             this.room.square.ceiling =
                 +(this.room.sizes.s1) *
                 +(this.room.sizes.s2)
 
             this.room.square.floor = this.room.square.ceiling
         },
-        updateStenaSquare(){
-            this.room.square.sten = this.room.perimeter * +(this.room.height)
+        updateCeilingSquareHandler(sidesArr){
+            let res = 1;
+            for(let i=0; i<sidesArr.length; i++){
+                res *= +(sidesArr[i]);
+            }
+            return res;
+        },
+        updateCeilingAndFloorSquare(){
+            if (this.isSimpleSidesCounting){
+                this.room.square.ceiling = this.updateCeilingSquareHandler([
+                    (this.room.sizes.s1),
+                    (this.room.sizes.s2),
+                ]);
+                this.room.square.floor = this.room.square.ceiling
+            }else{
+                // todo пока тут дублирование идет, исправить потом, выбирать наибольшие 2 из 4-х сторон
+                this.room.square.ceiling = this.updateCeilingSquareHandler([
+                    (this.room.sizes.s1),
+                    (this.room.sizes.s2),
+                ]);
+                this.room.square.floor = this.room.square.ceiling
+            }
+        },
+        updateWallsSquare(){
+            this.room.square.walls = this.room.perimeter * +(this.room.height)
         },
         updatePerimeterAndSquares(){
             this.updatePerimeter();
-            this.updateCeilingSquare();
-            this.updateStenaSquare();
+            this.updateCeilingAndFloorSquare();
+            this.updateWallsSquare();
         },
         getJobTitleById(id){
             let find = "";
@@ -396,11 +478,11 @@ export default {
                         case 2: find *= this.room.perimeter; break;
                         case 3: find *= this.room.perimeter; break;
                         case 4: find *= this.room.square.ceiling; break;
-                        case 5: find *= this.room.square.sten; break;
+                        case 5: find *= this.room.square.walls; break;
                         case 6: find *= this.room.square.ceiling; break;
-                        case 7: find *= this.room.square.sten; break;
+                        case 7: find *= this.room.square.walls; break;
                         case 8: find *= this.room.square.ceiling; break;
-                        case 9: find *= this.room.square.sten; break;
+                        case 9: find *= this.room.square.walls; break;
                         case 10: find *= this.room.square.floor; break;
                         case 11: find *= this.room.square.floor; break;
                         case 12: find *= this.room.perimeter; break;
@@ -426,7 +508,7 @@ export default {
             tmp_job.summ = this.getJobCostById(this.currentPickedJob);
             tmp_job.iid = this.added_jobs_i;
             tmp_job.title = this.getJobTitleById(tmp_job.id);
-            console.log(tmp_job);
+            //console.log(tmp_job);
 
             this.added_jobs.push(tmp_job);
         },
@@ -475,8 +557,12 @@ export default {
     },
     created() {
         this.updatePerimeterAndSquares();
-        this.added_jobs_i++;
         this.room.doorstep_count = this.room.doors.length;
+
+        if (this.isSimpleSidesCounting){
+            this.room.sizes.s3 = this.room.sizes.s1;
+            this.room.sizes.s4 = this.room.sizes.s2;
+        }
     },
     mounted() {
 
