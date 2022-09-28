@@ -93,6 +93,7 @@ const store = createStore({
         ],
         materialsForBuyCount: 0,
         materialsForBuy: [],
+        jobsResultingSumm: 0,
     },
     getters:{
 
@@ -151,7 +152,14 @@ const store = createStore({
             );
 
             state.materialsForBuyCount--;
-        }
+        },
+
+        incValueToJobsResultingSumm(state, summ){
+            state.jobsResultingSumm += summ;
+        },
+        decValueToJobsResultingSumm(state, summ){
+            state.jobsResultingSumm -= summ;
+        },
     },
     modules:{},
 })

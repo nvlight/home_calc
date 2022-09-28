@@ -97,42 +97,28 @@
                 </button>
             </div>
             <div class="main_wrapper">
-                <div class="flex py-6 sm:px-6 lg:px-8">
+                <div class="flex">
                     <!-- Replace with your content -->
                     <div
-                        v-for="(room,key) in rooms.length"
-                        class="max-w-2xl px-4 py-6"
+                        v-for="(room,key) in rooms"
+                        class="max-w-2xl px-2 py-3"
                     >
                         <div class="border-4 border-dashed border-gray-200 rounded-lg" >
-                            <div class="px-6 py-6">
+                            <div class="px-2 py-2">
                                 <RoomSize
                                     :number="key"
+                                    :room="room"
                                 >
                                 </RoomSize>
                             </div>
                         </div>
                     </div>
-
-<!--                    <div class="max-w-2xl px-4 py-6 ">-->
-<!--                        <div class="border-4 border-dashed border-gray-200 rounded-lg" >-->
-<!--                            <div class="px-6 py-6">-->
-<!--                                <RoomSize>-->
-<!--                                </RoomSize>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    <div class="max-w-2xl px-4 py-6 ">-->
-<!--                        <div class="border-4 border-dashed border-gray-200 rounded-lg" >-->
-<!--                            <div class="px-6 py-6">-->
-<!--                                <RoomSize>-->
-<!--                                </RoomSize>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-                    <!-- /End replace -->
                 </div>
-
             </div>
+            <div class="resultingSumm p-3">
+                <h1 class="text-2xl font-semibold">Общая стоимость работ: {{jobsResultingSumm}}</h1>
+            </div>
+
         </main>
     </div>
 </template>
@@ -141,7 +127,8 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import RoomSize from "../components/RoomSize.vue"
-import {reactive} from "vue";
+import {reactive, computed} from "vue";
+import store from "../store/index.js";
 
 const user = {
     name: 'Tom Cook',
@@ -162,16 +149,165 @@ const userNavigation = [
     { name: 'Sign out', href: '#' },
 ]
 
-const rooms = reactive({length: 1,});
+const rooms = reactive([
+    {
+        isSimpleSidesCounting: true,
+        sizes : {
+            s1: 3.8,
+            s2: 3.8,
+            s3: 0,
+            s4: 0,
+        },
+        height: 2.3,
+        perimeter: 0,
+        square: {
+            ceiling: 0,
+            floor: 0,
+            walls: 0,
+        },
+        doorstep_count: 0, // пороги
+        windows: [
+            {
+                // проем - opening
+                // meter
+                width: 3,
+                height: 1.5,
+            },
+        ],
+        doors: [
+            {
+                width: 1,
+                height: 2,
+            },
+            {
+                // meter
+                width: 1,
+                height: 2,
+            },
+        ],
+    },
+    {
+        isSimpleSidesCounting: true,
+        sizes : {
+            s1: 3.8,
+            s2: 3.1,
+            s3: 0,
+            s4: 0,
+        },
+        height: 2.3,
+        perimeter: 0,
+        square: {
+            ceiling: 0,
+            floor: 0,
+            walls: 0,
+        },
+        doorstep_count: 0, // пороги
+        windows: [
+            {
+                // проем - opening
+                // meter
+                width: 3,
+                height: 1.5,
+            },
+        ],
+        doors: [
+            {
+                width: 1,
+                height: 2,
+            },
+            {
+                // meter
+                width: 1,
+                height: 2,
+            },
+        ],
+    },
+    {
+        isSimpleSidesCounting: true,
+        sizes : {
+            s1: 3.8,
+            s2: 3,
+            s3: 0,
+            s4: 0,
+        },
+        height: 2.3,
+        perimeter: 0,
+        square: {
+            ceiling: 0,
+            floor: 0,
+            walls: 0,
+        },
+        doorstep_count: 0, // пороги
+        windows: [
+            {
+                // проем - opening
+                // meter
+                width: 3,
+                height: 1.5,
+            },
+        ],
+        doors: [
+            {
+                width: 1,
+                height: 2,
+            },
+            {
+                // meter
+                width: 1,
+                height: 2,
+            },
+        ],
+    },
+    {
+        isSimpleSidesCounting: true,
+        sizes : {
+            s1: 3.9,
+            s2: 2.5,
+            s3: 0,
+            s4: 0,
+        },
+        height: 2.3,
+        perimeter: 0,
+        square: {
+            ceiling: 0,
+            floor: 0,
+            walls: 0,
+        },
+        doorstep_count: 0, // пороги
+        windows: [
+            {
+                // проем - opening
+                // meter
+                width: 3,
+                height: 1.5,
+            },
+        ],
+        doors: [
+            {
+                width: 1,
+                height: 2,
+            },
+            {
+                // meter
+                width: 1,
+                height: 2,
+            },
+        ],
+    },
+]);
+
+const jobsResultingSumm = computed(() => {
+    return store.state.jobsResultingSumm;
+});
 
 function roomIncrement() {
-    rooms.length++;
+    //rooms.length++;
 }
 
 function roomDecrement() {
-    if ( (rooms.length-1) >= 1 ){
-        rooms.length--;
-    }
+    //if ( (rooms.length-1) >= 1 ){
+    //    rooms.length--;
+    //}
 }
 
 </script>

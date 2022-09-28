@@ -1,19 +1,23 @@
 <template>
     <!-- Шаг 1. Введите размеры комнаты -->
-    <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
+    <div class="min-h-full flex items-center justify-start pt-4 pb-2 px-2 sm:px-2 lg:px-2">
         <div class="max-w-md w-full space-y-2">
+
+            <div class="border-dotted border-2 p-3 border-red-400">
+                {{ room }}
+            </div>
 
             <h1 class="font-semibold text-xl text-center">Комната {{number+1}}</h1>
             <h1 class="font-light text-xl">Шаг 1. Введите размеры комнаты</h1>
 
             <div v-if="this.$store.state.debug" class="border-dotted border-2 p-3 border-red-400">
-                isSimpleSidesCounting: {{(isSimpleSidesCounting)}}
+                isSimpleSidesCounting: {{(room.isSimpleSidesCounting)}}
             </div>
             <fieldset>
                 <div class="space-y-4">
                     <div class="flex items-start">
                         <div class="flex h-5 items-center">
-                            <input id="isSimpleSidesCountingId" name="comments" type="checkbox"
+                            <input :id="'isSimpleSidesCountingId' + number" name="comments" type="checkbox"
                                    class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500
                                    focus:outline-none  focus:ring-offset-2 focus:ring-indigo-500                                   "
                                    @click="isSimpleSidesCountingChange"
@@ -21,7 +25,7 @@
                             >
                         </div>
                         <div class="ml-3 text-sm">
-                            <label for="isSimpleSidesCountingId" class="font-medium text-gray-700">Простой подсчет сторон</label>
+                            <label :for="'isSimpleSidesCountingId' + number" class="font-medium text-gray-700">Простой подсчет сторон</label>
                         </div>
                     </div>
 
@@ -46,7 +50,7 @@
                            placeholder="Сторона 2">
                 </div>
 
-                <template v-if="!isSimpleSidesCounting">
+                <template v-if="!room.isSimpleSidesCounting">
                     <div class="mr-2">
                         <label for="s3" class="">Сторона 3</label>
                         <input @change="updatePerimeterAndSquares" id="s3" name="s3" v-model="room.sizes.s3" type="text" autocomplete="s3" required
@@ -236,7 +240,7 @@
     </div>
 </template>
 
-<script >
+<script>
 import CeilingCalc from "../components/CeilingCalc.vue";
 import LaminateCalc from "../components/LaminateCalc.vue";
 import {mapState} from "vuex";
@@ -246,14 +250,15 @@ export default {
     components: { CeilingCalc, LaminateCalc },
     props: {
         number: Number,
+        room: Object,
     },
     emits: ['addCalcedCeiling'],
     data(){
         return {
             added_jobs_i : 0, // index
             currentPickedJob: 0,
-            isSimpleSidesCounting: true,
-            room: {
+            room00000: {
+                isSimpleSidesCounting: true,
                 sizes : {
                     s1: 0,
                     s2: 0,
@@ -265,7 +270,7 @@ export default {
                 square: {
                     ceiling: 0,
                     floor: 0,
-                    sten: 0,
+                    walls: 0,
                 },
                 doorstep_count: 0, // пороги
                 windows: [
@@ -382,17 +387,8 @@ export default {
     },
     methods: {
         isSimpleSidesCountingChange(){
-            this.isSimpleSidesCounting = !(this.isSimpleSidesCounting);
+            this.room.isSimpleSidesCounting = !(this.room.isSimpleSidesCounting);
             this.updatePerimeterAndSquares();
-        },
-        updatePerimeterChich() {
-            this.room.perimeter =
-                Math.ceil(
-                    +(this.room.sizes.s1) +
-                    +(this.room.sizes.s2) +
-                    +(this.room.sizes.s3) +
-                    +(this.room.sizes.s4)
-                );
         },
         updatePerimeterHandler(sidesArr) {
             let res = 0;
@@ -402,7 +398,7 @@ export default {
             return res;
         },
         updatePerimeter() {
-            if (this.isSimpleSidesCounting){
+            if (this.room.isSimpleSidesCounting){
                 this.room.perimeter = this.updatePerimeterHandler([
                     (this.room.sizes.s1),
                     (this.room.sizes.s2),
@@ -418,14 +414,6 @@ export default {
                 ]);
             }
         },
-
-        updateCeilingSquareChich(){
-            this.room.square.ceiling =
-                +(this.room.sizes.s1) *
-                +(this.room.sizes.s2)
-
-            this.room.square.floor = this.room.square.ceiling
-        },
         updateCeilingSquareHandler(sidesArr){
             let res = 1;
             for(let i=0; i<sidesArr.length; i++){
@@ -434,7 +422,7 @@ export default {
             return res;
         },
         updateCeilingAndFloorSquare(){
-            if (this.isSimpleSidesCounting){
+            if (this.room.isSimpleSidesCounting){
                 this.room.square.ceiling = this.updateCeilingSquareHandler([
                     (this.room.sizes.s1),
                     (this.room.sizes.s2),
@@ -495,10 +483,6 @@ export default {
             }
             return find;
         },
-        jobTypeChanged(ev){
-            //console.log(ev)
-        },
-
         addCalcedJob(){
             //console.log('addCalcedJob');
             this.added_jobs_i++;
@@ -509,6 +493,8 @@ export default {
             tmp_job.iid = this.added_jobs_i;
             tmp_job.title = this.getJobTitleById(tmp_job.id);
             //console.log(tmp_job);
+
+            this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
 
             this.added_jobs.push(tmp_job);
         },
@@ -528,9 +514,17 @@ export default {
         },
         deleteAddedJob(del_id){
             //console.log(del_id)
+            const filtered = this.added_jobs.filter(
+                t => t.iid == del_id
+            );
             this.added_jobs = this.added_jobs.filter(
                 t => t.iid != del_id
-            )
+            );
+            //console.log(filtered);
+            const decSumm = filtered[0].summ;
+
+            //console.log(decSumm);
+            this.$store.commit('decValueToJobsResultingSumm', decSumm);
         },
         deleteAddedMaterial(material_id){
             this.$store.commit('deleteMaterial', material_id);
@@ -538,10 +532,12 @@ export default {
     },
     computed:{
         jobsSumm(){
-            return this.added_jobs.reduce(
+            const summ = this.added_jobs.reduce(
                 (previousValue, currentValue) => previousValue + currentValue.summ,
                 0
             );
+
+            return summ;
         },
 
         materialsSumm(){
@@ -554,15 +550,18 @@ export default {
         addedMaterials(){
             return this.$store.state.materialsForBuy;
         },
+
     },
     created() {
         this.updatePerimeterAndSquares();
         this.room.doorstep_count = this.room.doors.length;
 
-        if (this.isSimpleSidesCounting){
+        if (this.room.isSimpleSidesCounting){
             this.room.sizes.s3 = this.room.sizes.s1;
             this.room.sizes.s4 = this.room.sizes.s2;
         }
+
+        this.updatePerimeterAndSquares();
     },
     mounted() {
 
