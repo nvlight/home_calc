@@ -1,4 +1,5 @@
 import {createStore} from "vuex";
+import axiosClient from "../axios.js";
 
 const store = createStore({
     state:{
@@ -132,6 +133,29 @@ const store = createStore({
             //console.log(needMaterials);
             return needMaterials;
         },
+        // 12345678aA@
+        // 12345678aA@
+        login({commit}, user){
+            return axiosClient.post('/login', user)
+                .then( ({data}) => {
+                    commit('setUser', data)
+                    return data;
+                })
+        },
+        register({commit}, user){
+            return axiosClient.post('/register', user)
+                .then( ({data}) => {
+                    commit('setUser', data)
+                    return data;
+                })
+        },
+        logout({commit}){
+            return axiosClient.post('/logout')
+                .then( response => {
+                    commit('logout');
+                    return response;
+                })
+        },
     },
     mutations:{
         setCurrentSurveyLoading: (state, loading) => {
@@ -160,6 +184,18 @@ const store = createStore({
         decValueToJobsResultingSumm(state, summ){
             state.jobsResultingSumm -= summ;
         },
+
+        setUser: (state, userData) => {
+            state.user.token = userData.token;
+            state.user.data  = userData.user;
+            sessionStorage.setItem('TOKEN', userData.token);
+        },
+        logout: (state) => {
+            state.user.data  = {};
+            state.user.token = null;
+            sessionStorage.removeItem('TOKEN');
+        },
+
     },
     modules:{},
 })

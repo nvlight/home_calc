@@ -33,6 +33,13 @@
                                         <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
                                             <a :href="item.href" :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']">{{ item.name }}</a>
                                         </MenuItem>
+                                        <MenuItem
+                                            v-slot="{ active }">
+                                            <a @click="logout"
+                                               :class="[
+                                                   'block px-4 py-2 text-sm text-gray-700 cursor-pointer ']"> Sign out
+                                            </a>
+                                        </MenuItem>
                                     </MenuItems>
                                 </transition>
                             </Menu>
@@ -129,6 +136,7 @@ import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import RoomSize from "../components/RoomSize.vue"
 import {reactive, computed} from "vue";
 import store from "../store/index.js";
+import router from "../router/index.js";
 
 const user = {
     name: 'Tom Cook',
@@ -308,6 +316,16 @@ function roomDecrement() {
     //if ( (rooms.length-1) >= 1 ){
     //    rooms.length--;
     //}
+}
+
+function logout(){
+
+    store.dispatch('logout')
+        .then( () => {
+            router.push({
+                name: 'Login',
+            })
+        });
 }
 
 </script>

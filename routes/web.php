@@ -22,6 +22,6 @@ Route::group([
     'prefix' => 'test',
     'name'   => 'test.'
 ], function(){
-    Route::get('str', [TestLaravel9Features::class, 'str'])
-        ->name('str');
+    Route::get('dd', [TestLaravel9Features::class, 'dd'])
+        ->name('dd');
 });
