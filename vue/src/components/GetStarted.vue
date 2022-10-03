@@ -36,8 +36,7 @@
                                         <MenuItem
                                             v-slot="{ active }">
                                             <a @click="logout"
-                                               :class="[
-                                                   'block px-4 py-2 text-sm text-gray-700 cursor-pointer ']"> Sign out
+                                               :class="[active ? 'bg-gray-100' : '', 'cursor-pointer block px-4 py-2 text-sm text-gray-700']"> Sign out
                                             </a>
                                         </MenuItem>
                                     </MenuItems>
@@ -123,7 +122,7 @@
                 </div>
             </div>
             <div class="resultingSumm p-3">
-                <h1 class="text-2xl font-semibold">Общая стоимость работ: {{jobsResultingSumm}}</h1>
+                <h1 class="text-2xl font-semibold">Общая стоимость работ: {{jobsResultingSumm}} {{ currency }}</h1>
             </div>
 
         </main>
@@ -155,7 +154,9 @@ const userNavigation = [
     { name: 'Your Profile', href: '#' },
     { name: 'Settings', href: '#' },
     { name: 'Sign out', href: '#' },
-]
+];
+
+const currency = "₽";
 
 const rooms = reactive([
     {

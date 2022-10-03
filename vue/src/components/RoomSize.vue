@@ -161,15 +161,19 @@
             <div v-else>
                 <div v-for="(job,index) in added_jobs"
                     :key="index"
-                     class="flex justify-between mt-2"
-                >{{index+1}}. {{ job.title }}
-                    <div class="flex self-center">
-                        {{ job.summ }}
-                        <span class="font-semibold">&nbsp;₽</span>
-                        <button
-                            @click="deleteAddedJob(job.iid)"
-                            type="button"
-                            class="h-6 w-6 ml-2
+                >
+                    <div class="flex justify-between mt-2">
+                        <div>
+                            {{index+1}}. {{ job.title }}
+                        </div>
+                        <div class="flex self-center">
+                            <span class="flex">&nbsp;{{ job.summ }}
+                                <span class="font-semibold">&nbsp;₽</span>
+                            </span>
+                            <button
+                                @click="deleteAddedJob(job.id)"
+                                type="button"
+                                class="h-6 w-6 ml-2
                         flex items-center justify-center
                         rounded-full
                         border border-transparent
@@ -178,15 +182,19 @@
                         focus:ring-offset-2
                         focus:ring-red-500
                     ">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5 -mt-1 inline-block
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="h-5 w-5 -mt-1 inline-block
                                 self-end"
-                                 fill="none" viewBox="0 0 24 24"
-                                 stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                            </svg>
-                        </button>
+                                     fill="none" viewBox="0 0 24 24"
+                                     stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div v-if="job.adding_job_info_string">
+                        [{{ job.adding_job_info_string }}]
                     </div>
                 </div>
                 <!-- jobsSumm -->
@@ -457,41 +465,89 @@ export default {
             return find;
         },
         getJobCostById(id){
-            let find = 0;
+            let job_cost = 0;
+            let adding_job_info_string = "";
+            const currency = "₽";
             for (let i in this.work_types){
                 if (this.work_types[i].id === (id)){
-                    find = this.work_types[i].cost;
+                    job_cost = this.work_types[i].cost;
 
                     switch (id){
-                        case 2: find *= this.room.perimeter; break;
-                        case 3: find *= this.room.perimeter; break;
-                        case 4: find *= this.room.square.ceiling; break;
-                        case 5: find *= this.room.square.walls; break;
-                        case 6: find *= this.room.square.ceiling; break;
-                        case 7: find *= this.room.square.walls; break;
-                        case 8: find *= this.room.square.ceiling; break;
-                        case 9: find *= this.room.square.walls; break;
-                        case 10: find *= this.room.square.floor; break;
-                        case 11: find *= this.room.square.floor; break;
-                        case 12: find *= this.room.perimeter; break;
-                        case 13: find *= this.room.doorstep_count; break;
-                        case 27: find *= this.room.square.ceiling; break;
+                        case 2:
+                            job_cost *= this.room.perimeter;
+                            adding_job_info_string = `${this.room.perimeter} x ${job_cost} ${currency}`;
+                            break;
+                        case 3:
+                            adding_job_info_string = `${this.room.perimeter} x ${job_cost} ${currency}`;
+                            job_cost *= this.room.perimeter;
+                            break;
+                        case 4:
+                            adding_job_info_string = `${this.room.square.ceiling} x ${job_cost} ${currency}`;
+                            job_cost *= this.room.square.ceiling;
+                            break;
+                        case 5:
+                            adding_job_info_string = `${this.room.square.walls} x ${job_cost} ${currency}`;
+                            job_cost *= this.room.square.walls;
+                            break;
+                        case 6:
+                            adding_job_info_string = `${this.room.square.ceiling} x ${job_cost} ${currency}`;
+                            job_cost *= this.room.square.ceiling;
+                            break;
+                        case 7:
+                            adding_job_info_string = `${this.room.square.walls} x ${job_cost} ${currency}`;
+                            job_cost *= this.room.square.walls;
+                            break;
+                        case 8:
+                            adding_job_info_string = `${this.room.square.ceiling} x ${job_cost} ${currency}`;
+                            job_cost *= this.room.square.ceiling;
+                            break;
+                        case 9:
+                            adding_job_info_string = `${this.room.square.walls} x ${job_cost} ${currency}`;
+                            job_cost *= this.room.square.walls;
+                            break;
+                        case 10:
+                            adding_job_info_string = `${this.room.square.floor} x ${job_cost} ${currency}`;
+                            job_cost *= this.room.square.floor;
+                            break;
+                        case 11:
+                            adding_job_info_string = `${this.room.square.floor} x ${job_cost} ${currency}`;
+                            job_cost *= this.room.square.floor;
+                            break;
+                        case 12:
+                            adding_job_info_string = `${this.room.perimeter} x ${job_cost} ${currency}`;
+                            job_cost *= this.room.perimeter;
+                            break;
+                        case 13:
+                            adding_job_info_string = `${ this.room.doorstep_count} x ${job_cost} ${currency}`;
+                            job_cost *= this.room.doorstep_count;
+                            break;
+                        case 27:
+                            adding_job_info_string = `${this.room.square.ceiling} x ${job_cost} ${currency}`;
+                            job_cost *= this.room.square.ceiling;
+                            break;
                     }
 
                     break;
                 }
             }
-            return find;
+            return {
+                job_cost,
+                adding_job_info_string,
+            };
         },
         addCalcedJob(){
             //console.log('addCalcedJob');
             this.added_jobs_i++;
 
             let tmp_job = {}
-            tmp_job.id = this.currentPickedJob; // choosed id
-            tmp_job.summ = this.getJobCostById(this.currentPickedJob);
-            tmp_job.iid = this.added_jobs_i;
-            tmp_job.title = this.getJobTitleById(tmp_job.id);
+            tmp_job.id = this.added_jobs_i;
+            tmp_job.job_id = this.currentPickedJob; // choosed id
+
+            let job_cost = this.getJobCostById(this.currentPickedJob);
+            tmp_job.summ = job_cost['job_cost'];
+            tmp_job.adding_job_info_string = job_cost['adding_job_info_string'];
+
+            tmp_job.title = this.getJobTitleById(tmp_job.job_id);
             //console.log(tmp_job);
 
             this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
@@ -503,22 +559,25 @@ export default {
             this.added_jobs_i++;
 
             let tmp_job = {}
-            tmp_job.id = 1; // nat pot
+            tmp_job.id = this.added_jobs_i;
+            tmp_job.job_id = 1; // nat pot
             tmp_job.selected_id = res.selected_id;
             tmp_job.summ = res.price;
-            tmp_job.iid = this.added_jobs_i;
-            tmp_job.title = this.getJobTitleById(tmp_job.id);
-            console.log(tmp_job);
+            tmp_job.adding_job_info_string = res['adding_job_info_string'];
+            tmp_job.title = this.getJobTitleById(tmp_job.job_id);
+            //console.log(tmp_job);
+
+            this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
 
             this.added_jobs.push(tmp_job);
         },
         deleteAddedJob(del_id){
             //console.log(del_id)
             const filtered = this.added_jobs.filter(
-                t => t.iid == del_id
+                t => t.id == del_id
             );
             this.added_jobs = this.added_jobs.filter(
-                t => t.iid != del_id
+                t => t.id != del_id
             );
             //console.log(filtered);
             const decSumm = filtered[0].summ;
