@@ -118,9 +118,8 @@
             <div v-if="currentPickedJob == 1" class="ceiling_calc_wrapper">
                 <CeilingCalc
                     @addCalcedCeiling="addCalcedCeilingHandler"
-                    :square="room.square.ceiling"
-                    :perimeter="room.perimeter"
                     :roomSizes="room.sizes"
+                    :currentRoom="room"
                 >
                 </CeilingCalc>
             </div>
@@ -264,7 +263,7 @@ export default {
     data(){
         return {
             added_jobs_i : 0, // index
-            currentPickedJob: 0,
+            currentPickedJob: 1,
             room00000: {
                 isSimpleSidesCounting: true,
                 sizes : {

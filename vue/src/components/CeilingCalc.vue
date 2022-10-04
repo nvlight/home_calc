@@ -32,9 +32,13 @@
             Выбранный элемент select <strong>{{choosedCeiling.selected_id}}</strong>
         </div>
 
-        <div>
-            Потолок - {{square}} кв.м.
+        <div v-if="room.perimeter" class="pt-3">
+            Периметр: <span >{{room.perimeter}} м.</span>
         </div>
+        <div v-if="room.square.ceiling" class="pt-3">
+            Площадь потолка: <span >{{room.square.ceiling}} кв.м.</span>
+        </div>
+
         <div v-if="isCustomSizes">
             <fieldset>
                 <div class="mt-4 space-y-4">
@@ -121,11 +125,11 @@
                        placeholder="Сторона 4">
             </div>
 
-            <div v-if="customPerimeter" class="pt-3">
-                Периметр: <span >{{customPerimeter}} м.</span>
+            <div v-if="room.perimeter" class="pt-3">
+                Периметр: <span >{{room.perimeter}} м.</span>
             </div>
-            <div v-if="customSquare" class="pt-3">
-                Площадь потолка: <span >{{customSquare}} кв.м.</span>
+            <div v-if="room.square.ceiling" class="pt-3">
+                Площадь потолка: <span >{{room.square.ceiling}} кв.м.</span>
             </div>
 
         </div>
@@ -134,7 +138,6 @@
         <div class="flex justify-between mt-5">
             Натяжной потолок + установка
             <span>
-                <!-- <strong>{{choosedCeiling.price}}</strong> {{ currency }}-->
                 <strong>{{choosedCeilingPrice }}</strong> {{ currency }}
             </span>
         </div>
@@ -212,12 +215,13 @@ import { mapState } from "vuex";
 
 export default {
     name: 'CeilingCalc',
-    props: ['square', 'perimeter', 'roomSizes'],
+    props: ['square', 'perimeter', 'currentRoom', ],
     components: { BuildingMaterial },
     data(){
         return{
             currency: "₽",
             isCustomSizes: false,
+            room: {},
             customSizes : {
                 s1: 0,
                 s2: 0,
@@ -336,66 +340,34 @@ export default {
     },
     methods:{
         updatePerimeter() {
-            this.customPerimeter = Math.ceil( +(this.customSizes.s1) +
+            if (!this.isCustomSizes){
+                this.room.perimeter =
+                    +(this.room.sizes.s1) +
+                    +(this.room.sizes.s2) +
+                    +(this.room.sizes.s3) +
+                    +(this.room.sizes.s4);
+            }else{
+                this.room.perimeter =
+                +(this.customSizes.s1) +
                 +(this.customSizes.s2) +
                 +(this.customSizes.s3) +
-                +(this.customSizes.s4));
-        },
-        updateCeilingSquare(){
-            this.customSquare =
-                +(this.customSizes.s1) *
-                +(this.customSizes.s2)
-        },
-        updatePerimeterAndSquares(){
-            this.updatePerimeter();
-            this.updateCeilingSquare();
-            this.calcCeil();
-            this.updateCustomPerimeter();
-        },
-        updateCustomPerimeter(){
-            let customPer = this.calcCustomPerimeter();
-            this.baget.count = Math.ceil(customPer);
-            return customPer;
-        },
-        calcCustomPerimeter(){
-            let per = Math.ceil(this.perimeter);
-
-            if (this.isCustomSizes){
-                per = Math.ceil(+this.customSizes.s1 + +this.customSizes.s2) * 2;
+                +(this.customSizes.s4);
             }
-
-            return per;
         },
-        toggleCustomSizes(){
-            this.isCustomSizes = this.isCustomSizes ? false : true;
-
-            this.updateCustomPerimeter();
-
-            //
-            if (this.isCustomSizes){
-                this.setCustomSizesFromParent();
+        updateSquare(){
+            if (!this.isCustomSizes){
+                this.room.square.ceiling =
+                    +(this.room.sizes.s1) *
+                    +(this.room.sizes.s2);
+                this.room.square.floor = this.room.square.ceiling;
+            }else{
+                this.room.square.ceiling =
+                    +(this.customSizes.s1) *
+                    +(this.customSizes.s2);
+                this.room.square.floor = this.room.square.ceiling;
             }
-
-            this.calcCeil();
-        },
-        setCustomSizesFromParent(){
-            // roomSizes
-            this.customSizes = this.roomSizes;
-        },
-        addCalcedCeil(){
-            if (!this.choosedCeiling.selected_id.length){
-                alert('Сначала выберите потолок!')
-                return;
-            }
-
-            this.$emit('addCalcedCeiling', this.totalAmount)
         },
         calcCeil(){
-            let realSquare = this.square;
-            if (this.isCustomSizes){
-                realSquare = this.customSquare;
-            }
-
             let seil_select_id = this.choosedCeiling.selected_id;
             if (seil_select_id.length){
                 let index = seil_select_id[0];
@@ -404,10 +376,35 @@ export default {
                     //console.log(price)
                     let iteam = this.prices[price];
                     if (iteam.id === index){
-                        this.choosedCeiling.price = realSquare * iteam.price;
+                        this.choosedCeiling.price = this.room.square.ceiling * iteam.price;
                     }
                 }
             }
+        },
+        updatePerimeterAndSquares(){
+            this.updatePerimeter();
+            this.updateSquare();
+            this.calcCeil();
+        },
+
+        toggleCustomSizes(){
+            this.isCustomSizes = this.isCustomSizes ? false : true;
+
+            if (this.isCustomSizes){
+                this.setCustomSizesFromParent();
+            }
+
+            this.updatePerimeterAndSquares();
+        },
+        setCustomSizesFromParent(){
+            this.customSizes = Object.assign({}, this.room.sizes);
+        },
+        addCalcedCeil(){
+            if (!this.choosedCeiling.selected_id.length){
+                alert('Сначала выберите потолок!')
+                return;
+            }
+            this.$emit('addCalcedCeiling', this.totalAmount)
         },
 
     },
@@ -419,7 +416,6 @@ export default {
         //     //return this.$store.state.count;
         //     return store.state.count;
         // },
-
 
         bagetSumm() {
             return Math.ceil( this.baget.count * this.baget.price);
@@ -448,9 +444,6 @@ export default {
                 доставка: ${this.deliveryPrice} ${this.currency}`,
           }
         },
-        getCustomPerimeter(){
-            return Math.ceil(this.updateCustomPerimeter());
-        },
         choosedCeilingPrice(){
           return Math.ceil(this.choosedCeiling.price);
         },
@@ -459,7 +452,9 @@ export default {
     },
     created(){
         //console.log('created: ');
-        this.baget.count = Math.ceil(this.perimeter);
+        //this.setCustomSizesFromParent();
+        this.room = Object.assign({}, this.currentRoom);
+        this.baget.count = Math.ceil(this.room.perimeter);
     },
     beforeMount() {
     },
