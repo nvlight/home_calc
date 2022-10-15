@@ -78,6 +78,11 @@
                            placeholder="Высота">
                 </div>
             </div>
+
+            <div >
+
+            </div>
+
             <div>
                 <div v-if="room.perimeter" class="pt-3">
                     Периметр: <span >{{room.perimeter}} м.</span>
@@ -125,6 +130,7 @@
             </div>
             <div v-else-if="currentPickedJob == 10">
                 <LaminateCalc
+                    @addCalcedLaminate="addCalcedLaminateHandler"
                     :room="room"
                 >
                 </LaminateCalc>
@@ -259,11 +265,11 @@ export default {
         number: Number,
         room: Object,
     },
-    emits: ['addCalcedCeiling'],
+    emits: ['addCalcedCeiling', 'addCalcedLaminate'],
     data(){
         return {
             added_jobs_i : 0, // index
-            currentPickedJob: 1,
+            currentPickedJob: 10,
             room00000: {
                 isSimpleSidesCounting: true,
                 sizes : {
@@ -280,10 +286,9 @@ export default {
                     walls: 0,
                 },
                 doorstep_count: 0, // пороги
+
                 windows: [
                     {
-                        // проем - opening
-                        // meter
                         width: 3,
                         height: 1.5,
                     },
@@ -293,10 +298,19 @@ export default {
                         width: 1,
                         height: 2,
                     },
+                ],
+                window_ways: [ // оконный проем
                     {
-                        // meter
-                        width: 1,
+                        width: 0.4,
+                        height: 0.9,
+                        length: 0.8,
+                    },
+                ],
+                doorways: [ // дверной проем
+                    {
+                        width: 0.2,
                         height: 2,
+                        length: 0.8,
                     },
                 ],
             },
@@ -559,7 +573,24 @@ export default {
 
             let tmp_job = {}
             tmp_job.id = this.added_jobs_i;
-            tmp_job.job_id = 1; // nat pot
+            tmp_job.job_id = 1;  // nat pot
+            tmp_job.selected_id = res.selected_id;
+            tmp_job.summ = res.price;
+            tmp_job.adding_job_info_string = res['adding_job_info_string'];
+            tmp_job.title = this.getJobTitleById(tmp_job.job_id);
+            //console.log(tmp_job);
+
+            this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
+
+            this.added_jobs.push(tmp_job);
+        },
+        addCalcedLaminateHandler(res){
+            //console.log(res);
+            this.added_jobs_i++;
+
+            let tmp_job = {}
+            tmp_job.id = this.added_jobs_i;
+            tmp_job.job_id = 10; // laminate
             tmp_job.selected_id = res.selected_id;
             tmp_job.summ = res.price;
             tmp_job.adding_job_info_string = res['adding_job_info_string'];

@@ -368,15 +368,14 @@ export default {
             }
         },
         calcCeil(){
-            let seil_select_id = this.choosedCeiling.selected_id;
-            if (seil_select_id.length){
-                let index = seil_select_id[0];
+            let ceiling_select_id = this.choosedCeiling.selected_id;
+            if (ceiling_select_id.length){
+                const index = ceiling_select_id[0];
 
                 for ( let price in this.prices){
-                    //console.log(price)
-                    let iteam = this.prices[price];
-                    if (iteam.id === index){
-                        this.choosedCeiling.price = this.room.square.ceiling * iteam.price;
+                    const item = this.prices[price];
+                    if (item.id === index){
+                        this.choosedCeiling.price = this.room.square.ceiling * item.price;
                     }
                 }
             }
@@ -418,7 +417,8 @@ export default {
         // },
 
         bagetSumm() {
-            return Math.ceil( this.baget.count * this.baget.price);
+            return this.baget.count * this.baget.price;
+            //return Math.ceil( this.baget.count * this.baget.price);
         },
         chandeliersSumm() {
             return this.chandeliers.count * this.chandeliers.price;
@@ -454,7 +454,8 @@ export default {
         //console.log('created: ');
         //this.setCustomSizesFromParent();
         this.room = Object.assign({}, this.currentRoom);
-        this.baget.count = Math.ceil(this.room.perimeter);
+        this.baget.count = (this.room.perimeter);
+        //this.baget.count = Math.ceil(this.room.perimeter);
     },
     beforeMount() {
     },
