@@ -176,23 +176,22 @@ const rooms = reactive([
         doorstep_count: 0, // пороги
         windows: [
             {
-                // проем - opening
-                // meter
-                width: 3,
-                height: 1.5,
+                id: 1,
+                width: 0.4, // оконный проем
+                height: 0.9,
+                length: 0.8,
             },
         ],
+        is_windows_showing: false,
         doors: [
             {
-                width: 1,
+                id: 1,
+                width: 0.2, // дверной проем
                 height: 2,
-            },
-            {
-                // meter
-                width: 1,
-                height: 2,
+                length: 0.8,
             },
         ],
+        is_doors_showing: false,
     },
     {
         isSimpleSidesCounting: true,
@@ -210,25 +209,6 @@ const rooms = reactive([
             walls: 0,
         },
         doorstep_count: 0, // пороги
-        windows: [
-            {
-                // проем - opening
-                // meter
-                width: 3,
-                height: 1.5,
-            },
-        ],
-        doors: [
-            {
-                width: 1,
-                height: 2,
-            },
-            {
-                // meter
-                width: 1,
-                height: 2,
-            },
-        ],
     },
     {
         isSimpleSidesCounting: true,
@@ -246,25 +226,6 @@ const rooms = reactive([
             walls: 0,
         },
         doorstep_count: 0, // пороги
-        windows: [
-            {
-                // проем - opening
-                // meter
-                width: 3,
-                height: 1.5,
-            },
-        ],
-        doors: [
-            {
-                width: 1,
-                height: 2,
-            },
-            {
-                // meter
-                width: 1,
-                height: 2,
-            },
-        ],
     },
     {
         isSimpleSidesCounting: true,
@@ -282,25 +243,6 @@ const rooms = reactive([
             walls: 0,
         },
         doorstep_count: 0, // пороги
-        windows: [
-            {
-                // проем - opening
-                // meter
-                width: 3,
-                height: 1.5,
-            },
-        ],
-        doors: [
-            {
-                width: 1,
-                height: 2,
-            },
-            {
-                // meter
-                width: 1,
-                height: 2,
-            },
-        ],
     },
 ]);
 

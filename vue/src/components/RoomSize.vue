@@ -79,8 +79,83 @@
                 </div>
             </div>
 
-            <div >
+            <div>
+                <label>
+                    <input type="checkbox"
+                           :value="this.room.is_windows_showing"
+                           @change="this.room.is_windows_showing = !this.room.is_windows_showing"
+                    >
+                    <span class="pl-1">Показать окна</span>
+                </label>
 
+            </div>
+            <div class="windows_wrapper"
+                 v-if="this.room.is_windows_showing">
+                <div class="flex">
+                    <div class="mr-2">
+                        <label class="">
+                            <span>Длина</span>
+                            <input name="window_add_length" required
+                                   class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                                   rounded-b-md rounded-t-md
+                                   focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                   placeholder="1.2">
+                        </label>
+                    </div>
+                    <div class="mr-2">
+                        <label class="">
+                            <span>Высота</span>
+                            <input name="window_add_length" required
+                                   class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                                   rounded-b-md rounded-t-md
+                                   focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                   placeholder="1.2">
+                        </label>
+                    </div>
+                    <div class="mr-2">
+                        <label class="">
+                            <span>Ширина (проем)</span>
+                            <input name="window_add_length" required
+                                   class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                                   rounded-b-md rounded-t-md
+                                   focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                   placeholder="1.2">
+                        </label>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button
+                        @click="addWindow"
+                        class="py-2 px-4
+                        border border-transparent
+                        text-sm font-medium rounded-md text-white bg-indigo-600
+                        hover:bg-indigo-700
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-offset-2
+                        focus:ring-indigo-500">
+                        <span class="">Добавить окно</span>
+                    </button>
+                </div>
+                <div v-if="this.room?.windows">
+                    <div v-for="(window, key) in this.room.windows">
+                        <div class="font-semibold">{{key+1}}.</div>
+                        <ul>
+                            <li>Длина: {{window.length}} м.</li>
+                            <li>Высота: {{window.height}} м.</li>
+                            <li>Ширина (проем): {{window.width}} м.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div v-else="">
+                    <span class="font-light">Нет окон</span>
+                </div>
+            </div>
+
+            <div class="doors_wrapper">
+                <div>
+
+                </div>
             </div>
 
             <div>
@@ -270,50 +345,6 @@ export default {
         return {
             added_jobs_i : 0, // index
             currentPickedJob: 10,
-            room00000: {
-                isSimpleSidesCounting: true,
-                sizes : {
-                    s1: 0,
-                    s2: 0,
-                    s3: 0,
-                    s4: 0,
-                },
-                height: 0,
-                perimeter: 0,
-                square: {
-                    ceiling: 0,
-                    floor: 0,
-                    walls: 0,
-                },
-                doorstep_count: 0, // пороги
-
-                windows: [
-                    {
-                        width: 3,
-                        height: 1.5,
-                    },
-                ],
-                doors: [
-                    {
-                        width: 1,
-                        height: 2,
-                    },
-                ],
-                window_ways: [ // оконный проем
-                    {
-                        width: 0.4,
-                        height: 0.9,
-                        length: 0.8,
-                    },
-                ],
-                doorways: [ // дверной проем
-                    {
-                        width: 0.2,
-                        height: 2,
-                        length: 0.8,
-                    },
-                ],
-            },
             work_types: [
                 {
                     id: 1,
@@ -617,7 +648,19 @@ export default {
         },
         deleteAddedMaterial(material_id){
             this.$store.commit('deleteMaterial', material_id);
-        }
+        },
+        addWindow(){
+            console.log('addWindow');
+        },
+        deleteWindow(){
+
+        },
+        addDoor(){
+
+        },
+        deleteDoor(){
+
+        },
     },
     computed:{
         jobsSumm(){
@@ -643,7 +686,7 @@ export default {
     },
     created() {
         this.updatePerimeterAndSquares();
-        this.room.doorstep_count = this.room.doors.length;
+        // this.room.doorstep_count = this.room.doors.length;
 
         if (this.room.isSimpleSidesCounting){
             this.room.sizes.s3 = this.room.sizes.s1;
