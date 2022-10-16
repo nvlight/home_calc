@@ -112,6 +112,8 @@
                                 <RoomSize
                                     :number="key"
                                     :room="room"
+                                    @addWindow="addWindowHandler"
+                                    @deleteWindow="deleteWindowHandler"
                                 >
                                 </RoomSize>
                             </div>
@@ -157,8 +159,9 @@ const userNavigation = [
 
 const currency = "₽";
 
-const rooms = reactive([
+let rooms = reactive([
     {
+        id: 1,
         isSimpleSidesCounting: true,
         sizes : {
             s1: 3.8,
@@ -174,12 +177,25 @@ const rooms = reactive([
             walls: 0,
         },
         doorstep_count: 0, // пороги
+        windows_count: 3,
         windows: [
             {
                 id: 1,
                 width: 0.4, // оконный проем
                 height: 0.9,
                 length: 0.8,
+            },
+            {
+                id: 2,
+                width: 0.4, // оконный проем
+                height: 0.9,
+                length: 1.2,
+            },
+            {
+                id: 3,
+                width: 0.4, // оконный проем
+                height: 0.9,
+                length: 1,
             },
         ],
         is_windows_showing: false,
@@ -194,6 +210,7 @@ const rooms = reactive([
         is_doors_showing: false,
     },
     {
+        id: 2,
         isSimpleSidesCounting: true,
         sizes : {
             s1: 3.8,
@@ -211,6 +228,7 @@ const rooms = reactive([
         doorstep_count: 0, // пороги
     },
     {
+        id: 3,
         isSimpleSidesCounting: true,
         sizes : {
             s1: 3.8,
@@ -228,6 +246,7 @@ const rooms = reactive([
         doorstep_count: 0, // пороги
     },
     {
+        id: 4,
         isSimpleSidesCounting: true,
         sizes : {
             s1: 3.9,
@@ -267,6 +286,42 @@ function logout(){
                 name: 'Login',
             })
         });
+}
+
+function addWindowHandler(res){
+    //console.log('addWindowHandler', res);
+
+    const filtered = rooms.filter(
+        t => t.id == res.room_id
+    );
+    //console.log('filtered:',filtered);
+
+    filtered[0].windows_count++;
+    const new_window_id = filtered[0].windows_count;
+    //const new_window_id = 2;
+    //console.log('new_window_id: ', new_window_id);
+    res.windows_add.id = new_window_id;
+    const new_windowadd = res.windows_add;
+
+    const clone_new_windowadd = Object.assign({}, new_windowadd);
+    //console.log('new_windowadd:', clone_new_windowadd);
+    filtered[0].windows.push(clone_new_windowadd);
+
+}
+
+function deleteWindowHandler(res){
+    //console.log(res);
+
+    const filtered = rooms.filter(
+        t => t.id == res.room_id
+    );
+    //console.log('filtered:',filtered);
+    //console.log('del_id:',res.del_id);
+
+    filtered[0].windows = filtered[0].windows.filter(
+        t => t.id != res.del_id
+    );
+
 }
 
 </script>
