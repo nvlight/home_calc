@@ -114,6 +114,8 @@
                                     :room="room"
                                     @addWindow="addWindowHandler"
                                     @deleteWindow="deleteWindowHandler"
+                                    @addDoor="addDoorHandler"
+                                    @deleteDoor="deleteDoorHandler"
                                 >
                                 </RoomSize>
                             </div>
@@ -199,12 +201,25 @@ let rooms = reactive([
             },
         ],
         is_windows_showing: false,
+        doors_count: 3,
         doors: [
             {
                 id: 1,
-                width: 0.2, // дверной проем
+                width: 0.3,
+                height: 2.2,
+                length: 0.8,
+            },
+            {
+                id: 2,
+                width: 0.3,
                 height: 2,
                 length: 0.8,
+            },
+            {
+                id: 3,
+                width: 0.3, // дверной проем
+                height: 2.1,
+                length: 0.9,
             },
         ],
         is_doors_showing: false,
@@ -309,7 +324,7 @@ function addWindowHandler(res){
 
 }
 
-function deleteWindowHandler(res){
+function deleteWindowHandler(res) {
     //console.log(res);
 
     const filtered = rooms.filter(
@@ -322,6 +337,32 @@ function deleteWindowHandler(res){
         t => t.id != res.del_id
     );
 
+}
+
+function addDoorHandler(res) {
+    const filtered = rooms.filter(
+        t => t.id == res.room_id
+    );
+
+    filtered[0].doors_count++;
+    const new_door_id = filtered[0].doors_count;
+
+    res.doors_add.id = new_door_id;
+    const new_door_add = res.doors_add;
+
+    const clone_new_new_door_add = Object.assign({}, new_door_add);
+    filtered[0].doors.push(clone_new_new_door_add);
+}
+
+function deleteDoorHandler(res){
+
+    const filtered = rooms.filter(
+        t => t.id == res.room_id
+    );
+
+    filtered[0].doors = filtered[0].doors.filter(
+        t => t.id != res.del_id
+    );
 }
 
 </script>

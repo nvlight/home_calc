@@ -79,14 +79,23 @@
                 </div>
             </div>
 
-            <div>
-                <label>
-                    <input type="checkbox"
-                           :value="this.room.is_windows_showing"
-                           @change="this.room.is_windows_showing = !this.room.is_windows_showing"
-                    >
-                    <span class="pl-1">Показать окна</span>
-                </label>
+            <div class="windows_doors_showHide_labels">
+                <div class="flex justify-between">
+                    <label>
+                        <input type="checkbox"
+                               :value="this.room.is_windows_showing"
+                               @change="this.room.is_windows_showing = !this.room.is_windows_showing"
+                        >
+                        <span class="pl-1">Показать окна</span>
+                    </label>
+                    <label>
+                        <input type="checkbox"
+                               :value="this.room.is_doors_showing"
+                               @change="this.room.is_doors_showing = !this.room.is_doors_showing"
+                        >
+                        <span class="pl-1">Показать двери</span>
+                    </label>
+                </div>
 
             </div>
 
@@ -178,13 +187,95 @@
                 </div>
             </div>
 
-            <div class="doors_wrapper">
-                <div>
+            <div class="doors_wrapper"
+                 v-if="this.room.is_doors_showing">
+                <div class="flex">
+                    <div class="mr-2">
+                        <label class="">
+                            <span>Длина</span>
+                            <input  required
+                                    v-model="doors_add.length"
+                                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                                   rounded-b-md rounded-t-md
+                                   focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    placeholder="1.2">
+                        </label>
+                    </div>
+                    <div class="mr-2">
+                        <label class="">
+                            <span>Высота</span>
+                            <input required
+                                   v-model="doors_add.height"
+                                   class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                                   rounded-b-md rounded-t-md
+                                   focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                   placeholder="1.2">
+                        </label>
+                    </div>
+                    <div class="mr-2">
+                        <label class="">
+                            <span>Ширина (проем)</span>
+                            <input  required
+                                    v-model="doors_add.width"
+                                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                                   rounded-b-md rounded-t-md
+                                   focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                                    placeholder="1.2">
+                        </label>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button
+                        @click="addDoor"
+                        class="py-2 px-4
+                        border border-transparent
+                        text-sm font-medium rounded-md text-white bg-indigo-600
+                        hover:bg-indigo-700
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-offset-2
+                        focus:ring-indigo-500">
+                        <span class="">Добавить дверь</span>
+                    </button>
+                </div>
+                <div v-if="this.room?.doors" class="mt-3">
+                    <div v-for="(door, key) in this.room.doors"
+                         class="flex items-center justify-between
+                        ">
+                        <div>
+                            <div class="font-semibold">{{key+1}}.</div>
+                            <ul>
+                                <li>Длина: {{door.length}} м.</li>
+                                <li>Высота: {{door.height}} м.</li>
+                                <li>Ширина (проем): {{door.width}} м.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <button
+                                @click="deleteDoor(door.id)"
+                                class="ml-1 p-1
+                                text-red-500
+                                rounded-full
+                                focus:outline-none
+                                border border-transparent
+                                focus:ring-2
+                                focus:ring-offset-2
+                                focus:ring-red-300
+                                ">
 
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div v-else="">
+                    <span class="font-light">Нет дверей</span>
                 </div>
             </div>
 
-            <div>
+            <div class="rooms_calc">
                 <div v-if="room.perimeter" class="pt-3">
                     Периметр: <span >{{room.perimeter}} м.</span>
                 </div>
@@ -303,17 +394,17 @@
                         [{{ job.adding_job_info_string }}]
                     </div>
                 </div>
-                <!-- jobsSumm -->
+                <!-- jobsSum -->
                 <div class="mt-3">
-                    <span class="text-2xl">Стоимость работ: {{jobsSumm}}&nbsp;₽</span>
+                    <span class="text-2xl">Стоимость работ: {{jobsSum}}&nbsp;₽</span>
                 </div>
-                <!--/ jobsSumm -->
+                <!--/ jobsSum -->
             </div>
 
         </div>
     </div>
 
-    <!-- -->
+    <!-- Building materials list -->
     <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-2">
             <h2 class="font-semibold text-xl text-center">Строительные материалы:</h2>
@@ -345,13 +436,15 @@
                 </div>
                 <!-- MaterialSumm -->
                 <div class="mt-3">
-                    <span class="text-2xl">Стоимость строительных материалов: {{materialsSumm}}&nbsp;₽</span>
+                    <span class="text-2xl">Стоимость строительных материалов: {{materialsSum}}&nbsp;₽</span>
                 </div>
                 <!--/ MaterialSumm -->
             </div>
 
         </div>
     </div>
+    <!-- / Building materials list -->
+
 </template>
 
 <script>
@@ -366,7 +459,12 @@ export default {
         number: Number,
         room: Object,
     },
-    emits: ['addCalcedCeiling', 'addWindow', 'deleteWindow'], //  'addCalcedLaminate'
+    emits: [
+        'addCalcedCeiling',
+        'addWindow', 'deleteWindow',
+        'addDoor', 'deleteDoor',
+        //  'addCalcedLaminate'
+    ],
     data(){
         return {
             added_jobs_i : 0, // index
@@ -465,7 +563,12 @@ export default {
                 length: 1.2,
                 height: 1.1,
                 width: 0.4,
-            }
+            },
+            doors_add:{
+                length: 0.8,
+                height: 2.1,
+                width: 0.3,
+            },
         }
     },
     methods: {
@@ -703,23 +806,39 @@ export default {
             this.$emit('deleteWindow', res);
         },
         addDoor(){
+            //console.log('addWindow');
+            if (!this.doors_add.height || !this.doors_add.length || !this.doors_add.width){
+                alert('Параметры дверы не должны быть пустыми!');
+                return;
+            }
 
+            const res = {
+                doors_add: this.doors_add,
+                room_id: this.room.id,
+            };
+
+            this.$emit('addDoor', res);
         },
-        deleteDoor(){
+        deleteDoor(del_id){
+            const res = {
+                del_id: del_id,
+                room_id: this.room.id,
+            };
 
+            this.$emit('deleteDoor', res);
         },
     },
     computed:{
-        jobsSumm(){
-            const summ = this.added_jobs.reduce(
+        jobsSum(){
+            const sum = this.added_jobs.reduce(
                 (previousValue, currentValue) => previousValue + currentValue.summ,
                 0
             );
 
-            return summ;
+            return sum;
         },
 
-        materialsSumm(){
+        materialsSum(){
             return this.$store.state.materialsForBuy.reduce(
                 (previousValue, currentValue) => previousValue + +currentValue.price,
                 0

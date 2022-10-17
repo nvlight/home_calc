@@ -250,9 +250,6 @@ export default {
             }
             this.$emit('addCalcedLaminate', this.totalAmount)
         },
-        calcFloor(){
-
-        },
     },
     computed: {
         fullPrice(){
