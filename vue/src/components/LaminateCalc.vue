@@ -101,7 +101,6 @@
         <span><strong>{{square.floor}}</strong> кв.м.</span>
     </div>
 
-
     <select
         @change="calcFloor()"
         v-model="selected_id"
@@ -249,6 +248,11 @@ export default {
                 return;
             }
             this.$emit('addCalcedLaminate', this.totalAmount)
+        },
+        calcFloor(){
+            const changedPrice = this.prices.filter( t => t.id === this.selected_id )[0].price;
+            //console.log(changedPrice);
+            this.price = changedPrice;
         },
     },
     computed: {

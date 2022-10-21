@@ -327,6 +327,14 @@
                 >
                 </LaminateCalc>
             </div>
+            <div v-else-if="currentPickedJob == 13">
+                <DoorstepCalc
+                    @addCalcedDoorstep="addCalcedDoorstepHandler"
+                    :room="room"
+                >
+                </DoorstepCalc>
+            </div>
+
             <div v-else-if="Boolean(currentPickedJob) !== false">
                 <button @click="addCalcedJob"
                         class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -450,11 +458,12 @@
 <script>
 import CeilingCalc from "../components/CeilingCalc.vue";
 import LaminateCalc from "../components/LaminateCalc.vue";
+import DoorstepCalc from "./DoorstepCalc.vue";
 import {mapState} from "vuex";
 
 export default {
     name: "RoomSize",
-    components: { CeilingCalc, LaminateCalc },
+    components: {DoorstepCalc, CeilingCalc, LaminateCalc },
     props: {
         number: Number,
         room: Object,
@@ -468,7 +477,7 @@ export default {
     data(){
         return {
             added_jobs_i : 0, // index
-            currentPickedJob: 10,
+            currentPickedJob: 13,
             work_types: [
                 {
                     id: 1,
@@ -527,15 +536,9 @@ export default {
                 },
                 {
                     id: 10,
-                    title: "Ламинат. (Ширина от 200 мм)",
+                    title: "Ламинат",
                     description: '',
                     cost: 150,
-                },
-                {
-                    id: 11,
-                    title: "Ламинат. (Ширина до 160 мм)",
-                    description: '',
-                    cost: 200
                 },
                 {
                     id: 12,
@@ -695,10 +698,6 @@ export default {
                             adding_job_info_string = `${this.room.perimeter} x ${job_cost} ${currency}`;
                             job_cost *= this.room.perimeter;
                             break;
-                        case 13:
-                            adding_job_info_string = `${ this.room.doorstep_count} x ${job_cost} ${currency}`;
-                            job_cost *= this.room.doorstep_count;
-                            break;
                         case 27:
                             adding_job_info_string = `${this.room.square.ceiling} x ${job_cost} ${currency}`;
                             job_cost *= this.room.square.ceiling;
@@ -827,6 +826,10 @@ export default {
 
             this.$emit('deleteDoor', res);
         },
+
+        addCalcedDoorstepHandler(){
+            console.log('addCalcedDoorstepHandler');
+        },
     },
     computed:{
         jobsSum(){
@@ -852,7 +855,6 @@ export default {
     },
     created() {
         this.updatePerimeterAndSquares();
-        // this.room.doorstep_count = this.room.doors.length;
 
         if (this.room.isSimpleSidesCounting){
             this.room.sizes.s3 = this.room.sizes.s1;
