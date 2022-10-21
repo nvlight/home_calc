@@ -765,6 +765,21 @@ export default {
 
             this.added_jobs.push(tmp_job);
         },
+        addCalcedDoorstepHandler(res){
+            this.added_jobs_i++;
+
+            let tmp_job = {}
+            tmp_job.id = this.added_jobs_i;
+            tmp_job.job_id = 13; // laminate
+            tmp_job.selected_id = res.selected_id;
+            tmp_job.summ = res.price;
+            tmp_job.adding_job_info_string = res['adding_job_info_string'];
+            tmp_job.title = this.getJobTitleById(tmp_job.job_id);
+
+            this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
+
+            this.added_jobs.push(tmp_job);
+        },
         deleteAddedJob(del_id){
             //console.log(del_id)
             const filtered = this.added_jobs.filter(
@@ -825,10 +840,6 @@ export default {
             };
 
             this.$emit('deleteDoor', res);
-        },
-
-        addCalcedDoorstepHandler(){
-            console.log('addCalcedDoorstepHandler');
         },
     },
     computed:{

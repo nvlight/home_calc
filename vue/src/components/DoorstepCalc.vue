@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <button @click="addCalcedLaminate"
+    <button @click="addCalcedDoorstep"
             class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
           <span class="absolute left-0 inset-y-0 flex items-center pl-3">
             <!-- Heroicon name: solid/lock-closed -->
@@ -59,15 +59,26 @@ export default {
             price: 150,
             customPrice: 0,
             isCustomPrice: false,
-            sum: 0,
             doorsCount: 0,
         }
+    },
+    methods:{
+        addCalcedDoorstep(){
+            this.$emit('addCalcedDoorstep', this.totalAmount)
+        },
     },
     computed: {
         sum(){
             return this.price * this.doorsCount;
-            //return this.price * this.room.doors_count;
-        }
+        },
+        totalAmount() {
+            return {
+                price: this.sum,
+                adding_job_info_string:
+                    `Количество дверей: ${this.doorsCount} единиц,
+                    цена за 1 единицу: ${this.price} ${this.currency}`,
+            };
+        },
     },
     mounted() {
         this.doorsCount = this.room.doors_count;
