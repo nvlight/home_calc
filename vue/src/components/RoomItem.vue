@@ -470,7 +470,7 @@ import BaseboardsCalc from "./BaseboardsCalc.vue";
 import {mapState} from "vuex";
 
 export default {
-    name: "RoomSize",
+    name: "room-item",
     components: {DoorstepCalc, CeilingCalc, LaminateCalc, BaseboardsCalc, },
     props: {
         number: Number,
@@ -813,6 +813,7 @@ export default {
         deleteAddedMaterial(material_id){
             this.$store.commit('deleteMaterial', material_id);
         },
+
         addWindow(){
             //console.log('addWindow');
             if (!this.windows_add.height || !this.windows_add.length || !this.windows_add.width){
@@ -857,6 +858,7 @@ export default {
 
             this.$emit('deleteDoor', res);
         },
+
     },
     computed:{
         jobsSum(){

@@ -102,7 +102,7 @@ export default {
         }
     },
     mounted() {
-        this.doorsCount = this.room.doors_count;
+        this.doorsCount = this.room.doors.length;
         this.doorstepToBuyCount = this.doorsCount;
     }
 }
