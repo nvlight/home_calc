@@ -34,61 +34,45 @@ export default {
     },
     methods:{
         addWindowHandler(res){
-            //console.log('addWindowHandler', res);
-
-            const filtered = rooms.filter(
+            const room = this.rooms.filter(
                 t => t.id == res.room_id
             );
-            //console.log('filtered:',filtered);
 
-            filtered[0].windows_count++;
-            const new_window_id = filtered[0].windows_count;
-            //const new_window_id = 2;
-            //console.log('new_window_id: ', new_window_id);
-            res.windows_add.id = new_window_id;
-            const new_windowadd = res.windows_add;
+            res.windows_add.id = room[0].windows.length + 1;
 
-            const clone_new_windowadd = Object.assign({}, new_windowadd);
-            //console.log('new_windowadd:', clone_new_windowadd);
-            filtered[0].windows.push(clone_new_windowadd);
+            const newWindow = res.windows_add;
 
+            const cloneWindow = Object.assign({}, newWindow);
+            room[0].windows.push(cloneWindow);
         },
-        deleteWindowHandler(res) {
-            console.log(res)
-            const filtered = this.rooms.filter(
+        addDoorHandler(res) {
+            const room = this.rooms.filter(
                 t => t.id == res.room_id
             );
-            return;
-            //console.log('filtered:',filtered);
-            //console.log('del_id:',res.del_id);
 
-            filtered[0].windows = filtered[0].windows.filter(
+            res.doors_add.id = room[0].doors.length + 1;
+
+            const newDoor = res.doors_add;
+
+            const cloneDoor = Object.assign({}, newDoor);
+            room[0].doors.push(cloneDoor);
+        },
+
+        deleteWindowHandler(res) {
+            const room = this.rooms.filter(
+                t => t.id == res.room_id
+            );
+
+            room[0].windows = room[0].windows.filter(
                 t => t.id != res.del_id
             );
         },
-
-        addDoorHandler(res) {
-            console.log(res);
-            return;
-            const filtered = this.rooms.filter(
-                t => t.id == res.room_id
-            );
-
-            filtered[0].doors_count++;
-            const new_door_id = filtered[0].doors_count;
-
-            res.doors_add.id = new_door_id;
-            const new_door_add = res.doors_add;
-
-            const clone_new_new_door_add = Object.assign({}, new_door_add);
-            filtered[0].doors.push(clone_new_new_door_add);
-        },
         deleteDoorHandler(res){
-            const filtered = this.rooms.filter(
+            const room = this.rooms.filter(
                 t => t.id == res.room_id
             );
 
-            filtered[0].doors = filtered[0].doors.filter(
+            room[0].doors = room[0].doors.filter(
                 t => t.id != res.del_id
             );
         },
@@ -111,9 +95,7 @@ export default {
                     floor: 0,
                     walls: 0,
                 },
-                doorstep_count: 0, // пороги
 
-                windows_count: 3,
                 windows: [
                     {
                         id: 1,
@@ -136,7 +118,6 @@ export default {
                 ],
                 is_windows_showing: false,
 
-                doors_count: 3,
                 doors: [
                     {
                         id: 1,
