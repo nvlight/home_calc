@@ -552,7 +552,7 @@ export default {
                     id: 12,
                     title: "Плинтуса, установка",
                     description: '',
-                    cost: 50
+                    cost: 70
                 },
                 {
                     id: 13,

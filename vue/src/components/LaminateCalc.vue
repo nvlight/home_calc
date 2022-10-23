@@ -36,40 +36,47 @@
         class="flex"
     >
         <div class="mr-2">
-            <label for="a1" class="">Сторона 1</label>
-            <input
-                @change="updatePerimeterAndSquares"
-                id="a1" name="a1" v-model="customSizes.s1" type="text" autocomplete="s1" required
-                class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                           rounded-b-md rounded-t-md
-                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Сторона 1">
+            <label>
+                <span>Сторона 1</span>
+                <input
+                    @change="updatePerimeterAndSquares"
+                    v-model="customSizes.s1" type="text" autocomplete="s1" required
+                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                               rounded-b-md rounded-t-md
+                               focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    placeholder="Сторона 1">
+            </label>
         </div>
         <div class="mr-2">
-            <label for="a2" class="">Сторона 2</label>
-            <input
-                @change="updatePerimeterAndSquares"
-                id="a2" name="a2" v-model="customSizes.s2" type="text" autocomplete="s2" required
-                class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                           rounded-b-md rounded-t-md
-                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Сторона 2">
+            <label>
+                <span>Сторона 2</span>
+                <input
+                    @change="updatePerimeterAndSquares"
+                    v-model="customSizes.s2" type="text" autocomplete="s2" required
+                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                               rounded-b-md rounded-t-md
+                               focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    placeholder="Сторона 2">
+            </label>
         </div>
         <div class="mr-2">
-            <label for="a3" class="">Сторона 3</label>
-            <input
-                @change="updatePerimeterAndSquares"
-                id="a3" name="a3" v-model="customSizes.s3" type="text" autocomplete="s3" required
-                class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                           rounded-b-md rounded-t-md
-                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Сторона 3">
+            <label>
+            <span>Сторона 3</span>
+                <input
+                    @change="updatePerimeterAndSquares"
+                    id="a3" name="a3" v-model="customSizes.s3" type="text" autocomplete="s3" required
+                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                               rounded-b-md rounded-t-md
+                               focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    placeholder="Сторона 3">
+            </label>
         </div>
         <div class="mr-2">
-            <label for="a4" class="">Сторона 4</label>
+            <label></label>
+            <span>Сторона 4</span>
             <input
                 @change="updatePerimeterAndSquares"
-                id="a4" name="a4" v-model="customSizes.s4" type="text" autocomplete="current-password" required
+                v-model="customSizes.s4" type="text" autocomplete="current-password" required
                 class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                            rounded-b-md rounded-t-md
                            focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -116,16 +123,18 @@
     </select>
 
     <div class="laminatePriceByOneMesure">
-        <div class="mt-2 flex items-center">
-            <label for="price" class="">Цена за 1 кв.м.</label>
-            <input
-                id="price" name="price" v-model="price" type="text" autocomplete="s1" required
-                class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                       rounded-b-md rounded-t-md
-                       focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm
-                       w-1/6 ml-2
-                        "
-                placeholder="Цена ламината">
+        <div class="mt-2 ">
+            <label class="flex items-center">
+                <span>Цена за 1 кв.м.</span>
+                <input
+                    v-model="price" type="text" autocomplete="s1" required
+                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                           rounded-b-md rounded-t-md
+                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm
+                           w-1/6 ml-2
+                            "
+                    placeholder="Цена ламината">
+            </label>
         </div>
     </div>
 
