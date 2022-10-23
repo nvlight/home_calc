@@ -134,7 +134,10 @@
             <span>Цена укладки:</span>
             <span class="ml-1 font-semibold">{{fullPrice}} {{currency}}</span>
         </p>
-
+        <div class="mt-2">
+            <div class="font-medium">Материалы к покупке:</div>
+            <div>Ламинат - {{laminateToBuy}} м.кв.</div>
+        </div>
     </div>
 
     <button @click="addCalcedLaminate"
@@ -195,6 +198,7 @@ export default {
                 },
             ],
             selected_id: 0,
+            laminateToBuy: 0,
         }
     },
     methods: {
@@ -223,12 +227,12 @@ export default {
             }
         },
         updateSquare(){
-            this.square.ceiling = Math.ceil(
+            this.square.ceiling = (
                 +(this.getActualSizes().s1) *
                 +(this.getActualSizes().s2)
             );
             this.square.floor = this.square.ceiling;
-            this.square.walls = this.getActualPerimeter() * Math.ceil(this.room.height);
+            this.square.walls = this.getActualPerimeter() * (this.room.height);
         },
         updatePerimeterAndSquares(){
             //this.updatePerimeter();
@@ -271,6 +275,9 @@ export default {
     watch:{
     },
     created() {
+    },
+    mounted() {
+        this.laminateToBuy = this.getActualSquares().floor;
     }
 }
 </script>

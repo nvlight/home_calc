@@ -334,6 +334,13 @@
                 >
                 </DoorstepCalc>
             </div>
+            <div v-else-if="currentPickedJob == 12">
+                <baseboards-calc
+                    @addCalcedBaseboards="addCalcedBaseboardsHandler"
+                    :room="room"
+                >
+                </baseboards-calc>
+            </div>
 
             <div v-else-if="Boolean(currentPickedJob) !== false">
                 <button @click="addCalcedJob"
@@ -459,25 +466,26 @@
 import CeilingCalc from "../components/CeilingCalc.vue";
 import LaminateCalc from "../components/LaminateCalc.vue";
 import DoorstepCalc from "./DoorstepCalc.vue";
+import BaseboardsCalc from "./BaseboardsCalc.vue";
 import {mapState} from "vuex";
 
 export default {
     name: "RoomSize",
-    components: {DoorstepCalc, CeilingCalc, LaminateCalc },
+    components: {DoorstepCalc, CeilingCalc, LaminateCalc, BaseboardsCalc, },
     props: {
         number: Number,
         room: Object,
     },
     emits: [
         'addCalcedCeiling',
+        'addCalcedDoorstep',
         'addWindow', 'deleteWindow',
         'addDoor', 'deleteDoor',
-        //  'addCalcedLaminate'
     ],
     data(){
         return {
             added_jobs_i : 0, // index
-            currentPickedJob: 13,
+            currentPickedJob: 12,
             work_types: [
                 {
                     id: 1,
@@ -551,13 +559,6 @@ export default {
                     title: "Порог, установка",
                     description: '',
                     cost: 150
-                },
-
-                {
-                    id: 27,
-                    title: "Натяжная стена",
-                    description: '',
-                    cost: 400,
                 },
             ],
             added_jobs:[],
@@ -775,6 +776,21 @@ export default {
             tmp_job.summ = res.price;
             tmp_job.adding_job_info_string = res['adding_job_info_string'];
             tmp_job.title = this.getJobTitleById(tmp_job.job_id);
+
+            this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
+
+            this.added_jobs.push(tmp_job);
+        },
+        addCalcedBaseboardsHandler(res){
+            this.added_jobs_i++;
+
+            let tmp_job = {}
+            tmp_job.id = this.added_jobs_i;
+            tmp_job.job_id = 12; // laminate
+            tmp_job.selected_id = res.selected_id;
+            tmp_job.summ = res.price;
+            tmp_job.adding_job_info_string = res['adding_job_info_string'];
+            tmp_job.title = 'Плинтуса, установка ' + ` (id=${tmp_job.job_id})`;
 
             this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
 
