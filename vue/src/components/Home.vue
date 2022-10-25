@@ -86,7 +86,7 @@ import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { MenuIcon, XIcon } from '@heroicons/vue/outline'
 
 const navigation = [
-    { name: ' Продукт', href: '#' },
+    { name: 'Продукт', href: '#' },
     { name: 'Возможности', href: '#' },
     { name: 'Магазин', href: '#' },
     { name: 'Компания', href: '#' },

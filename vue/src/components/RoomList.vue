@@ -103,18 +103,6 @@ export default {
                         height: 0.9,
                         length: 0.8,
                     },
-                    {
-                        id: 2,
-                        width: 0.4, // оконный проем
-                        height: 0.9,
-                        length: 1.2,
-                    },
-                    {
-                        id: 3,
-                        width: 0.4, // оконный проем
-                        height: 0.9,
-                        length: 1,
-                    },
                 ],
                 is_windows_showing: false,
 
@@ -125,20 +113,13 @@ export default {
                         height: 2.2,
                         length: 0.8,
                     },
-                    {
-                        id: 2,
-                        width: 0.3,
-                        height: 2,
-                        length: 0.8,
-                    },
-                    {
-                        id: 3,
-                        width: 0.3, // дверной проем
-                        height: 2.1,
-                        length: 0.9,
-                    },
                 ],
                 is_doors_showing: false,
+
+                internalCorners: 4,
+                outerCorners: 2,
+                connectors: 7, // соединение
+                stubs: 2, // заглушка
             },
             // {
             //     id: 2,

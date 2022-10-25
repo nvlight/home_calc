@@ -30,10 +30,10 @@
 
     <h3 class="font-semibold mt-3">Ввод углов комнаты для подсчета уголков</h3>
     <div v-if="this.$store.state.debug" class="border-dotted border-2 p-3 border-red-400">
-        <div>internalCorners: {{internalCorners}}</div>
-        <div>outerCorners: {{outerCorners}}</div>
-        <div>connectors: {{connectors}}</div>
-        <div>stubs: {{stubs}}</div>
+        <div>room.internalCorners: {{room.internalCorners}}</div>
+        <div>room.outerCorners: {{room.outerCorners}}</div>
+        <div>room.connectors: {{room.connectors}}</div>
+        <div>room.stubs: {{room.stubs}}</div>
     </div>
     <div class="Baseboards_consumables">
         <div class="mt-2 flex justify-between">
@@ -41,7 +41,7 @@
                 <span>Внутренние углы</span>
                 <input
                     type="text"
-                    v-model="internalCorners"
+                    v-model="room.internalCorners"
                     class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                    rounded-b-md rounded-t-md
                    focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -51,7 +51,7 @@
                 <span>Внешние углы</span>
                 <input
                     type="text"
-                    v-model="outerCorners"
+                    v-model="room.outerCorners"
                     class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                    rounded-b-md rounded-t-md
                    focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -63,7 +63,7 @@
                 <span>Соединители <br>&nbsp;</span>
                 <input
                     type="text"
-                    v-model="connectors"
+                    v-model="room.connectors"
                     class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                    rounded-b-md rounded-t-md
                    focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -73,7 +73,7 @@
                 <span>Заглушки <br>(пара, правая и левая)</span>
                 <input
                     type="text"
-                    v-model="stubs"
+                    v-model="room.stubs"
                     class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                    rounded-b-md rounded-t-md
                    focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
@@ -112,10 +112,7 @@ export default {
         room: {
             type: Object,
         },
-        internalCorners: 0,
-        outerCorners: 0,
-        connectors: 0, // соединение
-        stubs: 0, // заглушка
+
     },
     components: {
         MaterialsForBuyBlock,
@@ -160,10 +157,10 @@ export default {
                 {title: 'stubs', descripiton: 'Заглушки',},
             ];
             for(let i=0; i<index_for_check.length; i++){
-                if (this[index_for_check[i].title]){
+                if (this.room[index_for_check[i].title]){
                     arr.push({
                         title: index_for_check[i].descripiton,
-                        description: this[index_for_check[i].title],
+                        description: this.room[index_for_check[i].title],
                     });
                 }
             }
