@@ -143,24 +143,14 @@
             <span>Цена укладки:</span>
             <span class="ml-1 font-semibold">{{fullPrice}} {{currency}}</span>
         </p>
-        <div class="mt-2">
-            <div class="font-medium">Материалы к покупке:</div>
-            <div>Ламинат - {{laminateToBuy}} м.кв.</div>
-        </div>
     </div>
+    <mg-button @click="addCalcedLaminate">Добавить сумму</mg-button>
 
-    <button @click="addCalcedLaminate"
-        class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-            <!-- Heroicon name: solid/lock-closed -->
-            <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path fill-rule="evenodd"
-                    d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                    clip-rule="evenodd"/>
-            </svg>
-          </span>Добавить
-    </button>
+    <div class="mt-2">
+        <div class="font-medium">Материалы к покупке:</div>
+        <div>Ламинат - {{laminateToBuy}} м.кв.</div>
+    </div>
+    <mg-button @click="addMaterials">Добавить материалы</mg-button>
 
 </template>
 
@@ -266,6 +256,9 @@ export default {
             const changedPrice = this.prices.filter( t => t.id === this.selected_id )[0].price;
             //console.log(changedPrice);
             this.price = changedPrice;
+        },
+        addMaterials(){
+
         },
     },
     computed: {
