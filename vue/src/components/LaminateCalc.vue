@@ -1,14 +1,5 @@
 <template>
     <h3 class="text-center text-2xl font-semibold">Подсчет ламината</h3>
-<!--    <pre>{{room}}</pre>-->
-<!--    <div>-->
-<!--        isCustomSizes: {{isCustomSizes}}-->
-<!--    </div>-->
-<!--    <pre>room.sizes: {{room.sizes}}</pre>-->
-<!--    <pre>customSizes: {{customSizes}}</pre>-->
-<!--    <pre>getActualSizes: {{getActualSizes()}}</pre>-->
-<!--    <pre>getActualPerimeter: {{getActualPerimeter()}}</pre>-->
-<!--    <div>getActualSquares: <pre>{{getActualSquares()}}</pre></div>-->
 
     <div>
         <fieldset>
@@ -61,7 +52,7 @@
         </div>
         <div class="mr-2">
             <label>
-            <span>Сторона 3</span>
+                <span>Сторона 3</span>
                 <input
                     @change="updatePerimeterAndSquares"
                     id="a3" name="a3" v-model="customSizes.s3" type="text" autocomplete="s3" required
@@ -72,15 +63,16 @@
             </label>
         </div>
         <div class="mr-2">
-            <label></label>
-            <span>Сторона 4</span>
-            <input
-                @change="updatePerimeterAndSquares"
-                v-model="customSizes.s4" type="text" autocomplete="current-password" required
-                class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                           rounded-b-md rounded-t-md
-                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Сторона 4">
+            <label>
+                <span>Сторона 4</span>
+                <input
+                    @change="updatePerimeterAndSquares"
+                    v-model="customSizes.s4" type="text" autocomplete="current-password" required
+                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                               rounded-b-md rounded-t-md
+                               focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    placeholder="Сторона 4">
+            </label>
         </div>
 
         <div class="pt-3 hidden">
@@ -155,13 +147,23 @@
 </template>
 
 <script>
+import {mapGetters, mapState, mapActions} from "vuex";
+
 export default {
     name: "LaminateCalc",
-    props: ['room'],
-    emits: ['addCalcedLaminate'],
+    props:{
+        room: {
+            type: Object,
+            required: true,
+        },
+        'currentPickedJob':{
+            type: Number,
+            required: true,
+        }
+    },
+    emits: [],
     data(){
         return {
-            currency: "₽",
             price: 200,
             isCustomSizes: false,
             customSizes : {
@@ -201,6 +203,12 @@ export default {
         }
     },
     methods: {
+        ...mapActions({
+            addJob: 'addJob',
+            incrementAddedJobNum: 'incrementAddedJobNum',
+            incValueToJobsResultingSumm: 'incValueToJobsResultingSumm',
+        }),
+
         toggleCustomSizes(){
             this.isCustomSizes = !(this.isCustomSizes);
         },
@@ -250,18 +258,36 @@ export default {
                 alert('Выберите ширину ламината!');
                 return;
             }
-            this.$emit('addCalcedLaminate', this.totalAmount)
+            this.addCalcedLaminateHandler(this.totalAmount);
         },
         calcFloor(){
             const changedPrice = this.prices.filter( t => t.id === this.selected_id )[0].price;
-            //console.log(changedPrice);
             this.price = changedPrice;
         },
         addMaterials(){
 
         },
+
+        addCalcedLaminateHandler(){
+            this.incrementAddedJobNum();
+
+            let tmp_job = {}
+            tmp_job.title = "Ламинат, укладка" + ` (id=${this.currentPickedJob})`;
+            tmp_job.id = this.addedJobNum;
+            tmp_job.job_id = this.currentPickedJob;
+            tmp_job.sum = this.totalAmount.price;
+            tmp_job.adding_job_info_string = this.totalAmount['adding_job_info_string'];
+
+            this.incValueToJobsResultingSumm(tmp_job.sum);
+            this.addJob(tmp_job);
+        },
     },
     computed: {
+        ...mapState({
+            addedJobNum: state => state.addedJobNum,
+            currency: state => state.currency,
+        }),
+
         fullPrice(){
             return this.price * this.getActualSquares().floor;
         },

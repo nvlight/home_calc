@@ -91,41 +91,64 @@
 
     <mg-button @click="addMaterials">Добавить материалы</mg-button>
 
-
 </template>
 
 <script>
+import {mapGetters, mapState, mapActions} from "vuex";
 import MaterialsForBuyBlock from "./additional/MaterialsForBuyBlock.vue";
+
 export default {
     name: "baseboards-calc",
     props:{
         room: {
             type: Object,
+            required: true,
         },
-
+        'currentPickedJob':{
+            type: Number,
+            required: true,
+        }
     },
     components: {
         MaterialsForBuyBlock,
     },
-    emits: [
-        'addCalcedBaseboards',
-    ],
+    emits: [],
     data(){
         return{
-            currency: "₽",
             perimeter: 0,
             price: 70,
         }
     },
     methods:{
-        addCalcedBaseboards(){
-            this.$emit('addCalcedBaseboards', this.totalAmount);
-        },
-        addMaterials(){
+        ...mapActions({
+            addJob: 'addJob',
+            incrementAddedJobNum: 'incrementAddedJobNum',
+            incValueToJobsResultingSumm: 'incValueToJobsResultingSumm',
+        }),
 
+        addCalcedBaseboards(){
+            this.incrementAddedJobNum();
+
+            let tmp_job = {}
+            tmp_job.title = "Плинтуса, установка" + ` (id=${this.currentPickedJob})`;
+            tmp_job.id = this.addedJobNum;
+            tmp_job.job_id = this.currentPickedJob;
+            tmp_job.sum = this.totalAmount.price;
+            tmp_job.adding_job_info_string = this.totalAmount['adding_job_info_string'];
+
+            this.incValueToJobsResultingSumm(tmp_job.sum);
+            this.addJob(tmp_job);
+        },
+
+        addMaterials(){
         },
     },
     computed:{
+        ...mapState({
+            addedJobNum: state => state.addedJobNum,
+            currency: state => state.currency,
+        }),
+
         sum(){
             return this.perimeter * this.price;
         },

@@ -82,7 +82,6 @@ export default {
             tmp_job.title = "Пороги" + ` (id=${this.currentPickedJob})`;
             tmp_job.id = this.addedJobNum;
             tmp_job.job_id = this.currentPickedJob;
-            tmp_job.seiling_selected_id = this.totalAmount.seiling_selected_id;
             tmp_job.sum = this.totalAmount.price;
             tmp_job.adding_job_info_string = this.totalAmount['adding_job_info_string'];
 

@@ -9,7 +9,9 @@
         </CeilingCalc>
     </div>
     <div v-else-if="currentPickedJob == 10">
-        <LaminateCalc @addCalcedLaminate="addCalcedLaminateHandler" :room="room"></LaminateCalc>
+        <LaminateCalc
+            :currentPickedJob="currentPickedJob"
+            :room="room"></LaminateCalc>
     </div>
     <div v-else-if="currentPickedJob == 13">
         <DoorstepCalc
@@ -18,10 +20,15 @@
         ></DoorstepCalc>
     </div>
     <div v-else-if="currentPickedJob == 12">
-        <baseboards-calc @addCalcedBaseboards="addCalcedBaseboardsHandler" :room="room"></baseboards-calc>
+        <baseboards-calc
+            :currentPickedJob="currentPickedJob"
+            :room="room">
+        </baseboards-calc>
     </div>
+
     <div v-else-if="currentPickedJob == 14">
-        <wallpaper-calc :room="room"></wallpaper-calc>
+        <wallpaper-calc :room="room">
+        </wallpaper-calc>
     </div>
 
     <div v-else-if="Boolean(currentPickedJob) !== false">
@@ -52,7 +59,9 @@ export default {
         }
     },
     methods:{
+        addCalcedJob(){
 
+        },
     },
     computed:{
 

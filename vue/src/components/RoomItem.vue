@@ -639,21 +639,6 @@ export default {
 
             this.addedJobs.push(tmp_job);
         },
-        addCalcedBaseboardsHandler(res){
-            this.addedJobs_i++;
-
-            let tmp_job = {}
-            tmp_job.id = this.addedJobs_i;
-            tmp_job.job_id = 12; // laminate
-            tmp_job.selected_id = res.selected_id;
-            tmp_job.summ = res.price;
-            tmp_job.adding_job_info_string = res['adding_job_info_string'];
-            tmp_job.title = 'Плинтуса, установка ' + ` (id=${tmp_job.job_id})`;
-
-            this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
-
-            this.addedJobs.push(tmp_job);
-        },
         deleteAddedJob(del_id){
             //console.log(del_id)
             const filtered = this.addedJobs.filter(
@@ -738,7 +723,7 @@ export default {
         this.updatePerimeterAndSquares();
     },
     mounted() {
-        this.currentPickedJob = 13;
+        this.currentPickedJob = 10;
     },
 }
 </script>
