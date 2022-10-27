@@ -100,7 +100,11 @@ const store = createStore({
         addedJobs: [],
     },
     getters:{
-
+        jobsSum(){
+            const sum = store.state.addedJobs
+                .reduce((previousValue, currentValue) => previousValue + currentValue.sum, 0 );
+            return sum;
+        },
     },
     actions:{
         getSurvey({commit}, id){

@@ -350,43 +350,7 @@
     </div>
 
     <!-- added Jobs list -->
-    <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-2">
-
-            <h2 class="font-semibold text-xl text-center">1. Виды работ:</h2>
-
-            <div v-if="!addedJobs?.length">
-                <span class="block text-center">Список пуст</span>
-            </div>
-            <div v-else>
-                <div v-for="(job,index) in addedJobs"
-                    :key="index">
-                    <div class="flex justify-between mt-2">
-                        <div>
-                            {{index+1}}. {{ job.title }}
-                        </div>
-                        <div class="flex self-center">
-                            <span class="flex">&nbsp;{{ job.sum }}
-                                <span class="font-semibold">&nbsp;₽</span>
-                            </span>
-
-                            <mg-trash-icon-button @click="deleteJob(job.id)">
-                            </mg-trash-icon-button>
-                        </div>
-                    </div>
-                    <div v-if="job.adding_job_info_string">
-                        [{{ job.adding_job_info_string }}]
-                    </div>
-                </div>
-                <!-- jobsSum -->
-                <div class="mt-3">
-                    <span class="text-2xl">Стоимость работ: {{jobsSum}}&nbsp;₽</span>
-                </div>
-                <!--/ jobsSum -->
-            </div>
-
-        </div>
-    </div>
+    <added-job-list></added-job-list>
     <!-- / -->
 
     <!-- added Building materials list -->
@@ -429,7 +393,6 @@
         </div>
     </div>
     <!-- / added Building materials list -->
-
 </template>
 
 <script>
@@ -437,13 +400,16 @@ import CeilingCalc from "../components/CeilingCalc.vue";
 import LaminateCalc from "../components/LaminateCalc.vue";
 import DoorstepCalc from "./DoorstepCalc.vue";
 import BaseboardsCalc from "./BaseboardsCalc.vue";
-import {mapState, mapActions} from "vuex";
+import {mapState, mapActions, mapGetters} from "vuex";
 import WallpaperCalc from "./WallpaperCalc.vue";
 import ShowPickedComponent from "./ShowPickedComponent.vue";
+import AddedJobList from "./AddedJobList.vue";
 
 export default {
     name: "room-item",
-    components: {WallpaperCalc, DoorstepCalc, CeilingCalc, LaminateCalc, BaseboardsCalc, ShowPickedComponent},
+    components: {
+        WallpaperCalc, DoorstepCalc, CeilingCalc, LaminateCalc, BaseboardsCalc, ShowPickedComponent, AddedJobList,
+    },
     props: {
         number: Number,
         room: Object,
@@ -831,14 +797,9 @@ export default {
         ...mapState({
             addedJobs: state => state.addedJobs,
         }),
-        jobsSum(){
-            const sum = this.addedJobs.reduce(
-                (previousValue, currentValue) => previousValue + currentValue.sum,
-                0
-            );
-
-            return sum;
-        },
+        ...mapGetters({
+            jobsSum: 'jobsSum',
+        }),
 
         materialsSum(){
             return this.$store.state.materialsForBuy.reduce(
