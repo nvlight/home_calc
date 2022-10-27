@@ -11,7 +11,8 @@
     <div v-else-if="currentPickedJob == 10">
         <LaminateCalc
             :currentPickedJob="currentPickedJob"
-            :room="room"></LaminateCalc>
+            :room="room">
+        </LaminateCalc>
     </div>
     <div v-else-if="currentPickedJob == 13">
         <DoorstepCalc
@@ -27,7 +28,9 @@
     </div>
 
     <div v-else-if="currentPickedJob == 14">
-        <wallpaper-calc :room="room">
+        <wallpaper-calc
+            :currentPickedJob="currentPickedJob"
+            :room="room">
         </wallpaper-calc>
     </div>
 

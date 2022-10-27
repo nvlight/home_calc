@@ -11,10 +11,11 @@ const store = createStore({
         currency: "₽",
         materialsForBuyCount: 0,
         materialsForBuy: [],
-        jobsResultingSumm: 0,
-
+        jobsResultingSum: 0,
+        roomsJobsResultSumArray: [],
         addedJobNum: 0,
         addedJobs: [],
+        currentRoomJobsSum: 0,
 
         buildingMaterials: [
             {
@@ -104,7 +105,7 @@ const store = createStore({
     getters:{
         jobsSum(){
             const sum = store.state.addedJobs
-                .reduce((previousValue, currentValue) => previousValue + currentValue.sum, 0 );
+                .reduce( (previousValue, currentValue) => previousValue + currentValue.sum, 0 );
             return sum;
         },
     },
@@ -142,6 +143,7 @@ const store = createStore({
             //console.log(needMaterials);
             return needMaterials;
         },
+
         // 12345678aA@
         // 12345678aA@
         login({commit}, user){
@@ -177,7 +179,7 @@ const store = createStore({
             const filtered = store.state.addedJobs.filter(
                 t => t.id == job_id
             );
-            commit('decValueToJobsResultingSumm', filtered[0].sum);
+            commit('decValueTojobsResultingSum', filtered[0].sum);
 
             dispatch('deleteJob', job_id);
         },
@@ -185,17 +187,12 @@ const store = createStore({
             return commit('deleteJob', job_id);
         },
 
-        incValueToJobsResultingSumm({commit}, sum){
-            return commit('incValueToJobsResultingSumm', sum);
+        incValueToJobsResultingSum({commit}, sum){
+            return commit('incValueToJobsResultingSum', sum);
         },
+
     },
     mutations:{
-        setCurrentSurveyLoading: (state, loading) => {
-            state.currentSurvey.loading = loading;
-        },
-        setCurrentSurvey: (state, survey) => {
-            state.currentSurvey.data = survey.data;
-        },
         addMaterial(state, material){
             state.materialsForBuyCount++;
             material.id = state.materialsForBuyCount;
@@ -210,11 +207,11 @@ const store = createStore({
             state.materialsForBuyCount--;
         },
 
-        incValueToJobsResultingSumm(state, sum){
-            state.jobsResultingSumm += sum;
+        incValueToJobsResultingSum(state, sum){
+            state.jobsResultingSum += sum;
         },
-        decValueToJobsResultingSumm(state, sum){
-            state.jobsResultingSumm -= sum;
+        decValueTojobsResultingSum(state, sum){
+            state.jobsResultingSum -= sum;
         },
 
         setUser: (state, userData) => {
@@ -240,6 +237,7 @@ const store = createStore({
                 t => t.id != job_id
             );
         },
+
     },
     modules:{},
 })

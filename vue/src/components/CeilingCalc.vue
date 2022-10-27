@@ -339,6 +339,12 @@ export default {
         }
     },
     methods:{
+        ...mapActions({
+            addJob: 'addJob',
+            incrementAddedJobNum: 'incrementAddedJobNum',
+            incValueToJobsResultingSum: 'incValueToJobsResultingSum',
+        }),
+
         updatePerimeter() {
             if (!this.isCustomSizes){
                 this.room.perimeter =
@@ -404,28 +410,26 @@ export default {
                 return;
             }
             //this.$emit('addCalcedCeiling', this.totalAmount)
-            this.addCalcedCeilingHandler(this.totalAmount)
+            this.addCalcedSum(this.totalAmount)
         },
 
-        addCalcedCeilingHandler(res){
+        addCalcedSum(res){
             this.incrementAddedJobNum();
 
             let tmp_job = {}
+            tmp_job.title = "Натяжной потолок" + ` (id=${this.currentPickedJob})`;
             tmp_job.id = this.addedJobNum;
-            tmp_job.job_id = this.currentPickedJob;  // nat pot
-            tmp_job.seiling_selected_id = res.seiling_selected_id;
+            tmp_job.room_id = this.room.id;
+            tmp_job.job_id = this.currentPickedJob;
             tmp_job.sum = res.price;
             tmp_job.adding_job_info_string = res['adding_job_info_string'];
-            tmp_job.title = "Натяжной потолок" + ` (id=${this.currentPickedJob})`;
 
-            this.$store.commit('incValueToJobsResultingSumm', tmp_job.sum);
+            // todo - а это штука вообще нужна?
+            tmp_job.seiling_selected_id = res.seiling_selected_id;
+
+            this.incValueToJobsResultingSum(tmp_job.sum);
             this.addJob(tmp_job);
         },
-
-        ...mapActions({
-            incrementAddedJobNum: 'incrementAddedJobNum',
-            addJob: 'addJob',
-        }),
     },
     computed:{
         ...mapState({

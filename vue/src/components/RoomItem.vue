@@ -324,6 +324,7 @@
     <div class="resultOfCalculations">
         <h1 class="font-semibold text-2xl text-center">Результаты подсчетов</h1>
     </div>
+    <room-jobs-sum :room_id="room.id"></room-jobs-sum>
 
     <!-- added Jobs list -->
     <added-job-list></added-job-list>
@@ -344,12 +345,13 @@ import WallpaperCalc from "./WallpaperCalc.vue";
 import ShowPickedComponent from "./ShowPickedComponent.vue";
 import AddedJobList from "./AddedJobList.vue";
 import AddedBuildingMaterialsList from "./AddedBuildingMaterialsList.vue";
+import RoomJobsSum from "./RoomJobsSum.vue";
 
 export default {
     name: "room-item",
     components: {
         WallpaperCalc, DoorstepCalc, CeilingCalc, LaminateCalc, BaseboardsCalc, ShowPickedComponent, AddedJobList,
-        AddedBuildingMaterialsList,
+        AddedBuildingMaterialsList, RoomJobsSum
     },
     props: {
         number: Number,
@@ -622,42 +624,6 @@ export default {
             this.addedJobs.push(tmp_job);
         },
 
-        addCalcedLaminateHandler(res){
-            //console.log(res);
-            this.addedJobs_i++;
-
-            let tmp_job = {}
-            tmp_job.id = this.addedJobs_i;
-            tmp_job.job_id = 10; // laminate
-            tmp_job.selected_id = res.selected_id;
-            tmp_job.summ = res.price;
-            tmp_job.adding_job_info_string = res['adding_job_info_string'];
-            tmp_job.title = this.getJobTitleById(tmp_job.job_id);
-            //console.log(tmp_job);
-
-            this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
-
-            this.addedJobs.push(tmp_job);
-        },
-        deleteAddedJob(del_id){
-            //console.log(del_id)
-            const filtered = this.addedJobs.filter(
-                t => t.id == del_id
-            );
-            this.addedJobs = this.addedJobs.filter(
-                t => t.id != del_id
-            );
-            //console.log(filtered);
-            const decSumm = filtered[0].summ;
-
-            //console.log(decSumm);
-            this.$store.commit('decValueToJobsResultingSumm', decSumm);
-        },
-
-        deleteAddedMaterial(material_id){
-            this.$store.commit('deleteMaterial', material_id);
-        },
-
         addWindow(){
             //console.log('addWindow');
             if (!this.windows_add.height || !this.windows_add.length || !this.windows_add.width){
@@ -723,7 +689,7 @@ export default {
         this.updatePerimeterAndSquares();
     },
     mounted() {
-        this.currentPickedJob = 10;
+        this.currentPickedJob = 12;
     },
 }
 </script>

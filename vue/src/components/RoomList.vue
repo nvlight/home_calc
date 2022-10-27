@@ -121,60 +121,48 @@ export default {
                 connectors: 7, // соединение
                 stubs: 2, // заглушка
             },
-            // {
-            //     id: 2,
-            //     isSimpleSidesCounting: true,
-            //     sizes : {
-            //         s1: 3.8,
-            //         s2: 3.1,
-            //         s3: 0,
-            //         s4: 0,
-            //     },
-            //     height: 2.3,
-            //     perimeter: 0,
-            //     square: {
-            //         ceiling: 0,
-            //         floor: 0,
-            //         walls: 0,
-            //     },
-            //     doorstep_count: 0, // пороги
-            // },
-            // {
-            //     id: 3,
-            //     isSimpleSidesCounting: true,
-            //     sizes : {
-            //         s1: 3.8,
-            //         s2: 3,
-            //         s3: 0,
-            //         s4: 0,
-            //     },
-            //     height: 2.3,
-            //     perimeter: 0,
-            //     square: {
-            //         ceiling: 0,
-            //         floor: 0,
-            //         walls: 0,
-            //     },
-            //     doorstep_count: 0, // пороги
-            // },
-            // {
-            //     id: 4,
-            //     isSimpleSidesCounting: true,
-            //     sizes : {
-            //         s1: 3.9,
-            //         s2: 2.5,
-            //         s3: 0,
-            //         s4: 0,
-            //     },
-            //     height: 2.3,
-            //     perimeter: 0,
-            //     square: {
-            //         ceiling: 0,
-            //         floor: 0,
-            //         walls: 0,
-            //     },
-            //     doorstep_count: 0, // пороги
-            // },
+            {
+                id: 2,
+                isSimpleSidesCounting: true,
+                sizes : {
+                    s1: 5,
+                    s2: 4,
+                    s3: 0,
+                    s4: 0,
+                },
+                height: 2.3,
+                perimeter: 0,
+                square: {
+                    ceiling: 0,
+                    floor: 0,
+                    walls: 0,
+                },
+
+                windows: [
+                    {
+                        id: 1,
+                        width: 0.4, // оконный проем
+                        height: 0.9,
+                        length: 0.8,
+                    },
+                ],
+                is_windows_showing: false,
+
+                doors: [
+                    {
+                        id: 1,
+                        width: 0.3,
+                        height: 2.2,
+                        length: 0.8,
+                    },
+                ],
+                is_doors_showing: false,
+
+                internalCorners: 4,
+                outerCorners: 2,
+                connectors: 7, // соединение
+                stubs: 2, // заглушка
+            },
         ];
     }
 }

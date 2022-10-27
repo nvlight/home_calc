@@ -206,7 +206,7 @@ export default {
         ...mapActions({
             addJob: 'addJob',
             incrementAddedJobNum: 'incrementAddedJobNum',
-            incValueToJobsResultingSumm: 'incValueToJobsResultingSumm',
+            incValueToJobsResultingSum: 'incValueToJobsResultingSum',
         }),
 
         toggleCustomSizes(){
@@ -258,7 +258,7 @@ export default {
                 alert('Выберите ширину ламината!');
                 return;
             }
-            this.addCalcedLaminateHandler(this.totalAmount);
+            this.addCalcedSum(this.totalAmount);
         },
         calcFloor(){
             const changedPrice = this.prices.filter( t => t.id === this.selected_id )[0].price;
@@ -268,17 +268,18 @@ export default {
 
         },
 
-        addCalcedLaminateHandler(){
+        addCalcedSum(){
             this.incrementAddedJobNum();
 
             let tmp_job = {}
             tmp_job.title = "Ламинат, укладка" + ` (id=${this.currentPickedJob})`;
             tmp_job.id = this.addedJobNum;
+            tmp_job.room_id = this.room.id;
             tmp_job.job_id = this.currentPickedJob;
             tmp_job.sum = this.totalAmount.price;
             tmp_job.adding_job_info_string = this.totalAmount['adding_job_info_string'];
 
-            this.incValueToJobsResultingSumm(tmp_job.sum);
+            this.incValueToJobsResultingSum(tmp_job.sum);
             this.addJob(tmp_job);
         },
     },

@@ -123,7 +123,7 @@ export default {
         ...mapActions({
             addJob: 'addJob',
             incrementAddedJobNum: 'incrementAddedJobNum',
-            incValueToJobsResultingSumm: 'incValueToJobsResultingSumm',
+            incValueToJobsResultingSum: 'incValueToJobsResultingSum',
         }),
 
         addCalcedBaseboards(){
@@ -132,11 +132,12 @@ export default {
             let tmp_job = {}
             tmp_job.title = "Плинтуса, установка" + ` (id=${this.currentPickedJob})`;
             tmp_job.id = this.addedJobNum;
+            tmp_job.room_id = this.room.id;
             tmp_job.job_id = this.currentPickedJob;
             tmp_job.sum = this.totalAmount.price;
             tmp_job.adding_job_info_string = this.totalAmount['adding_job_info_string'];
 
-            this.incValueToJobsResultingSumm(tmp_job.sum);
+            this.incValueToJobsResultingSum(tmp_job.sum);
             this.addJob(tmp_job);
         },
 

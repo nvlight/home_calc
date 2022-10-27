@@ -24,11 +24,6 @@
                         [{{ job.adding_job_info_string }}]
                     </div>
                 </div>
-                <!-- jobsSum -->
-                <div class="mt-3">
-                    <span class="text-2xl">Стоимость работ: {{jobsSum}}&nbsp;{{ currency }}</span>
-                </div>
-                <!--/ jobsSum -->
             </div>
         </div>
     </div>
