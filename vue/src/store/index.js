@@ -95,8 +95,9 @@ const store = createStore({
         materialsForBuyCount: 0,
         materialsForBuy: [],
         jobsResultingSumm: 0,
+
         addedJobNum: 0,
-        added_jobs: [],
+        addedJobs: [],
     },
     getters:{
 
@@ -167,10 +168,10 @@ const store = createStore({
             return commit('addJob', job);
         },
         deleteJobHandler({commit, dispatch}, job_id){
-            const filtered = store.state.added_jobs.filter(
+            const filtered = store.state.addedJobs.filter(
                 t => t.id == job_id
             );
-            commit('decValueToJobsResultingSumm', filtered[0].summ);
+            commit('decValueToJobsResultingSumm', filtered[0].sum);
 
             dispatch('deleteJob', job_id);
         },
@@ -222,10 +223,10 @@ const store = createStore({
         },
 
         addJob: (state, job) => {
-            state.added_jobs.push(job);
+            state.addedJobs.push(job);
         },
         deleteJob: (state, job_id) => {
-            state.added_jobs = state.added_jobs.filter(
+            state.addedJobs = state.addedJobs.filter(
                 t => t.id != job_id
             );
         },

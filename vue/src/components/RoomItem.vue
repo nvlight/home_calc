@@ -292,10 +292,10 @@
         </div>
     </div>
 
-    <!-- Шаг 2. Выбор видов работ -->
+    <!-- Шаг 2. Выбор и добавление работ -->
     <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-2">
-            <h1 class="font-light text-xl text-center">Шаг 2. Выбор видов работ</h1>
+            <h1 class="font-light text-xl text-center">Шаг 2. Выбор и добавление работ</h1>
 
             <label for="job_type" class="block text-sm font-medium text-gray-700">Наименование работы</label>
             <select v-model="currentPickedJob" @change="jobTypeChanged" v-if="work_types?.length" id="job_type" name="job_type" autocomplete="job name"
@@ -345,47 +345,33 @@
     </div>
 
     <!-- Результаты подсчетов -->
+    <div class="resultOfCalculations">
+        <h1 class="font-semibold text-2xl text-center">Результаты подсчетов</h1>
+    </div>
+
+    <!-- added Jobs list -->
     <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-2">
-            <h1 class="font-semibold text-2xl text-center">Результаты подсчетов</h1>
+
             <h2 class="font-semibold text-xl text-center">1. Виды работ:</h2>
 
-            <div v-if="!added_jobs?.length">
+            <div v-if="!addedJobs?.length">
                 <span class="block text-center">Список пуст</span>
             </div>
             <div v-else>
-                <div v-for="(job,index) in added_jobs"
-                    :key="index"
-                >
+                <div v-for="(job,index) in addedJobs"
+                    :key="index">
                     <div class="flex justify-between mt-2">
                         <div>
                             {{index+1}}. {{ job.title }}
                         </div>
                         <div class="flex self-center">
-                            <span class="flex">&nbsp;{{ job.summ }}
+                            <span class="flex">&nbsp;{{ job.sum }}
                                 <span class="font-semibold">&nbsp;₽</span>
                             </span>
-                            <button
-                                @click="deleteJob(job.id)"
-                                type="button"
-                                class="h-6 w-6 ml-2
-                        flex items-center justify-center
-                        rounded-full
-                        border border-transparent
-                        text-sm text-red-500
-                        focus:ring-2
-                        focus:ring-offset-2
-                        focus:ring-red-500
-                    ">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="h-5 w-5 -mt-1 inline-block
-                                self-end"
-                                     fill="none" viewBox="0 0 24 24"
-                                     stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                </svg>
-                            </button>
+
+                            <mg-trash-icon-button @click="deleteJob(job.id)">
+                            </mg-trash-icon-button>
                         </div>
                     </div>
                     <div v-if="job.adding_job_info_string">
@@ -401,8 +387,9 @@
 
         </div>
     </div>
+    <!-- / -->
 
-    <!-- Building materials list -->
+    <!-- added Building materials list -->
     <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-2">
             <h2 class="font-semibold text-xl text-center">Строительные материалы:</h2>
@@ -441,7 +428,7 @@
 
         </div>
     </div>
-    <!-- / Building materials list -->
+    <!-- / added Building materials list -->
 
 </template>
 
@@ -471,7 +458,6 @@ export default {
     ],
     data(){
         return {
-            added_jobs_i : 0, // index
             currentPickedJob: 1,
             work_types: [
                 {
@@ -554,7 +540,6 @@ export default {
                     cost: 150
                 },
             ],
-            //added_jobs:[],
             added_materials: [],
             windows_add:{
                 length: 1.2,
@@ -712,10 +697,10 @@ export default {
 
         addCalcedJob(){
             //console.log('addCalcedJob');
-            this.added_jobs_i++;
+            this.addedJobs_i++;
 
             let tmp_job = {}
-            tmp_job.id = this.added_jobs_i;
+            tmp_job.id = this.addedJobs_i;
             tmp_job.job_id = this.currentPickedJob; // choosed id
 
             let job_cost = this.getJobCostById(this.currentPickedJob);
@@ -727,15 +712,15 @@ export default {
 
             this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
 
-            this.added_jobs.push(tmp_job);
+            this.addedJobs.push(tmp_job);
         },
 
         addCalcedLaminateHandler(res){
             //console.log(res);
-            this.added_jobs_i++;
+            this.addedJobs_i++;
 
             let tmp_job = {}
-            tmp_job.id = this.added_jobs_i;
+            tmp_job.id = this.addedJobs_i;
             tmp_job.job_id = 10; // laminate
             tmp_job.selected_id = res.selected_id;
             tmp_job.summ = res.price;
@@ -745,13 +730,13 @@ export default {
 
             this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
 
-            this.added_jobs.push(tmp_job);
+            this.addedJobs.push(tmp_job);
         },
         addCalcedDoorstepHandler(res){
-            this.added_jobs_i++;
+            this.addedJobs_i++;
 
             let tmp_job = {}
-            tmp_job.id = this.added_jobs_i;
+            tmp_job.id = this.addedJobs_i;
             tmp_job.job_id = 13; // laminate
             tmp_job.selected_id = res.selected_id;
             tmp_job.summ = res.price;
@@ -760,13 +745,13 @@ export default {
 
             this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
 
-            this.added_jobs.push(tmp_job);
+            this.addedJobs.push(tmp_job);
         },
         addCalcedBaseboardsHandler(res){
-            this.added_jobs_i++;
+            this.addedJobs_i++;
 
             let tmp_job = {}
-            tmp_job.id = this.added_jobs_i;
+            tmp_job.id = this.addedJobs_i;
             tmp_job.job_id = 12; // laminate
             tmp_job.selected_id = res.selected_id;
             tmp_job.summ = res.price;
@@ -775,14 +760,14 @@ export default {
 
             this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
 
-            this.added_jobs.push(tmp_job);
+            this.addedJobs.push(tmp_job);
         },
         deleteAddedJob(del_id){
             //console.log(del_id)
-            const filtered = this.added_jobs.filter(
+            const filtered = this.addedJobs.filter(
                 t => t.id == del_id
             );
-            this.added_jobs = this.added_jobs.filter(
+            this.addedJobs = this.addedJobs.filter(
                 t => t.id != del_id
             );
             //console.log(filtered);
@@ -791,6 +776,7 @@ export default {
             //console.log(decSumm);
             this.$store.commit('decValueToJobsResultingSumm', decSumm);
         },
+
         deleteAddedMaterial(material_id){
             this.$store.commit('deleteMaterial', material_id);
         },
@@ -843,11 +829,11 @@ export default {
     },
     computed:{
         ...mapState({
-            added_jobs: state => state.added_jobs,
+            addedJobs: state => state.addedJobs,
         }),
         jobsSum(){
-            const sum = this.added_jobs.reduce(
-                (previousValue, currentValue) => previousValue + currentValue.summ,
+            const sum = this.addedJobs.reduce(
+                (previousValue, currentValue) => previousValue + currentValue.sum,
                 0
             );
 

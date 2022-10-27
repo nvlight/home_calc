@@ -415,14 +415,14 @@ export default {
             let tmp_job = {}
             tmp_job.id = this.addedJobNum;
             tmp_job.job_id = this.currentPickedJob;  // nat pot
-            tmp_job.selected_id = res.selected_id;
-            tmp_job.summ = res.price;
+            tmp_job.seiling_selected_id = res.seiling_selected_id;
+            tmp_job.sum = res.price;
             tmp_job.adding_job_info_string = res['adding_job_info_string'];
             //tmp_job.title = this.getJobTitleById(tmp_job.job_id);
-            tmp_job.title = "Натяжной потолок" + ` (id=${this.currentPickedJob})`;;
+            tmp_job.title = "Натяжной потолок" + ` (id=${this.currentPickedJob})`;
             //console.log(tmp_job);
 
-            this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
+            this.$store.commit('incValueToJobsResultingSumm', tmp_job.sum);
 
             this.addJob(tmp_job);
         },
@@ -434,13 +434,8 @@ export default {
     },
     computed:{
         ...mapState({
-            storeCount: state => state.count,
             addedJobNum: state => state.addedJobNum,
         }),
-        // storeCount() {
-        //     //return this.$store.state.count;
-        //     return store.state.count;
-        // },
 
         bagetSumm() {
             return this.baget.count * this.baget.price;
@@ -456,14 +451,14 @@ export default {
             return this.pipes.count * this.pipes.price;
         },
         totalAmount() {
-          let summ = this.choosedCeiling.price
-            + this.bagetSumm
-            + this.chandeliersSumm
-            + this.luminaireSumm
-            + this.deliveryPrice;
+          const sum = this.choosedCeiling.price
+                    + this.bagetSumm
+                    + this.chandeliersSumm
+                    + this.luminaireSumm
+                    + this.deliveryPrice;
           return {
-              selected_id: this.choosedCeiling.selected_id,
-              price: summ,
+              seiling_selected_id: this.choosedCeiling.selected_id,
+              price: sum,
               adding_job_info_string:
                 `Сам потолок + установка: ${this.choosedCeiling.price} ${this.currency},
                 багеты: ${this.bagetSumm} ${this.currency},
@@ -477,11 +472,8 @@ export default {
     watch:{
     },
     created(){
-        //console.log('created: ');
-        //this.setCustomSizesFromParent();
         this.room = Object.assign({}, this.currentRoom);
         this.baget.count = (this.room.perimeter);
-        //this.baget.count = Math.ceil(this.room.perimeter);
     },
     beforeMount() {
     },
