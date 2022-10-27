@@ -408,8 +408,6 @@ export default {
         },
 
         addCalcedCeilingHandler(res){
-            //console.log(res);
-
             this.incrementAddedJobNum();
 
             let tmp_job = {}
@@ -418,12 +416,9 @@ export default {
             tmp_job.seiling_selected_id = res.seiling_selected_id;
             tmp_job.sum = res.price;
             tmp_job.adding_job_info_string = res['adding_job_info_string'];
-            //tmp_job.title = this.getJobTitleById(tmp_job.job_id);
             tmp_job.title = "Натяжной потолок" + ` (id=${this.currentPickedJob})`;
-            //console.log(tmp_job);
 
             this.$store.commit('incValueToJobsResultingSumm', tmp_job.sum);
-
             this.addJob(tmp_job);
         },
 

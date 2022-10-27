@@ -12,7 +12,10 @@
         <LaminateCalc @addCalcedLaminate="addCalcedLaminateHandler" :room="room"></LaminateCalc>
     </div>
     <div v-else-if="currentPickedJob == 13">
-        <DoorstepCalc @addCalcedDoorstep="addCalcedDoorstepHandler" :room="room"></DoorstepCalc>
+        <DoorstepCalc
+            :room="room"
+            :currentPickedJob="currentPickedJob"
+        ></DoorstepCalc>
     </div>
     <div v-else-if="currentPickedJob == 12">
         <baseboards-calc @addCalcedBaseboards="addCalcedBaseboardsHandler" :room="room"></baseboards-calc>
@@ -28,6 +31,7 @@
 </template>
 
 <script>
+import {mapGetters, mapState, mapActions} from "vuex";
 import CeilingCalc from "./CeilingCalc.vue";
 import LaminateCalc from "./LaminateCalc.vue";
 import DoorstepCalc from "./DoorstepCalc.vue";
@@ -46,10 +50,15 @@ export default {
             type: Object,
             required: true,
         }
+    },
+    methods:{
+
+    },
+    computed:{
+
     }
 }
 </script>
 
 <style scoped>
-
 </style>

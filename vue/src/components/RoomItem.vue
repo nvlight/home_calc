@@ -3,7 +3,7 @@
     <div class="min-h-full flex items-center justify-start pt-4 pb-2 px-2 sm:px-2 lg:px-2">
         <div class="max-w-md w-full space-y-2">
 
-            <div class="border-dotted border-2 p-3 border-red-400">
+            <div v-if="this.$store.state.debug" class="border-dotted border-2 p-3 border-red-400">
                 {{ room }}
             </div>
 
@@ -317,30 +317,6 @@
                 :currentPickedJob="currentPickedJob"
                 :room="room">
             </show-picked-component>
-
-<!--            <div v-if="currentPickedJob == 1">-->
-<!--                <CeilingCalc @addCalcedCeiling="addCalcedCeilingHandler"-->
-<!--                    :roomSizes="room.sizes"-->
-<!--                    :currentRoom="room">-->
-<!--                </CeilingCalc>-->
-<!--            </div>-->
-<!--            <div v-else-if="currentPickedJob == 10">-->
-<!--                <LaminateCalc @addCalcedLaminate="addCalcedLaminateHandler" :room="room"></LaminateCalc>-->
-<!--            </div>-->
-<!--            <div v-else-if="currentPickedJob == 13">-->
-<!--                <DoorstepCalc @addCalcedDoorstep="addCalcedDoorstepHandler" :room="room"></DoorstepCalc>-->
-<!--            </div>-->
-<!--            <div v-else-if="currentPickedJob == 12">-->
-<!--                <baseboards-calc @addCalcedBaseboards="addCalcedBaseboardsHandler" :room="room"></baseboards-calc>-->
-<!--            </div>-->
-<!--            <div v-else-if="currentPickedJob == 14">-->
-<!--                <wallpaper-calc :room="room"></wallpaper-calc>-->
-<!--            </div>-->
-
-<!--            <div v-else-if="Boolean(currentPickedJob) !== false">-->
-<!--                <mg-grid-icon-button @click="addCalcedJob">Добавить</mg-grid-icon-button>-->
-<!--            </div>-->
-
         </div>
     </div>
 
@@ -354,44 +330,7 @@
     <!-- / -->
 
     <!-- added Building materials list -->
-    <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-2">
-            <h2 class="font-semibold text-xl text-center">Строительные материалы:</h2>
-
-            <div v-if="!addedMaterials?.length">
-                <span class="block text-center">Список пуст</span>
-            </div>
-            <div v-else>
-                <div v-for="(material,index) in addedMaterials"
-                     :key="index"
-                     class="flex justify-between mt-2"
-                >{{index+1}}.&nbsp;
-                    <div class="flex self-center">
-                        <span>{{ material.name }}, вес/количество: <strong>{{ material.weight }}</strong>
-                            [{{material.itemId}}] id: {{material.id}}
-                        </span>
-                        <span class="font-semibold">{{ material.price }} <strong>₽</strong></span>
-                        <button type="button"
-                            @click="deleteAddedMaterial(material.id)"
-                            class="h-6 w-6 ml-2 flex items-center justify-center rounded-full border border-transparent text-sm text-red-500
-                                focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                 class="h-5 w-5 -mt-1 inline-block self-end"
-                                 fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                <!-- MaterialSumm -->
-                <div class="mt-3">
-                    <span class="text-2xl">Стоимость строительных материалов: {{materialsSum}}&nbsp;₽</span>
-                </div>
-                <!--/ MaterialSumm -->
-            </div>
-
-        </div>
-    </div>
+    <added-building-materials-list></added-building-materials-list>
     <!-- / added Building materials list -->
 </template>
 
@@ -404,11 +343,13 @@ import {mapState, mapActions, mapGetters} from "vuex";
 import WallpaperCalc from "./WallpaperCalc.vue";
 import ShowPickedComponent from "./ShowPickedComponent.vue";
 import AddedJobList from "./AddedJobList.vue";
+import AddedBuildingMaterialsList from "./AddedBuildingMaterialsList.vue";
 
 export default {
     name: "room-item",
     components: {
         WallpaperCalc, DoorstepCalc, CeilingCalc, LaminateCalc, BaseboardsCalc, ShowPickedComponent, AddedJobList,
+        AddedBuildingMaterialsList,
     },
     props: {
         number: Number,
@@ -698,21 +639,6 @@ export default {
 
             this.addedJobs.push(tmp_job);
         },
-        addCalcedDoorstepHandler(res){
-            this.addedJobs_i++;
-
-            let tmp_job = {}
-            tmp_job.id = this.addedJobs_i;
-            tmp_job.job_id = 13; // laminate
-            tmp_job.selected_id = res.selected_id;
-            tmp_job.summ = res.price;
-            tmp_job.adding_job_info_string = res['adding_job_info_string'];
-            tmp_job.title = this.getJobTitleById(tmp_job.job_id);
-
-            this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
-
-            this.addedJobs.push(tmp_job);
-        },
         addCalcedBaseboardsHandler(res){
             this.addedJobs_i++;
 
@@ -800,18 +726,6 @@ export default {
         ...mapGetters({
             jobsSum: 'jobsSum',
         }),
-
-        materialsSum(){
-            return this.$store.state.materialsForBuy.reduce(
-                (previousValue, currentValue) => previousValue + +currentValue.price,
-                0
-            );
-        },
-
-        addedMaterials(){
-            return this.$store.state.materialsForBuy;
-        },
-
     },
     created() {
         this.updatePerimeterAndSquares();
@@ -824,7 +738,7 @@ export default {
         this.updatePerimeterAndSquares();
     },
     mounted() {
-        this.currentPickedJob = 1;
+        this.currentPickedJob = 13;
     },
 }
 </script>

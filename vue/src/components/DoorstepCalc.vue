@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import {mapGetters, mapState, mapActions} from "vuex";
 import MaterialsForBuyBlock from "./additional/MaterialsForBuyBlock.vue";
 
 export default {
@@ -49,14 +50,15 @@ export default {
         'room': {
             type: Object,
             required: true,
+        },
+        'currentPickedJob':{
+            type: Number,
+            required: true,
         }
     },
-    emits: [
-        'addCalcedDoorstep',
-    ],
+    emits: [],
     data() {
         return {
-            currency: "₽",
             price: 150,
             customPrice: 0,
             isCustomPrice: false,
@@ -65,14 +67,35 @@ export default {
         }
     },
     methods: {
-        addCalcedDoorstep() {
-            this.$emit('addCalcedDoorstep', this.totalAmount)
-        },
+        ...mapActions({
+            addJob: 'addJob',
+            incrementAddedJobNum: 'incrementAddedJobNum',
+            incValueToJobsResultingSumm: 'incValueToJobsResultingSumm',
+        }),
         addMaterials(){
 
         },
+        addCalcedDoorstep(){
+            this.incrementAddedJobNum();
+
+            let tmp_job = {}
+            tmp_job.title = "Пороги" + ` (id=${this.currentPickedJob})`;
+            tmp_job.id = this.addedJobNum;
+            tmp_job.job_id = this.currentPickedJob;
+            tmp_job.seiling_selected_id = this.totalAmount.seiling_selected_id;
+            tmp_job.sum = this.totalAmount.price;
+            tmp_job.adding_job_info_string = this.totalAmount['adding_job_info_string'];
+
+            this.incValueToJobsResultingSumm(tmp_job.sum);
+            this.addJob(tmp_job);
+        },
     },
     computed: {
+        ...mapState({
+            addedJobNum: state => state.addedJobNum,
+            currency: state => state.currency,
+        }),
+
         sum() {
             return this.price * this.doorsCount;
         },

@@ -13,7 +13,7 @@
                         <div> {{index+1}}. {{ job.title }} </div>
                         <div class="flex self-center">
                             <span class="flex">&nbsp;{{ job.sum }}
-                                <span class="font-semibold">&nbsp;₽</span>
+                                <span class="font-semibold">&nbsp;{{ currency }}</span>
                             </span>
 
                             <mg-trash-icon-button @click="deleteJob(job.id)">
@@ -26,7 +26,7 @@
                 </div>
                 <!-- jobsSum -->
                 <div class="mt-3">
-                    <span class="text-2xl">Стоимость работ: {{jobsSum}}&nbsp;₽</span>
+                    <span class="text-2xl">Стоимость работ: {{jobsSum}}&nbsp;{{ currency }}</span>
                 </div>
                 <!--/ jobsSum -->
             </div>
@@ -48,6 +48,7 @@ export default {
     },
     computed:{
         ...mapState({
+            currency: state => state.currency,
             addedJobs: state => state.addedJobs,
         }),
         ...mapGetters({

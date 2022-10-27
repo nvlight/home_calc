@@ -8,6 +8,14 @@ const store = createStore({
             data: {},
             token: sessionStorage.getItem('TOKEN'),
         },
+        currency: "₽",
+        materialsForBuyCount: 0,
+        materialsForBuy: [],
+        jobsResultingSumm: 0,
+
+        addedJobNum: 0,
+        addedJobs: [],
+
         buildingMaterials: [
             {
                 id: 82239108,
@@ -92,12 +100,6 @@ const store = createStore({
             },
 
         ],
-        materialsForBuyCount: 0,
-        materialsForBuy: [],
-        jobsResultingSumm: 0,
-
-        addedJobNum: 0,
-        addedJobs: [],
     },
     getters:{
         jobsSum(){
@@ -182,6 +184,10 @@ const store = createStore({
         deleteJob({commit}, job_id){
             return commit('deleteJob', job_id);
         },
+
+        incValueToJobsResultingSumm({commit}, sum){
+            return commit('incValueToJobsResultingSumm', sum);
+        },
     },
     mutations:{
         setCurrentSurveyLoading: (state, loading) => {
@@ -204,11 +210,11 @@ const store = createStore({
             state.materialsForBuyCount--;
         },
 
-        incValueToJobsResultingSumm(state, summ){
-            state.jobsResultingSumm += summ;
+        incValueToJobsResultingSumm(state, sum){
+            state.jobsResultingSumm += sum;
         },
-        decValueToJobsResultingSumm(state, summ){
-            state.jobsResultingSumm -= summ;
+        decValueToJobsResultingSumm(state, sum){
+            state.jobsResultingSumm -= sum;
         },
 
         setUser: (state, userData) => {
