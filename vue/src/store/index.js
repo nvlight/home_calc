@@ -95,6 +95,8 @@ const store = createStore({
         materialsForBuyCount: 0,
         materialsForBuy: [],
         jobsResultingSumm: 0,
+        addedJobNum: 0,
+        added_jobs: [],
     },
     getters:{
 
@@ -156,6 +158,25 @@ const store = createStore({
                     return response;
                 })
         },
+
+        incrementAddedJobNum({commit}){
+            return commit('incAddedJobNum');
+        },
+
+        addJob({commit}, job){
+            return commit('addJob', job);
+        },
+        deleteJobHandler({commit, dispatch}, job_id){
+            const filtered = store.state.added_jobs.filter(
+                t => t.id == job_id
+            );
+            commit('decValueToJobsResultingSumm', filtered[0].summ);
+
+            dispatch('deleteJob', job_id);
+        },
+        deleteJob({commit}, job_id){
+            return commit('deleteJob', job_id);
+        },
     },
     mutations:{
         setCurrentSurveyLoading: (state, loading) => {
@@ -196,6 +217,18 @@ const store = createStore({
             sessionStorage.removeItem('TOKEN');
         },
 
+        incAddedJobNum: (state) => {
+            state.addedJobNum++;
+        },
+
+        addJob: (state, job) => {
+            state.added_jobs.push(job);
+        },
+        deleteJob: (state, job_id) => {
+            state.added_jobs = state.added_jobs.filter(
+                t => t.id != job_id
+            );
+        },
     },
     modules:{},
 })

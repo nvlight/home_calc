@@ -211,11 +211,11 @@
 <script>
 import BuildingMaterial from "../components/BuildingMaterial.vue";
 import store from "../store/index.js";
-import { mapState } from "vuex";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
     name: 'CeilingCalc',
-    props: ['square', 'perimeter', 'currentRoom', ],
+    props: ['square', 'perimeter', 'currentRoom', 'currentPickedJob', ],
     components: { BuildingMaterial },
     data(){
         return{
@@ -403,13 +403,39 @@ export default {
                 alert('Сначала выберите потолок!')
                 return;
             }
-            this.$emit('addCalcedCeiling', this.totalAmount)
+            //this.$emit('addCalcedCeiling', this.totalAmount)
+            this.addCalcedCeilingHandler(this.totalAmount)
         },
 
+        addCalcedCeilingHandler(res){
+            //console.log(res);
+
+            this.incrementAddedJobNum();
+
+            let tmp_job = {}
+            tmp_job.id = this.addedJobNum;
+            tmp_job.job_id = this.currentPickedJob;  // nat pot
+            tmp_job.selected_id = res.selected_id;
+            tmp_job.summ = res.price;
+            tmp_job.adding_job_info_string = res['adding_job_info_string'];
+            //tmp_job.title = this.getJobTitleById(tmp_job.job_id);
+            tmp_job.title = "Натяжной потолок" + ` (id=${this.currentPickedJob})`;;
+            //console.log(tmp_job);
+
+            this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
+
+            this.addJob(tmp_job);
+        },
+
+        ...mapActions({
+            incrementAddedJobNum: 'incrementAddedJobNum',
+            addJob: 'addJob',
+        }),
     },
     computed:{
         ...mapState({
             storeCount: state => state.count,
+            addedJobNum: state => state.addedJobNum,
         }),
         // storeCount() {
         //     //return this.$store.state.count;

@@ -292,10 +292,10 @@
         </div>
     </div>
 
-    <!-- Шаг 2. Добавьте виды работ -->
+    <!-- Шаг 2. Выбор видов работ -->
     <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-2">
-            <h1 class="font-light text-xl text-center">Шаг 2. Добавьте виды работ</h1>
+            <h1 class="font-light text-xl text-center">Шаг 2. Выбор видов работ</h1>
 
             <label for="job_type" class="block text-sm font-medium text-gray-700">Наименование работы</label>
             <select v-model="currentPickedJob" @change="jobTypeChanged" v-if="work_types?.length" id="job_type" name="job_type" autocomplete="job name"
@@ -312,51 +312,34 @@
             <div v-if="this.$store.state.debug" class="border-dotted border-2 p-3 border-red-400">
                 currentPickedJob: {{(currentPickedJob)}} {{Boolean(currentPickedJob)}}
             </div>
-            <div v-if="currentPickedJob == 1" class="ceiling_calc_wrapper">
-                <CeilingCalc
-                    @addCalcedCeiling="addCalcedCeilingHandler"
-                    :roomSizes="room.sizes"
-                    :currentRoom="room"
-                >
-                </CeilingCalc>
-            </div>
-            <div v-else-if="currentPickedJob == 10">
-                <LaminateCalc
-                    @addCalcedLaminate="addCalcedLaminateHandler"
-                    :room="room"
-                >
-                </LaminateCalc>
-            </div>
-            <div v-else-if="currentPickedJob == 13">
-                <DoorstepCalc
-                    @addCalcedDoorstep="addCalcedDoorstepHandler"
-                    :room="room"
-                >
-                </DoorstepCalc>
-            </div>
-            <div v-else-if="currentPickedJob == 12">
-                <baseboards-calc
-                    @addCalcedBaseboards="addCalcedBaseboardsHandler"
-                    :room="room"
-                >
-                </baseboards-calc>
-            </div>
 
-            <div v-else-if="Boolean(currentPickedJob) !== false">
-                <button @click="addCalcedJob"
-                        class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                      <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                        <!-- Heroicon name: solid/lock-closed -->
-                        <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg"
-                             viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                          <path fill-rule="evenodd"
-                                d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                                clip-rule="evenodd"/>
-                        </svg>
-                      </span>
-                    Добавить
-                </button>
-            </div>
+            <show-picked-component
+                :currentPickedJob="currentPickedJob"
+                :room="room">
+            </show-picked-component>
+
+<!--            <div v-if="currentPickedJob == 1">-->
+<!--                <CeilingCalc @addCalcedCeiling="addCalcedCeilingHandler"-->
+<!--                    :roomSizes="room.sizes"-->
+<!--                    :currentRoom="room">-->
+<!--                </CeilingCalc>-->
+<!--            </div>-->
+<!--            <div v-else-if="currentPickedJob == 10">-->
+<!--                <LaminateCalc @addCalcedLaminate="addCalcedLaminateHandler" :room="room"></LaminateCalc>-->
+<!--            </div>-->
+<!--            <div v-else-if="currentPickedJob == 13">-->
+<!--                <DoorstepCalc @addCalcedDoorstep="addCalcedDoorstepHandler" :room="room"></DoorstepCalc>-->
+<!--            </div>-->
+<!--            <div v-else-if="currentPickedJob == 12">-->
+<!--                <baseboards-calc @addCalcedBaseboards="addCalcedBaseboardsHandler" :room="room"></baseboards-calc>-->
+<!--            </div>-->
+<!--            <div v-else-if="currentPickedJob == 14">-->
+<!--                <wallpaper-calc :room="room"></wallpaper-calc>-->
+<!--            </div>-->
+
+<!--            <div v-else-if="Boolean(currentPickedJob) !== false">-->
+<!--                <mg-grid-icon-button @click="addCalcedJob">Добавить</mg-grid-icon-button>-->
+<!--            </div>-->
 
         </div>
     </div>
@@ -383,7 +366,7 @@
                                 <span class="font-semibold">&nbsp;₽</span>
                             </span>
                             <button
-                                @click="deleteAddedJob(job.id)"
+                                @click="deleteJob(job.id)"
                                 type="button"
                                 class="h-6 w-6 ml-2
                         flex items-center justify-center
@@ -467,11 +450,13 @@ import CeilingCalc from "../components/CeilingCalc.vue";
 import LaminateCalc from "../components/LaminateCalc.vue";
 import DoorstepCalc from "./DoorstepCalc.vue";
 import BaseboardsCalc from "./BaseboardsCalc.vue";
-import {mapState} from "vuex";
+import {mapState, mapActions} from "vuex";
+import WallpaperCalc from "./WallpaperCalc.vue";
+import ShowPickedComponent from "./ShowPickedComponent.vue";
 
 export default {
     name: "room-item",
-    components: {DoorstepCalc, CeilingCalc, LaminateCalc, BaseboardsCalc, },
+    components: {WallpaperCalc, DoorstepCalc, CeilingCalc, LaminateCalc, BaseboardsCalc, ShowPickedComponent},
     props: {
         number: Number,
         room: Object,
@@ -479,13 +464,15 @@ export default {
     emits: [
         'addCalcedCeiling',
         'addCalcedDoorstep',
-        'addWindow', 'deleteWindow',
-        'addDoor', 'deleteDoor',
+        'addWindow',
+        'deleteWindow',
+        'addDoor',
+        'deleteDoor',
     ],
     data(){
         return {
             added_jobs_i : 0, // index
-            currentPickedJob: 12,
+            currentPickedJob: 1,
             work_types: [
                 {
                     id: 1,
@@ -543,6 +530,12 @@ export default {
                     cost: 200,
                 },
                 {
+                    id: 14,
+                    title: "Обои, поклейка",
+                    description: '',
+                    cost: 200,
+                },
+                {
                     id: 10,
                     title: "Ламинат",
                     description: '',
@@ -561,7 +554,7 @@ export default {
                     cost: 150
                 },
             ],
-            added_jobs:[],
+            //added_jobs:[],
             added_materials: [],
             windows_add:{
                 length: 1.2,
@@ -576,6 +569,9 @@ export default {
         }
     },
     methods: {
+        ...mapActions({
+            deleteJob: 'deleteJobHandler',
+        }),
         isSimpleSidesCountingChange(){
             this.room.isSimpleSidesCounting = !(this.room.isSimpleSidesCounting);
             this.updatePerimeterAndSquares();
@@ -713,6 +709,7 @@ export default {
                 adding_job_info_string,
             };
         },
+
         addCalcedJob(){
             //console.log('addCalcedJob');
             this.added_jobs_i++;
@@ -732,23 +729,7 @@ export default {
 
             this.added_jobs.push(tmp_job);
         },
-        addCalcedCeilingHandler(res){
-            //console.log(res);
-            this.added_jobs_i++;
 
-            let tmp_job = {}
-            tmp_job.id = this.added_jobs_i;
-            tmp_job.job_id = 1;  // nat pot
-            tmp_job.selected_id = res.selected_id;
-            tmp_job.summ = res.price;
-            tmp_job.adding_job_info_string = res['adding_job_info_string'];
-            tmp_job.title = this.getJobTitleById(tmp_job.job_id);
-            //console.log(tmp_job);
-
-            this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
-
-            this.added_jobs.push(tmp_job);
-        },
         addCalcedLaminateHandler(res){
             //console.log(res);
             this.added_jobs_i++;
@@ -861,6 +842,9 @@ export default {
 
     },
     computed:{
+        ...mapState({
+            added_jobs: state => state.added_jobs,
+        }),
         jobsSum(){
             const sum = this.added_jobs.reduce(
                 (previousValue, currentValue) => previousValue + currentValue.summ,
@@ -893,7 +877,7 @@ export default {
         this.updatePerimeterAndSquares();
     },
     mounted() {
-
+        this.currentPickedJob = 1;
     },
 }
 </script>
