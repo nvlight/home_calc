@@ -109,7 +109,7 @@
             </div>
 
             <div class="resultingSumm p-3">
-                <h1 class="text-2xl font-semibold">Общая стоимость работ: {{jobsResultingSumm}} {{ currency }}</h1>
+                <h1 class="text-2xl font-semibold">Общая стоимость работ: {{jobsResultingSum}} {{ currency }}</h1>
             </div>
 
         </main>
@@ -145,7 +145,7 @@ const userNavigation = [
 
 const currency = "₽";
 
-const jobsResultingSumm = computed(() => {
+const jobsResultingSum = computed(() => {
     return store.state.jobsResultingSum;
 });
 

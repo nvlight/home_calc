@@ -33,10 +33,10 @@
         </div>
 
         <div v-if="room.perimeter" class="pt-3">
-            Периметр: <span >{{room.perimeter}} м.</span>
+            Периметр: <span >{{room.perimeter}} м. ({{Math.ceil(room.perimeter)}} м.)</span>
         </div>
         <div v-if="room.square.ceiling" class="pt-3">
-            Площадь потолка: <span >{{room.square.ceiling}} кв.м.</span>
+            Площадь потолка: <span >{{room.square.ceiling}} кв.м. ({{Math.ceil(room.square.ceiling)}} кв.м.)</span>
         </div>
 
         <div v-if="isCustomSizes">
@@ -126,10 +126,10 @@
             </div>
 
             <div v-if="room.perimeter" class="pt-3">
-                Периметр: <span >{{room.perimeter}} м.</span>
+                Периметр: <span >{{room.perimeter}} м. ({{Math.ceil(room.perimeter)}} м.)</span>
             </div>
             <div v-if="room.square.ceiling" class="pt-3">
-                Площадь потолка: <span >{{room.square.ceiling}} кв.м.</span>
+                Площадь потолка: <span >{{room.square.ceiling}} кв.м. ({{Math.ceil(room.square.ceiling)}} кв.м1.)</span>
             </div>
 
         </div>
@@ -188,19 +188,7 @@
             Итоговая сумма  <strong>{{ totalAmount.price }} {{ currency }}</strong>
         </div>
 
-        <button @click="addCalcedCeil"
-            class="mt-3 group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-              <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                <!-- Heroicon name: solid/lock-closed -->
-                <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg"
-                     viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                        d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                        clip-rule="evenodd"/>
-                </svg>
-              </span>
-            Добавить всю сумму
-        </button>
+        <mg-grid-icon-button @click="addCalcedCeil">Добавить всю сумму</mg-grid-icon-button>
 
         <BuildingMaterial>
         </BuildingMaterial>
@@ -381,7 +369,8 @@ export default {
                 for ( let price in this.prices){
                     const item = this.prices[price];
                     if (item.id === index){
-                        this.choosedCeiling.price = this.room.square.ceiling * item.price;
+                        // бизнес требование - квадратура потолка всегда округляется наверх!
+                        this.choosedCeiling.price = Math.ceil(this.room.square.ceiling) * item.price;
                     }
                 }
             }
@@ -437,8 +426,9 @@ export default {
         }),
 
         bagetSumm() {
-            return this.baget.count * this.baget.price;
-            //return Math.ceil( this.baget.count * this.baget.price);
+            //return this.baget.count * this.baget.price;
+            // бизнес-требование, периметр багетов всегда должен быть округлен вверх!
+            return Math.ceil( this.baget.count ) * this.baget.price;
         },
         chandeliersSumm() {
             return this.chandeliers.count * this.chandeliers.price;
@@ -459,7 +449,8 @@ export default {
               seiling_selected_id: this.choosedCeiling.selected_id,
               price: sum,
               adding_job_info_string:
-                `Сам потолок + установка: ${this.choosedCeiling.price} ${this.currency},
+                `Сам потолок + установка: ${this.choosedCeiling.price} ${this.currency}
+                (${Math.ceil(this.room.square.ceiling)} кв.м.),
                 багеты: ${this.bagetSumm} ${this.currency},
                 доставка: ${this.deliveryPrice} ${this.currency}`,
           }
