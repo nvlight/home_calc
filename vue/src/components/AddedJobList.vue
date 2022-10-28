@@ -3,11 +3,11 @@
         <div class="max-w-md w-full space-y-2">
             <h2 class="font-semibold text-xl text-center">1. Виды работ:</h2>
 
-            <div v-if="!addedJobs?.length">
+            <div v-if="!addedJobsClone?.length">
                 <span class="block text-center">Список пуст</span>
             </div>
             <div v-else>
-                <div v-for="(job,index) in addedJobs"
+                <div v-for="(job,index) in addedJobsClone"
                      :key="index">
                     <div class="flex justify-between mt-2">
                         <div> {{index+1}}. {{ job.title }} </div>
@@ -25,16 +25,27 @@
                     </div>
                 </div>
             </div>
+            <room-jobs-sum :room_id="room_id"></room-jobs-sum>
         </div>
     </div>
 </template>
 
 <script>
 import {mapState, mapGetters, mapActions} from 'vuex'
+import roomJobsSum from "./RoomJobsSum.vue";
 
 export default {
     name: 'added-job-list',
     props: {
+        room_id: {
+            type: Number,
+        }
+    },
+    components: { roomJobsSum, },
+    data(){
+        return {
+            addedJobsClone: [],
+        }
     },
     methods:{
         ...mapActions({
@@ -49,6 +60,19 @@ export default {
         ...mapGetters({
             jobsSum: 'jobsSum',
         }),
+    },
+    watch:{
+        addedJobs: {
+            handler(newValue, oldValue){
+                //console.log('newValue:', newValue);
+                //console.log('oldValue:', oldValue);
+
+                const tmp = this.addedJobs
+                    .filter(t => t.room_id === this.room_id )
+                this.addedJobsClone = Object.assign(tmp, {});
+            },
+            deep: true,
+        },
     },
     mounted() {
     }

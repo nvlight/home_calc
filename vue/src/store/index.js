@@ -16,7 +16,6 @@ const store = createStore({
         addedJobNum: 0,
         addedJobs: [],
         currentRoomJobsSum: 0,
-
         buildingMaterials: [
             {
                 id: 82239108,
@@ -110,6 +109,7 @@ const store = createStore({
         },
     },
     actions:{
+        // 12345678aA@
         getSurvey({commit}, id){
             commit('setCurrentSurveyLoading', true);
             return axiosClient
@@ -143,9 +143,6 @@ const store = createStore({
             //console.log(needMaterials);
             return needMaterials;
         },
-
-        // 12345678aA@
-        // 12345678aA@
         login({commit}, user){
             return axiosClient.post('/login', user)
                 .then( ({data}) => {
@@ -167,11 +164,9 @@ const store = createStore({
                     return response;
                 })
         },
-
         incrementAddedJobNum({commit}){
             return commit('incAddedJobNum');
         },
-
         addJob({commit}, job){
             return commit('addJob', job);
         },
@@ -186,11 +181,9 @@ const store = createStore({
         deleteJob({commit}, job_id){
             return commit('deleteJob', job_id);
         },
-
         incValueToJobsResultingSum({commit}, sum){
             return commit('incValueToJobsResultingSum', sum);
         },
-
     },
     mutations:{
         addMaterial(state, material){
@@ -206,14 +199,12 @@ const store = createStore({
 
             state.materialsForBuyCount--;
         },
-
         incValueToJobsResultingSum(state, sum){
             state.jobsResultingSum += sum;
         },
         decValueTojobsResultingSum(state, sum){
             state.jobsResultingSum -= sum;
         },
-
         setUser: (state, userData) => {
             state.user.token = userData.token;
             state.user.data  = userData.user;
@@ -224,11 +215,9 @@ const store = createStore({
             state.user.token = null;
             sessionStorage.removeItem('TOKEN');
         },
-
         incAddedJobNum: (state) => {
             state.addedJobNum++;
         },
-
         addJob: (state, job) => {
             state.addedJobs.push(job);
         },
@@ -237,7 +226,6 @@ const store = createStore({
                 t => t.id != job_id
             );
         },
-
     },
     modules:{},
 })

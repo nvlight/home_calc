@@ -324,10 +324,9 @@
     <div class="resultOfCalculations">
         <h1 class="font-semibold text-2xl text-center">Результаты подсчетов</h1>
     </div>
-    <room-jobs-sum :room_id="room.id"></room-jobs-sum>
 
     <!-- added Jobs list -->
-    <added-job-list></added-job-list>
+    <added-job-list :room_id="room.id"></added-job-list>
     <!-- / -->
 
     <!-- added Building materials list -->

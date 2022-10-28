@@ -107,6 +107,7 @@
                     <!-- Replace with your content -->
                 </div>
             </div>
+
             <div class="resultingSumm p-3">
                 <h1 class="text-2xl font-semibold">Общая стоимость работ: {{jobsResultingSumm}} {{ currency }}</h1>
             </div>
@@ -145,7 +146,7 @@ const userNavigation = [
 const currency = "₽";
 
 const jobsResultingSumm = computed(() => {
-    return store.state.jobsResultingSumm;
+    return store.state.jobsResultingSum;
 });
 
 function logout(){
