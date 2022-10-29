@@ -672,6 +672,7 @@ export default {
     computed:{
         ...mapState({
             addedJobs: state => state.addedJobs,
+            currPickedJob: state => state.currentPickedJob,
         }),
         ...mapGetters({
             jobsSum: 'jobsSum',
@@ -688,7 +689,8 @@ export default {
         this.updatePerimeterAndSquares();
     },
     mounted() {
-        this.currentPickedJob = 12;
+        //this.currentPickedJob = 12;
+        this.currentPickedJob = this.currPickedJob;
     },
 }
 </script>

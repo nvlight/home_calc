@@ -16,6 +16,8 @@ const store = createStore({
         addedJobNum: 0,
         addedJobs: [],
         currentRoomJobsSum: 0,
+        currentPickedJob: 14,
+
         buildingMaterials: [
             {
                 id: 82239108,

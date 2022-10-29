@@ -1,6 +1,4 @@
 <template>
-    <h3>ShowPickedComponent</h3>
-
     <div v-if="currentPickedJob == 1">
         <CeilingCalc
             :roomSizes="room.sizes"
