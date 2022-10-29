@@ -102,10 +102,33 @@
 
     <mg-button @click="addCalcedWallpapers">Добавить сумму</mg-button>
 
+    <div class="mt-2">
+        <div>Длина рулона: 10.05 м.</div>
+        <div>Ширина рулона: 1.06 м.</div>
+    </div>
+    <div class="flex justify-between mt-2">
+        <mg-input-labeled v-model="rapport" :placeholder="'0.64 м. / 0.32 м. / 0 м. '">Раппорт</mg-input-labeled>
+        <mg-input-labeled v-model="oneRollMeters" :placeholder="'10 м. '">Кол-во метров в 1-м рулоне</mg-input-labeled>
+    </div>
+    <div class="mt-2">Периметр:
+        <span class="font-semibold">{{perimeter}} м.</span> (<span class="font-semibold">{{perimeterCeil}} м.</span>)
+    </div>
+    <div class="mt-2">Высота с учетом раппорта: <span class="font-semibold">{{heightRapport}} м.</span></div>
+
     <materials-for-buy-block
         :materials="materials"
         :room="room"
     ></materials-for-buy-block>
+    <div class="mt-2">Обоев (рулонов) к покупке:
+        <span class="font-semibold">{{Math.ceil(rolls)}}</span>
+        <template v-if="rolls !== Math.ceil(rolls)">
+            (<span class="font-semibold">{{rolls}}</span>)
+        </template>
+    </div>
+    <div class="">
+        {{glue.name}} <span class="font-semibold">{{glue.count}} коробок</span>
+    </div>
+
     <mg-button @click="">Добавить материалы</mg-button>
 
 </template>
@@ -143,6 +166,8 @@ export default {
             decSquareCount: 0,
 
             price: 200,
+            rapport: 0,
+            oneRollMeters: 10,
         }
     },
 
@@ -161,14 +186,6 @@ export default {
             this.height = this.room.height;
         },
 
-        setIncSquareCount(val){
-            console.log(val);
-            //this.incSquareCount = val;
-        },
-        setDecSquareCount(val){
-            this.decSquareCount = val;
-        },
-
         addCalcedWallpapers(){
             this.incrementAddedJobNum();
 
@@ -178,7 +195,7 @@ export default {
             tmp_job.room_id = this.room.id;
             tmp_job.job_id = this.currentPickedJob;
             tmp_job.sum = this.totalAmount.price;
-            tmp_job.adding_job_info_string = this.totalAmount['adding_job_info_string'];
+            tmp_job.adding_job_info_string = this.totalAmount.adding_job_info_string;
 
             this.incValueToJobsResultingSum(tmp_job.sum);
             this.addJob(tmp_job);
@@ -186,6 +203,9 @@ export default {
 
     },
     computed:{
+        // todo - тут можно примерить обои!
+        // https://oboi-store.ru/
+
         ...mapState({
             currency: state => state.currency,
             addedJobNum: state => state.addedJobNum,
@@ -195,6 +215,9 @@ export default {
                     +(this.sizes.s2) +
                     +(this.sizes.s3) +
                     +(this.sizes.s4);
+        },
+        perimeterCeil(){
+            return Math.ceil(this.perimeter);
         },
         squareCeiling(){
             return +(this.sizes.s1) * +(this.sizes.s2);
@@ -231,7 +254,19 @@ export default {
                     цена за 1 кв.м.: ${this.price} ${this.currency}`,
             };
         },
+        heightRapport(){
+            return (+this.height + +this.rapport);
+        },
 
+        rolls(){
+            return (this.perimeterCeil * this.heightRapport) / this.oneRollMeters ;
+        },
+
+        glue(){
+            const name = 'Спец Флизелин (франция), 300 г., 40 м.кв.';
+            const count = Math.ceil(this.rolls / 2);
+            return {name, count}
+        },
     },
 
     mounted() {

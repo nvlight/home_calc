@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-3">
+    <div v-if="roomJobsSum" class="mt-3">
         <span class="text-2xl">Стоимость работ: {{ roomJobsSum }}&nbsp;{{ currency }}</span>
     </div>
 </template>
@@ -11,7 +11,6 @@ export default {
     name: "room-jobs-sum",
     data(){
         return {
-            jobsSummm: 0,
             roomJobsSum: 0,
         }
     },
