@@ -207,7 +207,6 @@ export default {
     components: { BuildingMaterial },
     data(){
         return{
-            currency: "₽",
             isCustomSizes: false,
             room: {},
             customSizes : {
@@ -423,6 +422,7 @@ export default {
     computed:{
         ...mapState({
             addedJobNum: state => state.addedJobNum,
+            currency: state => state.currency,
         }),
 
         bagetSumm() {
