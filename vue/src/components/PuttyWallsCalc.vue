@@ -23,8 +23,6 @@
         </div>
     </div>
 
-
-
     <div class="mt-3 flex items-center">
         <div class="w-7/12">
             <div class="mt-3">
@@ -40,6 +38,17 @@
             </div>
         </div>
     </div>
+
+    <div v-if="this.$store.state.debug" class="mt-3 border-dotted border-2 p-3 border-red-400">
+        <div>{{ windows }}</div>
+        <div>{{ doors }}</div>
+        <div>windowsSquare: {{ windowsSquare }}</div>
+        <div>doorsSquare:   {{ doorsSquare }}</div>
+        <div>fullSquareWalls: {{ fullSquareWalls }}</div>
+    </div>
+
+    <div class="mt-2">Площадь с учетом дверей и окон:</div>
+    <div><span class="font-semibold">{{ ceiledFullSquareWalls }} кв.м. ({{ fullSquareWalls }}) кв.м.</span></div>
 
     <div class="mt-3 w-4/12">
         <div class="mt-2">
@@ -82,6 +91,8 @@ export default {
             decSquareCount: 0,
 
             price: 200,
+            doors: [],
+            windows: [],
         }
     },
     methods:{
@@ -141,8 +152,17 @@ export default {
                 + +this.incSquareCount
                 - +this.decSquareCount
         },
+        fullSquareWalls(){
+            return (+ this.squareWalls
+                    + this.squareToInc + this.squareToDec
+            ).toFixed(2)
+        },
+        ceiledFullSquareWalls(){
+            return Math.ceil( this.fullSquareWalls );
+        },
+
         sum(){
-            return this.squareWalls * this.price;
+            return this.ceiledFullSquareWalls * this.price;
         },
 
         materials(){
@@ -161,9 +181,45 @@ export default {
                     цена за 1 кв.м.: ${this.price} ${this.currency}`,
             };
         },
+
+        windowsSquare(){
+            let s1 = 0;
+            let s2 = 0;
+            let SInc = 0;
+            let SDec = 0;
+            this.windows.forEach(t => {
+                s1 = t.width * t.height * 2;
+                s2 = t.width * t.length;
+                SInc = s1 + s2;
+                SDec = t.height * t.length;
+            });
+            return {SInc, SDec};
+        },
+        doorsSquare(){
+            let s1 = 0;
+            let s2 = 0;
+            let SInc = 0;
+            let SDec = 0;
+            this.doors.forEach(t => {
+                s1 = t.width * t.height * 2;
+                s2 = t.width * t.length;
+                SInc = s1 + s2;
+                SDec = t.height * t.length;
+            });
+            return {SInc, SDec};
+        },
+        squareToInc(){
+            return +this.windowsSquare.SInc +this.doorsSquare.SInc
+        },
+        squareToDec(){
+            return -(+this.windowsSquare.SDec) + (-+this.doorsSquare.SDec);
+        },
+
     },
     mounted() {
         this.setDefaultRoomSizesHandler();
+        this.doors   = Object.assign([], this.room.doors);
+        this.windows = Object.assign([], this.room.windows);
     }
 }
 </script>

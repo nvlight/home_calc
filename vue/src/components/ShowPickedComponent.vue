@@ -47,10 +47,6 @@
         <putty-walls-calc :room="room"></putty-walls-calc>
     </div>
 
-    <div v-else-if="Boolean(currentPickedJob) !== false">
-        <mg-grid-icon-button @click="addCalcedJob">Добавить</mg-grid-icon-button>
-    </div>
-
 </template>
 
 <script>
@@ -80,12 +76,8 @@ export default {
         }
     },
     methods:{
-        addCalcedJob(){
-
-        },
     },
     computed:{
-
     }
 }
 </script>
