@@ -39,6 +39,20 @@
         </ceilingpaper-calc>
     </div>
 
+    <div v-else-if="currentPickedJob == 4">
+        <putty-ceiling-calc
+            :currentPickedJob="currentPickedJob"
+            :room="room">
+        </putty-ceiling-calc>
+    </div>
+
+    <div v-else-if="currentPickedJob == 5">
+        <putty-walls-calc
+            :currentPickedJob="currentPickedJob"
+            :room="room">
+        </putty-walls-calc>
+    </div>
+
     <div v-else-if="Boolean(currentPickedJob) !== false">
         <mg-grid-icon-button @click="addCalcedJob">Добавить</mg-grid-icon-button>
     </div>
@@ -53,10 +67,13 @@ import DoorstepCalc from "./DoorstepCalc.vue";
 import BaseboardsCalc from "./BaseboardsCalc.vue";
 import WallpaperCalc from "./WallpaperCalc.vue";
 import CeilingpaperCalc from "./CeilingpaperCalc.vue";
+import PuttyCeilingCalc from "./PuttyCeilingCalc.vue";
+import PuttyWallsCalc from "./PuttyWallsCalc.vue";
 
 export default {
     name: "show-picked-component",
     components: { CeilingCalc, LaminateCalc, DoorstepCalc, BaseboardsCalc, WallpaperCalc, CeilingpaperCalc,
+        PuttyCeilingCalc, PuttyWallsCalc,
     },
     props: {
         currentPickedJob: {

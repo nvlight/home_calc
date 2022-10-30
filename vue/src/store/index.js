@@ -16,7 +16,7 @@ const store = createStore({
         addedJobNum: 0,
         addedJobs: [],
         currentRoomJobsSum: 0,
-        currentPickedJob: 6,
+        currentPickedJob: 0,
 
         buildingMaterials: [
             {
@@ -186,6 +186,10 @@ const store = createStore({
         incValueToJobsResultingSum({commit}, sum){
             return commit('incValueToJobsResultingSum', sum);
         },
+
+        setCurrentPickedJob({commit}, id){
+            return commit('setCurrentPickedJob', id);
+        }
     },
     mutations:{
         addMaterial(state, material){
@@ -228,6 +232,11 @@ const store = createStore({
                 t => t.id != job_id
             );
         },
+
+        setCurrentPickedJob: (state, id) => {
+            state.currentPickedJob = +id;
+            sessionStorage.setItem('currentPickedJob', state.currentPickedJob);
+        }
     },
     modules:{
 

@@ -293,12 +293,12 @@
     </div>
 
     <!-- Шаг 2. Выбор и добавление работ -->
-    <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
+    <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-2 lg:px-2">
         <div class="max-w-md w-full space-y-2">
             <h1 class="font-light text-xl text-center">Шаг 2. Выбор и добавление работ</h1>
 
             <label for="job_type" class="block text-sm font-medium text-gray-700">Наименование работы</label>
-            <select v-model="currentPickedJob" @change="jobTypeChanged" v-if="work_types?.length" id="job_type" name="job_type" autocomplete="job name"
+            <select v-model="currentPickedJob" @change="setCurrentPickedJob(currentPickedJob)" v-if="work_types?.length" id="job_type" name="job_type" autocomplete="job name"
                     class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
                     sm:text-sm mb-3"
             >
@@ -309,7 +309,8 @@
                     class="text-1xl"
                 >{{wt.id}}.  {{wt.title}}<span class="font-semibold"></span></option>
             </select>
-            <div v-if="this.$store.state.debug" class="border-dotted border-2 p-3 border-red-400">
+
+            <div v-if="$store.state.debug" class="border-dotted border-2 p-3 border-red-400">
                 currentPickedJob: {{(currentPickedJob)}} {{Boolean(currentPickedJob)}}
             </div>
 
@@ -366,7 +367,7 @@ export default {
     ],
     data(){
         return {
-            currentPickedJob: 1,
+            currentPickedJob: 0,
             work_types: [
                 {
                     id: 1,
@@ -454,6 +455,7 @@ export default {
     methods: {
         ...mapActions({
             deleteJob: 'deleteJobHandler',
+            setCurrentPickedJob: 'setCurrentPickedJob',
         }),
         isSimpleSidesCountingChange(){
             this.room.isSimpleSidesCounting = !(this.room.isSimpleSidesCounting);
@@ -679,8 +681,10 @@ export default {
         this.updatePerimeterAndSquares();
     },
     mounted() {
-        //this.currentPickedJob = 12;
-        this.currentPickedJob = this.currPickedJob;
+
+        if (sessionStorage.getItem('currentPickedJob')){
+            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
+        }
     },
 }
 </script>
