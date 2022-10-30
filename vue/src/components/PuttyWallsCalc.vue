@@ -1,5 +1,5 @@
 <template>
-    <h3>PuttyWallsCalc</h3>
+    <h3 class="text-center text-xl font-semibold">Подсчет гипсокартона, стены</h3>
 </template>
 
 <script>
