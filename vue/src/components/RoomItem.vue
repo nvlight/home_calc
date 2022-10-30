@@ -307,7 +307,7 @@
                     :key="index"
                     :value="wt.id"
                     class="text-1xl"
-                >{{wt.id}}.  {{wt.title}} - от {{wt.cost}}&nbsp;<span class="font-semibold">₽</span></option>
+                >{{wt.id}}.  {{wt.title}}<span class="font-semibold"></span></option>
             </select>
             <div v-if="this.$store.state.debug" class="border-dotted border-2 p-3 border-red-400">
                 currentPickedJob: {{(currentPickedJob)}} {{Boolean(currentPickedJob)}}
@@ -414,20 +414,10 @@ export default {
                 {
                     id: 6,
                     title: "Обои поклейка (потолок)",
-                    description: '',
-                    cost: 250,
                 },
                 {
                     id: 7,
-                    title: "Обои поклейка (все стены)",
-                    description: '',
-                    cost: 200,
-                },
-                {
-                    id: 14,
-                    title: "Обои, поклейка",
-                    description: '',
-                    cost: 200,
+                    title: "Обои, поклейка (стены)",
                 },
                 {
                     id: 10,

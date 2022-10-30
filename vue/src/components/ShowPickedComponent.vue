@@ -25,11 +25,18 @@
         </baseboards-calc>
     </div>
 
-    <div v-else-if="currentPickedJob == 14">
+    <div v-else-if="currentPickedJob == 7">
         <wallpaper-calc
             :currentPickedJob="currentPickedJob"
             :room="room">
         </wallpaper-calc>
+    </div>
+
+    <div v-else-if="currentPickedJob == 6">
+        <ceilingpaper-calc
+            :currentPickedJob="currentPickedJob"
+            :room="room">
+        </ceilingpaper-calc>
     </div>
 
     <div v-else-if="Boolean(currentPickedJob) !== false">
@@ -45,10 +52,12 @@ import LaminateCalc from "./LaminateCalc.vue";
 import DoorstepCalc from "./DoorstepCalc.vue";
 import BaseboardsCalc from "./BaseboardsCalc.vue";
 import WallpaperCalc from "./WallpaperCalc.vue";
+import CeilingpaperCalc from "./CeilingpaperCalc.vue";
 
 export default {
     name: "show-picked-component",
-    components: { CeilingCalc, LaminateCalc, DoorstepCalc, BaseboardsCalc, WallpaperCalc},
+    components: { CeilingCalc, LaminateCalc, DoorstepCalc, BaseboardsCalc, WallpaperCalc, CeilingpaperCalc,
+    },
     props: {
         currentPickedJob: {
             type: Number,

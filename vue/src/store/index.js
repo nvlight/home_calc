@@ -16,7 +16,7 @@ const store = createStore({
         addedJobNum: 0,
         addedJobs: [],
         currentRoomJobsSum: 0,
-        currentPickedJob: 14,
+        currentPickedJob: 6,
 
         buildingMaterials: [
             {
@@ -229,7 +229,9 @@ const store = createStore({
             );
         },
     },
-    modules:{},
+    modules:{
+
+    },
 })
 
 export default store;

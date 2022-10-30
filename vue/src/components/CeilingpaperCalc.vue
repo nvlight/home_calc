@@ -1,5 +1,5 @@
 <template>
-    <h3 class="text-center text-xl font-semibold">Подсчет обоев, стены</h3>
+    <h3 class="text-center text-xl font-semibold">Подсчет обоев, потолок</h3>
 
     <div>
         <mg-button @click="setDefaultRoomSizesHandler">установить размеры комнаты по умолчанию</mg-button>
@@ -18,26 +18,27 @@
         <div class="mr-2">
             <mg-input-labeled v-model="sizes.s4" :placeholder="'кв.м.'">Сторона 4</mg-input-labeled>
         </div>
-        <div class="mr-2">
-            <mg-input-labeled v-model="height"   :placeholder="'кв.м.'">Высота</mg-input-labeled>
+    </div>
+
+    <div class="mt-3 flex items-center">
+        <div class="w-7/12">
+            <div>Длина: <span>{{perimeter}} м.</span></div>
+            <div>Ширина: <span>{{height}} м.</span></div>
+            <div>Площадь: <span>{{squareCeiling}} кв.м.</span></div>
+            <div class="mt-2" v-if="squareCeiling !== resulCeilingSquare">Площадь (общая): {{ resulCeilingSquare }} кв.м.
+                <br>с учетом +/-
+            </div>
+        </div>
+        <div class="w-5/12">
+            <div class="mt-2">
+                <mg-input-labeled :modelValue="incSquareCount" @input="incSquareCount = $event.target.value"
+                                  :placeholder="'кв.м.'">Прибавить кв.м.</mg-input-labeled>
+                <mg-input-labeled v-model="decSquareCount" :placeholder="'кв.м.'">Убавить кв.м.</mg-input-labeled>
+            </div>
         </div>
     </div>
 
     <div class="mt-3">
-        <div>Периметр: <span>{{perimeter}} м.</span></div>
-        <div>Площадь потолка: <span>{{squareCeiling}} кв.м.</span></div>
-        <div>Площадь пола: <span>{{squareFloor}} кв.м.</span></div>
-        <div>Площадь стен: <span>{{squareWalls}} кв.м.</span></div>
-    </div>
-
-    <div class="mt-2 flex justify-between">
-        <mg-input-labeled :modelValue="incSquareCount" @input="incSquareCount = $event.target.value"
-                          :placeholder="'кв.м.'">Прибавить кв.м.</mg-input-labeled>
-        <mg-input-labeled v-model="decSquareCount" :placeholder="'кв.м.'">Убавить кв.м.</mg-input-labeled>
-    </div>
-
-    <div class="mt-3">
-        <div>Площадь стен общая: <strong>{{resultWallsSquare}}</strong> кв.м.</div>
         <div class="mt-2">
             <mg-input-labeled v-model="price" :placeholder="'кв.м.'">сумма за 1 кв.м.</mg-input-labeled>
         </div>
@@ -68,9 +69,9 @@
     <div class="mt-2 flex justify-between">
         <span>Обоев (рулонов) к покупке:</span>
         <div>
-            <span class="font-semibold">{{Math.ceil(rolls)}}</span>
-            <template v-if="rolls !== Math.ceil(rolls)">
-                (<span class="font-semibold">{{rolls}}</span>)
+            <span class="font-semibold">{{ ceilingRolls }}</span>
+            <template v-if="rolls !== ceilingRolls">
+                (<span class="font-semibold">{{ rolls }}</span>)
             </template>
         </div>
     </div>
@@ -87,7 +88,7 @@ import {mapState, mapActions,} from 'vuex'
 import MaterialsForBuyBlock from "./additional/MaterialsForBuyBlock.vue";
 
 export default {
-    name: "wallpaper-calc",
+    name: "ceilingpaper-calc",
     components: { MaterialsForBuyBlock
     },
     props: {
@@ -109,14 +110,13 @@ export default {
                 s3: 0,
                 s4: 0,
             },
-            height: 2.3,
 
             incSquareCount: 0,
             decSquareCount: 0,
 
-            price: 200,
+            price: 250,
             rapport: 0,
-            oneRollMeters: 10,
+            oneRollMeters: 30,
         }
     },
 
@@ -132,14 +132,13 @@ export default {
         },
         setDefaultRoomSizes(){
             this.sizes = Object.assign({}, this.room.sizes);
-            this.height = this.room.height;
         },
 
         addCalcedWallpapers(){
             this.incrementAddedJobNum();
 
             let tmp_job = {}
-            tmp_job.title = "Обои, наклейка, стены" + ` (id=${this.currentPickedJob})`;
+            tmp_job.title = "Обои, наклейка, потолок" + ` (id=${this.currentPickedJob})`;
             tmp_job.id = this.addedJobNum;
             tmp_job.room_id = this.room.id;
             tmp_job.job_id = this.currentPickedJob;
@@ -160,46 +159,38 @@ export default {
             addedJobNum: state => state.addedJobNum,
         }),
         perimeter(){
-            return +(this.sizes.s1) +
-                    +(this.sizes.s2) +
-                    +(this.sizes.s3) +
-                    +(this.sizes.s4);
+            return Math.max(+(this.sizes.s1), +(this.sizes.s3));
         },
         perimeterCeil(){
             return Math.ceil(this.perimeter);
         },
+        height(){
+            return Math.max(+(this.sizes.s2), +(this.sizes.s4));
+        },
         squareCeiling(){
             return +(this.sizes.s1) * +(this.sizes.s2);
         },
-        squareFloor(){
-            return +(this.sizes.s1) * +(this.sizes.s2);
-        },
-        squareWalls(){
-            // бизнес-требование, площадь стен нужно округлять вверх!
-            return Math.ceil(+this.perimeter * +this.height);
-        },
-        resultWallsSquare(){
-            return this.squareWalls
+        resulCeilingSquare(){
+            return this.squareCeiling
                 + +this.incSquareCount
                 - +this.decSquareCount
         },
         sum(){
-            return this.resultWallsSquare * this.price;
+            return this.resulCeilingSquare * this.price;
         },
 
         materials(){
             const arr = [];
-            arr.push({
-                title: 'Обои',
-                description: this.resultWallsSquare + ' кв.м.',
-            },)
+            arr.push(
+                //{title: 'Обои', description: this.squareCeiling + ' кв.м.'},
+            )
             return arr;
         },
         totalAmount() {
             return {
                 price: this.sum,
                 adding_job_info_string:
-                    `Квадратура: ${this.resultWallsSquare} м.кв.,
+                    `Квадратура: ${this.squareCeiling} м.кв.,
                     цена за 1 кв.м.: ${this.price} ${this.currency}`,
             };
         },
@@ -210,10 +201,13 @@ export default {
         rolls(){
             return (this.perimeterCeil * this.heightRapport) / this.oneRollMeters ;
         },
+        ceilingRolls(){
+            return Math.ceil(this.rolls);
+        },
 
         glue(){
             const name = 'Спец Флизелин (франция), 300 г., 40 м.кв.';
-            const count = Math.ceil(this.rolls / 2);
+            const count = Math.ceil(this.rolls * 2);
             return {name, count}
         },
     },
