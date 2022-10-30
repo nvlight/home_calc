@@ -159,6 +159,7 @@ export default {
             currency: state => state.currency,
             addedJobNum: state => state.addedJobNum,
         }),
+
         perimeter(){
             return +(this.sizes.s1) +
                     +(this.sizes.s2) +

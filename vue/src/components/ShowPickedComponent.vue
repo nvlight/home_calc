@@ -40,17 +40,11 @@
     </div>
 
     <div v-else-if="currentPickedJob == 4">
-        <putty-ceiling-calc
-            :currentPickedJob="currentPickedJob"
-            :room="room">
-        </putty-ceiling-calc>
+        <putty-ceiling-calc :room="room"></putty-ceiling-calc>
     </div>
 
     <div v-else-if="currentPickedJob == 5">
-        <putty-walls-calc
-            :currentPickedJob="currentPickedJob"
-            :room="room">
-        </putty-walls-calc>
+        <putty-walls-calc :room="room"></putty-walls-calc>
     </div>
 
     <div v-else-if="Boolean(currentPickedJob) !== false">

@@ -56,10 +56,6 @@ export default {
             type: Object,
             required: true,
         },
-        'currentPickedJob':{
-            type: Number,
-            required: true,
-        }
     },
     data(){
         return {
@@ -111,6 +107,7 @@ export default {
         ...mapState({
             currency: state => state.currency,
             addedJobNum: state => state.addedJobNum,
+            currentPickedJob: state => state.currentPickedJob,
         }),
 
         length(){
