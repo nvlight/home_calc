@@ -389,17 +389,10 @@ export default {
                 },
                 {
                     id: 2,
-                    title: "Карнизы - установка",
+                    title: "Карнизы",
                     description: '',
                     cost: 75,
                 },
-                {
-                    id: 3,
-                    title: "Карнизы - покраска",
-                    description: '',
-                    cost: 75,
-                },
-
                 {
                     id: 4,
                     title: "Шпатлевка под обои (потолок)",

@@ -47,6 +47,10 @@
         <putty-walls-calc :room="room"></putty-walls-calc>
     </div>
 
+    <div v-else-if="currentPickedJob == 2">
+        <cornice-calc :defaultPerimeter="room.perimeter"></cornice-calc>
+    </div>
+
 </template>
 
 <script>
@@ -59,11 +63,12 @@ import WallpaperCalc from "./WallpaperCalc.vue";
 import CeilingpaperCalc from "./CeilingpaperCalc.vue";
 import PuttyCeilingCalc from "./PuttyCeilingCalc.vue";
 import PuttyWallsCalc from "./PuttyWallsCalc.vue";
+import CorniceCalc from "./CorniceCalc.vue";
 
 export default {
     name: "show-picked-component",
     components: { CeilingCalc, LaminateCalc, DoorstepCalc, BaseboardsCalc, WallpaperCalc, CeilingpaperCalc,
-        PuttyCeilingCalc, PuttyWallsCalc,
+        PuttyCeilingCalc, PuttyWallsCalc, CorniceCalc,
     },
     props: {
         currentPickedJob: {
