@@ -32,21 +32,34 @@
         </div>
     </div>
 
+    <div class="mt-2">
+        <mg-checkbox v-model="select" :options="options"></mg-checkbox>
+    </div>
+
     <div class="mt-2 ">
         <span class="font-normal">Общая сумма: </span>
         <span class="font-semibold">{{sum}} {{currency}}</span>
     </div>
 
+    <mg-button @click="addCalcedCornices">Добавить сумму</mg-button>
+
 </template>
 
 <script>
 import {mapState, mapActions} from "vuex";
+import MgCheckbox from "./UI/MgCheckbox.vue";
 
 export default {
     name: 'cornice-calc',
+    components: {MgCheckbox},
+
     props: {
         'defaultPerimeter': {
             type: [Number, String],
+            required: true,
+        },
+        'room':{
+            type: [Object],
             required: true,
         },
     },
@@ -61,6 +74,16 @@ export default {
 
             priceInstallation: 70,
             pricePainting: 80,
+            currentPickedJob: 0,
+
+            toggle:[],
+            isInstallation: true,
+            isPainting: true,
+            options: [
+                { value: 1, name: 'установка', },
+                { value: 2, name: 'покраска',  selected: true,  },
+            ],
+            select: [],
         }
     },
     methods: {
@@ -72,13 +95,27 @@ export default {
 
         setDefaultPerimeter(){
             this.perimeter = this.defaultPerimeter;
-        }
+        },
+
+        addCalcedCornices(){
+            this.incrementAddedJobNum();
+
+            let tmp_job = {}
+            tmp_job.title = `${this.title} (id=${this.currentPickedJob})`;
+            tmp_job.id = this.addedJobNum;
+            tmp_job.room_id = this.room.id;
+            tmp_job.job_id = this.currentPickedJob;
+            tmp_job.sum = this.totalAmount.price;
+            tmp_job.adding_job_info_string = this.totalAmount.adding_job_info_string;
+
+            this.incValueToJobsResultingSum(tmp_job.sum);
+            this.addJob(tmp_job);
+        },
     },
     computed:{
         ...mapState({
             currency: state => state.currency,
             addedJobNum: state => state.addedJobNum,
-            currentPickedJob: state => state.currentPickedJob,
         }),
 
         changedPerimeter(){
@@ -93,15 +130,38 @@ export default {
         },
 
         sum(){
-            return this.sumPriceInstallation + this.sumPricePainting;
+            let s = 0;
+
+            if (this.select.includes(1)){
+                s += this.sumPriceInstallation;
+            }
+            if (this.select.includes(2)){
+                s += this.sumPricePainting;
+            }
+
+            return s;
+        },
+
+        totalAmount() {
+            return {
+                price: this.sum,
+                adding_job_info_string:
+                    `Периметр: ${this.changedPerimeter} м.,
+                    установка, цена за 1 м.: ${this.priceInstallation} ${this.currency}
+                     покраска, цена за 1 м.: ${this.pricePainting} ${this.currency}`,
+            };
         },
     },
     mounted() {
         this.setDefaultPerimeter();
-    }
+
+        if (sessionStorage.getItem('currentPickedJob')){
+            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
+        }
+    },
+
 }
 </script>
 
 <style scoped>
-
 </style>

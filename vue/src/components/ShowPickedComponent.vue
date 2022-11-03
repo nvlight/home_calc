@@ -48,7 +48,9 @@
     </div>
 
     <div v-else-if="currentPickedJob == 2">
-        <cornice-calc :defaultPerimeter="room.perimeter"></cornice-calc>
+        <cornice-calc :defaultPerimeter="room.perimeter"
+          :room="room"
+        ></cornice-calc>
     </div>
 
 </template>
