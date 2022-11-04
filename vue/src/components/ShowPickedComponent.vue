@@ -53,6 +53,10 @@
         ></cornice-calc>
     </div>
 
+    <div v-else-if="currentPickedJob == 9">
+        <drywall-calc :room="room"></drywall-calc>
+    </div>
+
 </template>
 
 <script>
@@ -66,11 +70,12 @@ import CeilingpaperCalc from "./CeilingpaperCalc.vue";
 import PuttyCeilingCalc from "./PuttyCeilingCalc.vue";
 import PuttyWallsCalc from "./PuttyWallsCalc.vue";
 import CorniceCalc from "./CorniceCalc.vue";
+import DrywallCalc from "./calc/DrywallCalc.vue";
 
 export default {
     name: "show-picked-component",
     components: { CeilingCalc, LaminateCalc, DoorstepCalc, BaseboardsCalc, WallpaperCalc, CeilingpaperCalc,
-        PuttyCeilingCalc, PuttyWallsCalc, CorniceCalc,
+        PuttyCeilingCalc, PuttyWallsCalc, CorniceCalc, DrywallCalc,
     },
     props: {
         currentPickedJob: {

@@ -77,7 +77,7 @@ export default {
     },
     data(){
         return {
-            title: 'Подсчет гипсокартона, стены',
+            title: 'Шпатлевка, стены',
 
             sizes: {
                 s1: 0,

@@ -59,7 +59,7 @@ export default {
     },
     data(){
         return {
-            title: 'Подсчет гипсокартона, потолок',
+            title: 'Шпатлевка, потолок',
 
             sizes: {
                 s1: 0,
