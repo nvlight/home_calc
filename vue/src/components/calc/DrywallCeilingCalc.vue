@@ -2,24 +2,15 @@
     <h3 class="text-center text-xl font-semibold">{{ title }}</h3>
 
     <div>
-        <mg-button @click="setDefaultRoomSizesHandler">установить размеры комнаты по умолчанию</mg-button>
+        <mg-button @click="setDefaultActionsHandler">установить размеры комнаты по умолчанию</mg-button>
     </div>
 
-    <div class="rounded-md shadow-sm flex mt-2">
+    <div class="rounded-md shadow-sm flex mt-2 justify-between">
         <div class="mr-2">
-            <mg-input-labeled v-model="sizes.s1" :placeholder="'кв.м.'">Сторона 1</mg-input-labeled>
+            <mg-input-labeled v-model="length" :placeholder="'кв.м.'">Длина</mg-input-labeled>
         </div>
         <div class="mr-2">
-            <mg-input-labeled v-model="sizes.s2" :placeholder="'кв.м.'">Сторона 2</mg-input-labeled>
-        </div>
-        <div class="mr-2">
-            <mg-input-labeled v-model="sizes.s3" :placeholder="'кв.м.'">Сторона 3</mg-input-labeled>
-        </div>
-        <div class="mr-2">
-            <mg-input-labeled v-model="sizes.s4" :placeholder="'кв.м.'">Сторона 4</mg-input-labeled>
-        </div>
-        <div class="mr-2">
-            <mg-input-labeled v-model="height"   :placeholder="'кв.м.'">Высота</mg-input-labeled>
+            <mg-input-labeled v-model="width" :placeholder="'кв.м.'">Ширина</mg-input-labeled>
         </div>
     </div>
 
@@ -27,7 +18,7 @@
         <div class="w-7/12">
             <div class="mt-3">
                 <div>Периметр: <span class="font-semibold">{{perimeter}} м.</span></div>
-                <div>Площадь стен: <span class="font-semibold">{{squareWalls}} кв.м.</span></div>
+                <div>Площадь потолка: <span class="font-semibold">{{ceiledfullSquareCeiling}} кв.м. ({{fullSquareCeiling}})</span></div>
             </div>
         </div>
         <div class="w-5/12">
@@ -38,17 +29,6 @@
             </div>
         </div>
     </div>
-
-    <div v-if="this.$store.state.debug" class="mt-3 border-dotted border-2 p-3 border-red-400">
-        <div>{{ windows }}</div>
-        <div>{{ doors }}</div>
-        <div>windowsSquare: {{ windowsSquare }}</div>
-        <div>doorsSquare:   {{ doorsSquare }}</div>
-        <div>fullSquareWalls: {{ fullSquareWalls }}</div>
-    </div>
-
-    <div class="mt-2">Площадь с учетом дверей и окон:</div>
-    <div><span class="font-semibold">{{ ceiledFullSquareWalls }} кв.м. ({{ fullSquareWalls }}) кв.м.</span></div>
 
     <div class="mt-3 w-4/12">
         <div class="mt-2">
@@ -84,7 +64,7 @@ import {mapState, mapActions} from "vuex";
 import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
 
 export default {
-    name: 'drywall-calc',
+    name: 'drywall-ceiling-calc',
     components: {
         MaterialsForBuyBlock,
     },
@@ -96,24 +76,17 @@ export default {
     },
     data(){
         return {
-            title: 'Гипсокартон, стены',
+            title: 'Гипсокартон, потолок',
 
-            sizes: {
-                s1: 0,
-                s2: 0,
-                s3: 0,
-                s4: 0,
-            },
-            height: 2.3,
+            length: 0,
+            width: 0,
 
             incSquareCount: 0,
             decSquareCount: 0,
 
             price: 200,
-            doors: [],
-            windows: [],
 
-            profileStep: 0.6,
+            profileStep: 0.4,
             suspensionStep: 0.5,
 
             fasteners: {
@@ -122,6 +95,7 @@ export default {
                 semechki: 0,
                 samor35sm_metall: 0,
             },
+
 
             currentPickedJob: 0,
         }
@@ -133,11 +107,9 @@ export default {
             addJob: 'addJob',
         }),
 
-        setDefaultRoomSizesHandler(){
-            this.setDefaultRoomSizes();
-        },
-        setDefaultRoomSizes(){
-            this.sizes = Object.assign({}, this.room.sizes);
+        setDefaultActionsHandler(){
+            this.length = Math.max(this.room.sizes.s1, this.room.sizes.s3);
+            this.width  = Math.max(this.room.sizes.s2, this.room.sizes.s4);
         },
 
         createJob(){
@@ -167,37 +139,26 @@ export default {
         }),
 
         perimeter(){
-            return +(this.sizes.s1) +
-                +(this.sizes.s2) +
-                +(this.sizes.s3) +
-                +(this.sizes.s4);
+            return (+(this.width) + +(this.length)) * 2;
+        },
+        square(){
+            return (+(this.width) *+ +(this.length));
         },
         perimeterCeil(){
             return Math.ceil(this.perimeter);
         },
-        squareCeiling(){
-            return +(this.sizes.s1) * +(this.sizes.s2);
-        },
-        squareFloor(){
-            return +(this.sizes.s1) * +(this.sizes.s2);
-        },
-        squareWalls(){
-            // бизнес-требование, площадь стен нужно округлять вверх!
-            return Math.ceil(+this.perimeter * +this.height)
-                + +this.incSquareCount
-                - +this.decSquareCount
-        },
-        fullSquareWalls(){
-            return (+ this.squareWalls
+
+        fullSquareCeiling(){
+            return (+ this.square
                     + this.squareToInc + this.squareToDec
             ).toFixed(2)
         },
-        ceiledFullSquareWalls(){
-            return Math.ceil( this.fullSquareWalls );
+        ceiledfullSquareCeiling(){
+            return Math.ceil( this.fullSquareCeiling );
         },
 
         sum(){
-            return this.ceiledFullSquareWalls * this.price;
+            return this.ceiledfullSquareCeiling * this.price;
         },
 
         materials(){
@@ -206,7 +167,7 @@ export default {
             arr.push(
             {
                 id: 12593034,
-                title: 'Гипсокартон 12.5 мм 2500х1200 3 м²',
+                title: 'Гипсокартон 9.5 мм 2500х1200 3 м²',
                 amount: this.driwallListCountCeiled + ' (' + this.driwallListCount + ')',
                 unit_name: 'листов',
                 description: 'Гипсокартон предназначен для внутренней отделки и декорирования отапливаемых помещений с сухим и нормальным влажностными режимами. Материал используется для облицовки стен, потолка и возведения перегородок в сухих помещениях, так же гипсокартон используют для создания декоративный элементов - встроенные ниши с полками, арки в помещениях. Это безопасный для здоровья материал, к преимуществам гипсокартона относится так же легкость возведения конструкции. Для крепления тяжёлых элементов на стену из гипсокартона следует использовать дополнительные армирующие элементы – профиль и дюбель для гипсокартона.',
@@ -276,61 +237,28 @@ export default {
             return {
                 price: this.sum,
                 adding_job_info_string:
-                    `Квадратура: ${this.ceiledFullSquareWalls} м.кв.,
+                    `Квадратура: ${this.fullSquareCeiling} м.кв.,
                     цена за 1 кв.м.: ${this.price} ${this.currency}`,
             };
         },
 
-        windowsSquare(){
-            let s1 = 0;
-            let s2 = 0;
-            let SInc = 0;
-            let SDec = 0;
-            this.windows.forEach(t => {
-                s1 = t.width * t.height * 2;
-                s2 = t.width * t.length;
-                SInc = s1 + s2;
-                SDec = t.height * t.length;
-            });
-            return {SInc, SDec};
-        },
-        doorsSquare(){
-            let s1 = 0;
-            let s2 = 0;
-            let SInc = 0;
-            let SDec = 0;
-            this.doors.forEach(t => {
-                s1 = t.width * t.height * 2;
-                s2 = t.width * t.length;
-                SInc = s1 + s2;
-                SDec = t.height * t.length;
-            });
-            return {SInc, SDec};
-        },
         squareToInc(){
-            return +this.windowsSquare.SInc +this.doorsSquare.SInc
+            return +this.incSquareCount
         },
         squareToDec(){
-            return -(+this.windowsSquare.SDec) + (-+this.doorsSquare.SDec);
+            return -(+this.decSquareCount);
         },
+
         profileGuide(){ // профиль направляющий
-            const p1 = (+this.sizes.s1 + +this.height) * 2;
-            const p2 = (+this.sizes.s2 + +this.height) * 2;
-            const p3 = (+this.sizes.s3 + +this.height) * 2;
-            const p4 = (+this.sizes.s4 + +this.height) * 2;
-            const sum = Math.ceil(p1 + p2 + p3 + p4);
-            return sum;
+            return (+this.width + +this.length) * 2;
         },
         profileGuideUnits(){
             return Math.ceil(this.profileGuide / 3);
         },
         profileCeiling(){ // профиль потолочный
             const additionalProfile = 1;
-            const p1 = (Math.ceil(+this.sizes.s1 / +this.profileStep) - additionalProfile) * +this.height;
-            const p2 = (Math.ceil(+this.sizes.s2 / +this.profileStep) - additionalProfile) * +this.height;
-            const p3 = (Math.ceil(+this.sizes.s3 / +this.profileStep) - additionalProfile) * +this.height;
-            const p4 = (Math.ceil(+this.sizes.s4 / +this.profileStep) - additionalProfile) * +this.height;
-            const sum = Math.ceil(p1 + p2 + p3 + p4);
+            const p1 = (Math.ceil(+this.length / +this.profileStep) - additionalProfile) * +this.width;
+            const sum = Math.ceil(p1);
             return sum;
         },
         profileCeilingUnits(){
@@ -362,18 +290,16 @@ export default {
         driwallListCount(){
             const additionalListCount = 0;
             // ! экономить не будем да, целый лист чтобы иметь резерв!
-            return ((this.fullSquareWalls / 3) + additionalListCount).toFixed(2);
+            return ((this.fullSquareCeiling / 3) + additionalListCount).toFixed(2);
         },
         driwallListCountCeiled(){
-            //amount: Math.ceil(this.ceiledFullSquareWalls / 3) + 1, // ! экономить не будем да, целый лист чтобы иметь резерв!
             const additionalListCount = 0;
-            return Math.ceil(this.fullSquareWalls / 3) + additionalListCount;
+            // ! экономить не будем да, целый лист чтобы иметь резерв!
+            return Math.ceil(this.fullSquareCeiling / 3) + additionalListCount;
         },
     },
     mounted() {
-        this.setDefaultRoomSizesHandler();
-        this.doors   = Object.assign([], this.room.doors);
-        this.windows = Object.assign([], this.room.windows);
+        this.setDefaultActionsHandler();
 
         if (sessionStorage.getItem('currentPickedJob')){
             this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
