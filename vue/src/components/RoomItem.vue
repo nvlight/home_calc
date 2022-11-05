@@ -1,8 +1,5 @@
 <template>
     <!-- Шаг 1. Введите размеры комнаты -->
-    <div>
-
-    </div>
     <div class="min-h-full flex items-center justify-start pt-4 pb-2 px-2 sm:px-2 lg:px-2">
         <div class="max-w-md w-full space-y-2">
 
@@ -394,20 +391,20 @@ export default {
         }),
 
         perimeter(){
-            return +this.room.sizes.s1 +
-                   +this.room.sizes.s2 +
-                   +this.room.sizes.s3 +
-                   +this.room.sizes.s4
+            return (+this.room.sizes.s1 +
+                    +this.room.sizes.s2 +
+                    +this.room.sizes.s3 +
+                    +this.room.sizes.s4).toFixed(2)
         },
         squareCeiling(){
-            return Math.max(+this.room.sizes.s1, +this.room.sizes.s3) *
-                   Math.max(+this.room.sizes.s2, +this.room.sizes.s4)
+            return (Math.max(+this.room.sizes.s1, +this.room.sizes.s3) *
+                    Math.max(+this.room.sizes.s2, +this.room.sizes.s4)).toFixed(2)
         },
         squareFloor(){
             return this.squareCeiling;
         },
         squareWalls(){
-            return this.perimeter * this.room.height;
+            return (this.perimeter * this.room.height).toFixed(2)
         },
 
     },

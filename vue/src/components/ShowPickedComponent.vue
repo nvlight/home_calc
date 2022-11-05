@@ -1,10 +1,6 @@
 <template>
     <div v-if="currentPickedJob == 1">
-        <CeilingCalc
-            :roomSizes="room.sizes"
-            :currentRoom="room"
-            :currentPickedJob="currentPickedJob">
-        </CeilingCalc>
+        <CeilingCalc :room="room"></CeilingCalc>
     </div>
     <div v-else-if="currentPickedJob == 10">
         <LaminateCalc

@@ -1,9 +1,11 @@
 <template>
+    <h3 class="text-center text-xl font-semibold">{{ title }}</h3>
+
     <div class="border border-dashed border-2 p-3 rounded-xl" >
         <h1 class="text-xl">Выбор типа потолка</h1>
         <div class="description hidden">
             <h3 class="text-xl">В наличии имеются несколько видов потолков:</h3>
-            <ol>
+            <ol class="">
                 <li>Матовые</li>
                 <li>Глянцевые</li>
                 <li>Сатиновые</li>
@@ -32,109 +34,34 @@
             Выбранный элемент select <strong>{{choosedCeiling.selected_id}}</strong>
         </div>
 
-        <div v-if="room.perimeter" class="pt-3">
-            Периметр: <span >{{room.perimeter}} м. ({{Math.ceil(room.perimeter)}} м.)</span>
-        </div>
-        <div v-if="room.square.ceiling" class="pt-3">
-            Площадь потолка: <span >{{room.square.ceiling}} кв.м. ({{Math.ceil(room.square.ceiling)}} кв.м.)</span>
-        </div>
-
-        <div v-if="isCustomSizes">
-            <fieldset>
-                <div class="mt-4 space-y-4">
-                    <div class="flex items-start">
-                        <div class="flex h-5 items-center">
-                            <input id="comments" name="comments" type="checkbox"
-                                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500
-                                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-                                   focus:border"
-                                   @click="toggleCustomSizes"
-                                   checked
-                            >
-                        </div>
-                        <div class="ml-3 text-sm">
-                            <label for="comments" class="font-medium text-gray-700">Запретить кастомные размеры потолка</label>
-                        </div>
-                    </div>
-
-                </div>
-            </fieldset>
-        </div>
-        <div v-else>
-            <fieldset>
-                <div class="mt-4 space-y-4">
-                    <div class="flex items-start">
-                        <div class="flex h-5 items-center">
-                            <input id="comments" name="comments" type="checkbox"
-                                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500
-                                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
-                                   focus:border"
-                                   @click="toggleCustomSizes"
-                                   checked
-                            >
-                        </div>
-                        <div class="ml-3 text-sm">
-                            <label for="comments" class="font-medium text-gray-700">Установить кастомные размеры потолка</label>
-                        </div>
-                    </div>
-
-                </div>
-            </fieldset>
-        </div>
-        <div
-            v-if="isCustomSizes"
-        >
+        <div class="rounded-md shadow-sm flex mt-2">
             <div class="mr-2">
-                <label for="a1" class="">Сторона 1</label>
-                <input
-                    @change="updatePerimeterAndSquares"
-                    id="a1" name="a1" v-model="customSizes.s1" type="text" autocomplete="s1" required
-                       class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                           rounded-b-md rounded-t-md
-                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                       placeholder="Сторона 1">
+                <mg-input-labeled v-model="sizes.s1">Сторона 1</mg-input-labeled>
             </div>
             <div class="mr-2">
-                <label for="a2" class="">Сторона 2</label>
-                <input
-                    @change="updatePerimeterAndSquares"
-                    id="a2" name="a2" v-model="customSizes.s2" type="text" autocomplete="s2" required
-                       class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                           rounded-b-md rounded-t-md
-                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                       placeholder="Сторона 2">
+                <mg-input-labeled v-model="sizes.s2">Сторона 2</mg-input-labeled>
             </div>
             <div class="mr-2">
-                <label for="a3" class="">Сторона 3</label>
-                <input
-                    @change="updatePerimeterAndSquares"
-                    id="a3" name="a3" v-model="customSizes.s3" type="text" autocomplete="s3" required
-                       class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                           rounded-b-md rounded-t-md
-                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                       placeholder="Сторона 3">
+                <mg-input-labeled v-model="sizes.s3">Сторона 3</mg-input-labeled>
             </div>
             <div class="mr-2">
-                <label for="a4" class="">Сторона 4</label>
-                <input
-                    @change="updatePerimeterAndSquares"
-                    id="a4" name="a4" v-model="customSizes.s4" type="text" autocomplete="current-password" required
-                       class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                           rounded-b-md rounded-t-md
-                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                       placeholder="Сторона 4">
+                <mg-input-labeled v-model="sizes.s4">Сторона 4</mg-input-labeled>
             </div>
 
-            <div v-if="room.perimeter" class="pt-3">
-                Периметр: <span >{{room.perimeter}} м. ({{Math.ceil(room.perimeter)}} м.)</span>
+            <div class="mr-2">
+                <mg-input-labeled v-model="room.height">Высота</mg-input-labeled>
             </div>
-            <div v-if="room.square.ceiling" class="pt-3">
-                Площадь потолка: <span >{{room.square.ceiling}} кв.м. ({{Math.ceil(room.square.ceiling)}} кв.м1.)</span>
-            </div>
-
+        </div>
+        <div>
+            <mg-button @click="setDefaultRoomSizesHandler">установить размеры по умолчанию</mg-button>
+        </div>
+        <div class="rooms_calc mt-2">
+            <div>Периметр: <span class="font-semibold">{{perimeter}}</span> м.</div>
+            <div>Площадь потолка: <span class="font-semibold">{{squareCeiling}} </span> кв.м.</div>
         </div>
 
         <hr class="mt-3">
+
         <div class="flex justify-between mt-5">
             Натяжной потолок + установка
             <span>
@@ -168,7 +95,6 @@
                 type="text" v-model="luminaire.count" placeholder="0">
             <strong class="w-1/3 text-right">{{luminaireSumm}} {{ currency }}</strong>
         </div>
-
         <div class="flex justify-between items-center mt-3">
             <span class="w-1/3" >Трубы (шт)</span>
             <input
@@ -203,20 +129,21 @@ import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
     name: 'CeilingCalc',
-    props: ['square', 'perimeter', 'currentRoom', 'currentPickedJob', ],
+    props: ['room'],
     components: { BuildingMaterial },
     data(){
         return{
-            isCustomSizes: false,
-            room: {},
-            customSizes : {
+            title: 'Натяжной потолок',
+
+            currentPickedJob: 0,
+
+            sizes: {
                 s1: 0,
                 s2: 0,
                 s3: 0,
                 s4: 0,
             },
-            customSquare: 0,
-            customPerimeter: 0,
+            height: 2.3,
 
             choosedCeiling: {
                 selected_id: [],
@@ -243,8 +170,6 @@ export default {
                 summ: 0,
             },
             deliveryPrice: 1000,
-            //totalAmount: 0,
-            //this.baget.summ + this.chandeliers.summ + this.luminaire.summ + this.deliveryPrice,
             prices: [
                 {
                     id : 1,
@@ -332,34 +257,20 @@ export default {
             incValueToJobsResultingSum: 'incValueToJobsResultingSum',
         }),
 
-        updatePerimeter() {
-            if (!this.isCustomSizes){
-                this.room.perimeter =
-                    +(this.room.sizes.s1) +
-                    +(this.room.sizes.s2) +
-                    +(this.room.sizes.s3) +
-                    +(this.room.sizes.s4);
-            }else{
-                this.room.perimeter =
-                +(this.customSizes.s1) +
-                +(this.customSizes.s2) +
-                +(this.customSizes.s3) +
-                +(this.customSizes.s4);
-            }
+        getDefaultPerimeter(){
+            return  +this.room.sizes.s1 +
+                    +this.room.sizes.s2 +
+                    +this.room.sizes.s3 +
+                    +this.room.sizes.s4
         },
-        updateSquare(){
-            if (!this.isCustomSizes){
-                this.room.square.ceiling =
-                    +(this.room.sizes.s1) *
-                    +(this.room.sizes.s2);
-                this.room.square.floor = this.room.square.ceiling;
-            }else{
-                this.room.square.ceiling =
-                    +(this.customSizes.s1) *
-                    +(this.customSizes.s2);
-                this.room.square.floor = this.room.square.ceiling;
-            }
+        setDefaultRoomSizesHandler(){
+            this.setDefaultRoomSizes();
         },
+        setDefaultRoomSizes(){
+            this.sizes = Object.assign({}, this.room.sizes);
+            this.baget.count = this.getDefaultPerimeter();
+        },
+
         calcCeil(){
             let ceiling_select_id = this.choosedCeiling.selected_id;
             if (ceiling_select_id.length){
@@ -369,54 +280,38 @@ export default {
                     const item = this.prices[price];
                     if (item.id === index){
                         // бизнес требование - квадратура потолка всегда округляется наверх!
-                        this.choosedCeiling.price = Math.ceil(this.room.square.ceiling) * item.price;
+                        this.choosedCeiling.price = Math.ceil(this.squareCeiling) * item.price;
                     }
                 }
             }
         },
-        updatePerimeterAndSquares(){
-            this.updatePerimeter();
-            this.updateSquare();
-            this.calcCeil();
-        },
 
-        toggleCustomSizes(){
-            this.isCustomSizes = this.isCustomSizes ? false : true;
-
-            if (this.isCustomSizes){
-                this.setCustomSizesFromParent();
-            }
-
-            this.updatePerimeterAndSquares();
-        },
-        setCustomSizesFromParent(){
-            this.customSizes = Object.assign({}, this.room.sizes);
-        },
         addCalcedCeil(){
             if (!this.choosedCeiling.selected_id.length){
                 alert('Сначала выберите потолок!')
                 return;
             }
-            //this.$emit('addCalcedCeiling', this.totalAmount)
-            this.addCalcedSum(this.totalAmount)
+            this.addCalced(this.totalAmount)
         },
 
-        addCalcedSum(res){
+        createJob(){
+            const job = {}
+            job.title = `${this.title} (id=${this.currentPickedJob})`;
+            job.id = this.addedJobNum;
+            job.room_id = this.room.id;
+            job.job_id = this.currentPickedJob;
+            job.sum = this.totalAmount.price;
+            job.adding_job_info_string = this.totalAmount.adding_job_info_string;
+            job.seiling_selected_id = this.totalAmount.seiling_selected_id; // unigue for seiling
+            return job;
+        },
+        addCalced(){
             this.incrementAddedJobNum();
 
-            let tmp_job = {}
-            tmp_job.title = "Натяжной потолок" + ` (id=${this.currentPickedJob})`;
-            tmp_job.id = this.addedJobNum;
-            tmp_job.room_id = this.room.id;
-            tmp_job.job_id = this.currentPickedJob;
-            tmp_job.sum = res.price;
-            tmp_job.adding_job_info_string = res['adding_job_info_string'];
+            const job = this.createJob();
 
-            // todo - а это штука вообще нужна?
-            tmp_job.seiling_selected_id = res.seiling_selected_id;
-
-            this.incValueToJobsResultingSum(tmp_job.sum);
-            this.addJob(tmp_job);
+            this.incValueToJobsResultingSum(job.sum);
+            this.addJob(job);
         },
     },
     computed:{
@@ -424,6 +319,23 @@ export default {
             addedJobNum: state => state.addedJobNum,
             currency: state => state.currency,
         }),
+
+        perimeter(){
+            return (+this.sizes.s1 +
+                    +this.sizes.s2 +
+                    +this.sizes.s3 +
+                    +this.sizes.s4).toFixed(2)
+        },
+        squareCeiling(){
+            return (Math.max(+this.sizes.s1, +this.sizes.s3) *
+                    Math.max(+this.sizes.s2, +this.sizes.s4)).toFixed(2)
+        },
+        squareFloor(){
+            return this.squareCeiling;
+        },
+        squareWalls(){
+            return this.perimeter * this.height;
+        },
 
         bagetSumm() {
             //return this.baget.count * this.baget.price;
@@ -450,7 +362,7 @@ export default {
               price: sum,
               adding_job_info_string:
                 `Сам потолок + установка: ${this.choosedCeiling.price} ${this.currency}
-                (${Math.ceil(this.room.square.ceiling)} кв.м.),
+                (${Math.ceil(this.squareCeiling)} кв.м.),
                 багеты: ${this.bagetSumm} ${this.currency},
                 доставка: ${this.deliveryPrice} ${this.currency}`,
           }
@@ -461,13 +373,14 @@ export default {
     },
     watch:{
     },
-    created(){
-        this.room = Object.assign({}, this.currentRoom);
-        this.baget.count = (this.room.perimeter);
-    },
     beforeMount() {
     },
     mounted() {
+        this.setDefaultRoomSizesHandler();
+
+        if (sessionStorage.getItem('currentPickedJob')){
+            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
+        }
     }
 }
 
