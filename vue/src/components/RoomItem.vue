@@ -1,74 +1,30 @@
 <template>
     <!-- Шаг 1. Введите размеры комнаты -->
+    <div>
+
+    </div>
     <div class="min-h-full flex items-center justify-start pt-4 pb-2 px-2 sm:px-2 lg:px-2">
         <div class="max-w-md w-full space-y-2">
 
             <h1 class="font-semibold text-xl text-center">Комната {{number+1}}</h1>
             <h1 class="font-light text-xl">Шаг 1. Введите размеры комнаты</h1>
 
-            <fieldset>
-                <div class="space-y-4">
-                    <div class="flex items-start">
-                        <div class="flex h-5 items-center">
-                            <input :id="'isSimpleSidesCountingId' + number" name="comments" type="checkbox"
-                                   class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500
-                                   focus:outline-none  focus:ring-offset-2 focus:ring-indigo-500                                   "
-                                   @click="isSimpleSidesCountingChange"
-                                   checked
-                            >
-                        </div>
-                        <div class="ml-3 text-sm">
-                            <label :for="'isSimpleSidesCountingId' + number" class="font-medium text-gray-700">Простой подсчет сторон</label>
-                        </div>
-                    </div>
-
-                </div>
-            </fieldset>
-
             <div class="rounded-md shadow-sm flex">
                 <div class="mr-2">
-                    <label for="s1" class="">Сторона 1</label>
-                    <input @change="updatePerimeterAndSquares" id="s1" name="s1" v-model="room.sizes.s1" type="text" autocomplete="s1" required
-                           class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                           rounded-b-md rounded-t-md
-                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                           placeholder="Сторона 1">
+                    <mg-input-labeled v-model="room.sizes.s1">Сторона 1</mg-input-labeled>
                 </div>
                 <div class="mr-2">
-                    <label for="s2" class="">Сторона 2</label>
-                    <input @change="updatePerimeterAndSquares" id="s2" name="s2" v-model="room.sizes.s2" type="text" autocomplete="s2" required
-                           class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                           rounded-b-md rounded-t-md
-                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                           placeholder="Сторона 2">
+                    <mg-input-labeled v-model="room.sizes.s2">Сторона 2</mg-input-labeled>
+                </div>
+                <div class="mr-2">
+                    <mg-input-labeled v-model="room.sizes.s3">Сторона 3</mg-input-labeled>
+                </div>
+                <div class="mr-2">
+                    <mg-input-labeled v-model="room.sizes.s4">Сторона 4</mg-input-labeled>
                 </div>
 
-                <template v-if="!room.isSimpleSidesCounting">
-                    <div class="mr-2">
-                        <label for="s3" class="">Сторона 3</label>
-                        <input @change="updatePerimeterAndSquares" id="s3" name="s3" v-model="room.sizes.s3" type="text" autocomplete="s3" required
-                               class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                           rounded-b-md rounded-t-md
-                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                               placeholder="Сторона 3">
-                    </div>
-                    <div class="mr-2">
-                        <label for="s4" class="">Сторона 4</label>
-                        <input @change="updatePerimeterAndSquares" id="s4" name="s4" v-model="room.sizes.s4" type="text" autocomplete="current-password" required
-                               class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                           rounded-b-md rounded-t-md
-                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                               placeholder="Сторона 4">
-                    </div>
-                </template>
-
                 <div class="mr-2">
-                    <label for="room_height" class="">Высота</label>
-                    <input @change="updatePerimeterAndSquares" id="room_height" name="room_height" v-model="room.height" type="text" autocomplete="current-password" required
-                           class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                           rounded-md focus:outline-none
-                           focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                           placeholder="Высота">
+                    <mg-input-labeled v-model="room.height">Высота</mg-input-labeled>
                 </div>
             </div>
 
@@ -98,7 +54,7 @@
                     <div class="mr-2">
                         <label class="">
                             <span>Длина</span>
-                            <input  required
+                            <input required
                                    v-model="windows_add.length"
                                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                                    rounded-b-md rounded-t-md
@@ -269,17 +225,10 @@
             </div>
 
             <div class="rooms_calc">
-                <div v-if="room.perimeter" class="pt-3">
-                    Периметр: <span >{{room.perimeter}} м.</span>
-                </div>
-                <div v-if="room.square.ceiling" class="pt-3">
-                    Площадь потолка: <span >{{room.square.ceiling}} кв.м.</span>
-                    <br>
-                    Площадь пола: <span >{{room.square.floor}} кв.м.</span>
-                </div>
-                <div v-if="room.square.walls" class="pt-3">
-                    Площадь стен: <span >{{room.square.walls}} кв.м.</span>
-                </div>
+                <div>Периметр: <span class="font-semibold">{{perimeter}}</span> м.</div>
+                <div>Площадь потолка: <span class="font-semibold">{{squareCeiling}} </span> кв.м.</div>
+                <div>Площадь пола: <span class="font-semibold">{{squareFloor}} </span> кв.м.</div>
+                <div>Площадь стен: <span class="font-semibold">{{squareWalls}} </span> кв.м.</div>
             </div>
 
         </div>
@@ -317,7 +266,7 @@
 
     <!-- added Jobs list -->
     <added-job-list :room_id="room.id"></added-job-list>
-    <!-- / -->
+    <!-- / added Jobs list -->
 
     <!-- added Building materials list -->
     <added-building-materials-list></added-building-materials-list>
@@ -357,6 +306,7 @@ export default {
     data(){
         return {
             currentPickedJob: 0,
+
             workTypes: [
                 { id: 1, title: "Натяжной потолок",},
                 { id: 8, title: "Гипсокартон (потолок)",},
@@ -388,65 +338,6 @@ export default {
             deleteJob: 'deleteJobHandler',
             setCurrentPickedJob: 'setCurrentPickedJob',
         }),
-        isSimpleSidesCountingChange(){
-            this.room.isSimpleSidesCounting = !(this.room.isSimpleSidesCounting);
-            this.updatePerimeterAndSquares();
-        },
-        updatePerimeterHandler(sidesArr) {
-            let res = 0;
-            for(let i=0; i<sidesArr.length; i++){
-                res += +(sidesArr[i]);
-            }
-            return res;
-        },
-        updatePerimeter() {
-            if (this.room.isSimpleSidesCounting){
-                this.room.perimeter = this.updatePerimeterHandler([
-                    (this.room.sizes.s1),
-                    (this.room.sizes.s2),
-                    (this.room.sizes.s1),
-                    (this.room.sizes.s2),
-                ]);
-            }else{
-                this.room.perimeter = this.updatePerimeterHandler([
-                    (this.room.sizes.s1),
-                    (this.room.sizes.s2),
-                    (this.room.sizes.s3),
-                    (this.room.sizes.s4),
-                ]);
-            }
-        },
-        updateCeilingSquareHandler(sidesArr){
-            let res = 1;
-            for(let i=0; i<sidesArr.length; i++){
-                res *= +(sidesArr[i]);
-            }
-            return res;
-        },
-        updateCeilingAndFloorSquare(){
-            if (this.room.isSimpleSidesCounting){
-                this.room.square.ceiling = this.updateCeilingSquareHandler([
-                    (this.room.sizes.s1),
-                    (this.room.sizes.s2),
-                ]);
-                this.room.square.floor = this.room.square.ceiling
-            }else{
-                // todo пока тут дублирование идет, исправить потом, выбирать наибольшие 2 из 4-х сторон
-                this.room.square.ceiling = this.updateCeilingSquareHandler([
-                    (this.room.sizes.s1),
-                    (this.room.sizes.s2),
-                ]);
-                this.room.square.floor = this.room.square.ceiling
-            }
-        },
-        updateWallsSquare(){
-            this.room.square.walls = (this.room.perimeter * +(this.room.height)).toFixed(2);
-        },
-        updatePerimeterAndSquares(){
-            this.updatePerimeter();
-            this.updateCeilingAndFloorSquare();
-            this.updateWallsSquare();
-        },
 
         addWindow(){
             //console.log('addWindow');
@@ -501,18 +392,28 @@ export default {
         ...mapGetters({
             jobsSum: 'jobsSum',
         }),
-    },
-    created() {
-        this.updatePerimeterAndSquares();
 
-        if (this.room.isSimpleSidesCounting){
-            this.room.sizes.s3 = this.room.sizes.s1;
-            this.room.sizes.s4 = this.room.sizes.s2;
-        }
+        perimeter(){
+            return +this.room.sizes.s1 +
+                   +this.room.sizes.s2 +
+                   +this.room.sizes.s3 +
+                   +this.room.sizes.s4
+        },
+        squareCeiling(){
+            return Math.max(+this.room.sizes.s1, +this.room.sizes.s3) *
+                   Math.max(+this.room.sizes.s2, +this.room.sizes.s4)
+        },
+        squareFloor(){
+            return this.squareCeiling;
+        },
+        squareWalls(){
+            return this.perimeter * this.room.height;
+        },
 
-        this.updatePerimeterAndSquares();
     },
-    mounted() {
+    created(){
+    },
+    mounted(){
 
         if (sessionStorage.getItem('currentPickedJob')){
             this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');

@@ -1,20 +1,12 @@
 <template>
-    <div
-        v-for="(room,key) in rooms"
-        class="max-w-2xl px-2 py-3"
-    >
+    <div v-for="(room,key) in rooms" class="max-w-2xl px-2 py-3">
         <div class="border-4 border-dashed border-gray-200 rounded-lg" >
             <div class="px-2 py-2">
-                <room-item
-                    :number="key"
-                    :room="room"
-                    :key="room.id"
+                <room-item :number="key" :room="room" :key="room.id"
                     @addWindow="addWindowHandler"
                     @deleteWindow="deleteWindowHandler"
                     @addDoor="addDoorHandler"
-                    @deleteDoor="deleteDoorHandler"
-                >
-                </room-item>
+                    @deleteDoor="deleteDoorHandler"></room-item>
             </div>
         </div>
     </div>
@@ -81,20 +73,13 @@ export default {
         this.rooms = [
             {
                 id: 1,
-                isSimpleSidesCounting: true,
                 sizes : {
-                    s1: 3.8,
-                    s2: 3.8,
-                    s3: 0,
-                    s4: 0,
+                    s1: 4,
+                    s2: 5,
+                    s3: 4,
+                    s4: 5,
                 },
-                height: 2.3,
-                perimeter: 0,
-                square: {
-                    ceiling: 0,
-                    floor: 0,
-                    walls: 0,
-                },
+                height: 2.4,
 
                 windows: [
                     {
@@ -123,7 +108,6 @@ export default {
             },
             {
                 id: 2,
-                isSimpleSidesCounting: true,
                 sizes : {
                     s1: 5,
                     s2: 4,
@@ -131,12 +115,6 @@ export default {
                     s4: 0,
                 },
                 height: 2.3,
-                perimeter: 0,
-                square: {
-                    ceiling: 0,
-                    floor: 0,
-                    walls: 0,
-                },
 
                 windows: [
                     {

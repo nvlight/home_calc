@@ -2,7 +2,7 @@
     <h3 class="text-center text-xl font-semibold">{{ title }}</h3>
 
     <div>
-        <mg-button @click="setDefaultPerimeter">установить размеры комнаты по умолчанию</mg-button>
+        <mg-button @click="setDefaultSizes">установить размеры комнаты по умолчанию</mg-button>
     </div>
 
     <div class="flex justify-between mt-2">
@@ -54,10 +54,6 @@ export default {
     components: {MgCheckbox},
 
     props: {
-        'defaultPerimeter': {
-            type: [Number, String],
-            required: true,
-        },
         'room':{
             type: [Object],
             required: true,
@@ -66,8 +62,6 @@ export default {
     data(){
         return {
             title: 'Карнизы',
-
-            perimeter: 0,
 
             incPerimeterCount: 0,
             decPerimeterCount: 0,
@@ -93,10 +87,6 @@ export default {
             addJob: 'addJob',
         }),
 
-        setDefaultPerimeter(){
-            this.perimeter = this.defaultPerimeter;
-        },
-
         addCalcedCornices(){
             this.incrementAddedJobNum();
 
@@ -111,12 +101,23 @@ export default {
             this.incValueToJobsResultingSum(tmp_job.sum);
             this.addJob(tmp_job);
         },
+
+        setDefaultSizes(){
+
+        },
     },
     computed:{
         ...mapState({
             currency: state => state.currency,
             addedJobNum: state => state.addedJobNum,
         }),
+
+        perimeter(){
+            return +this.room.sizes.s1 +
+                +this.room.sizes.s2 +
+                +this.room.sizes.s3 +
+                +this.room.sizes.s4
+        },
 
         changedPerimeter(){
             return +this.perimeter + +this.incPerimeterCount + (- +this.decPerimeterCount);
@@ -153,7 +154,7 @@ export default {
         },
     },
     mounted() {
-        this.setDefaultPerimeter();
+        this.setDefaultSizes();
 
         if (sessionStorage.getItem('currentPickedJob')){
             this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');

@@ -120,7 +120,7 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import RoomList from "./RoomList.vue";
-import {reactive, computed} from "vue";
+import {computed} from "vue";
 import store from "../store/index.js";
 import router from "../router/index.js";
 
@@ -143,7 +143,9 @@ const userNavigation = [
     { name: 'Sign out', href: '#' },
 ];
 
-const currency = "₽";
+const currency = computed(() => {
+    return store.state.currency;
+});
 
 const jobsResultingSum = computed(() => {
     return store.state.jobsResultingSum;
