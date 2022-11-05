@@ -3,16 +3,9 @@
     <div class="min-h-full flex items-center justify-start pt-4 pb-2 px-2 sm:px-2 lg:px-2">
         <div class="max-w-md w-full space-y-2">
 
-            <div v-if="this.$store.state.debug" class="border-dotted border-2 p-3 border-red-400">
-                {{ room }}
-            </div>
-
             <h1 class="font-semibold text-xl text-center">Комната {{number+1}}</h1>
             <h1 class="font-light text-xl">Шаг 1. Введите размеры комнаты</h1>
 
-            <div v-if="this.$store.state.debug" class="border-dotted border-2 p-3 border-red-400">
-                isSimpleSidesCounting: {{(room.isSimpleSidesCounting)}}
-            </div>
             <fieldset>
                 <div class="space-y-4">
                     <div class="flex items-start">
@@ -298,21 +291,17 @@
             <h1 class="font-light text-xl text-center">Шаг 2. Выбор и добавление работ</h1>
 
             <label for="job_type" class="block text-sm font-medium text-gray-700">Наименование работы</label>
-            <select v-model="currentPickedJob" @change="setCurrentPickedJob(currentPickedJob)" v-if="work_types?.length" id="job_type" name="job_type" autocomplete="job name"
+            <select v-model="currentPickedJob" @change="setCurrentPickedJob(currentPickedJob)" v-if="workTypes?.length" id="job_type" name="job_type" autocomplete="job name"
                     class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
                     sm:text-sm mb-3"
             >
                 <option :value="0" selected>Выберите вид работы</option>
-                <option v-for="(wt,index) in work_types"
+                <option v-for="(wt,index) in workTypes"
                     :key="index"
                     :value="wt.id"
                     class="text-1xl"
                 >{{wt.id}}.  {{wt.title}}<span class="font-semibold"></span></option>
             </select>
-
-            <div v-if="$store.state.debug" class="border-dotted border-2 p-3 border-red-400">
-                currentPickedJob: {{(currentPickedJob)}} {{Boolean(currentPickedJob)}}
-            </div>
 
             <show-picked-component
                 :currentPickedJob="currentPickedJob"
@@ -368,69 +357,18 @@ export default {
     data(){
         return {
             currentPickedJob: 0,
-            work_types: [
-                {
-                    id: 1,
-                    title: "Натяжной потолок",
-                    description: '',
-                    cost: 400,
-                },
-                {
-                    id: 8,
-                    title: "Гипсокартон (потолок)",
-                    description: '',
-                    cost: 350,
-                },
-                {
-                    id: 9,
-                    title: "Гипсокартон (стены)",
-                    description: '',
-                    cost: 300,
-                },
-                {
-                    id: 2,
-                    title: "Карнизы",
-                    description: '',
-                    cost: 75,
-                },
-                {
-                    id: 4,
-                    title: "Шпатлевка под обои (потолок)",
-                    description: '',
-                    cost: 250,
-                },
-                {
-                    id: 5,
-                    title: "Шпатлевка под обои (стены)",
-                    description: '',
-                    cost: 200,
-                },
-                {
-                    id: 6,
-                    title: "Обои поклейка (потолок)",
-                },
-                {
-                    id: 7,
-                    title: "Обои, поклейка (стены)",
-                },
-                {
-                    id: 10,
-                    title: "Ламинат",
-                    description: '',
-                    cost: 150,
-                },
-                {
-                    id: 12,
-                    title: "Плинтуса, установка",
-                    description: '',
-                    cost: 70
-                },
-                {
-                    id: 13,
-                    title: "Порог, установка",
-                    description: '',
-                    cost: 150
-                },
+            workTypes: [
+                { id: 1, title: "Натяжной потолок",},
+                { id: 8, title: "Гипсокартон (потолок)",},
+                { id: 9, title: "Гипсокартон (стены)",},
+                { id: 2, title: "Карнизы",},
+                { id: 4, title: "Шпатлевка под обои (потолок)",},
+                { id: 5, title: "Шпатлевка под обои (стены)", },
+                { id: 6, title: "Обои поклейка (потолок)", },
+                { id: 7, title: "Обои, поклейка (стены)", },
+                { id: 10,title: "Ламинат",},
+                { id: 12,title: "Плинтуса, установка",},
+                { id: 13,title: "Порог, установка",},
             ],
             added_materials: [],
             windows_add:{
@@ -502,110 +440,12 @@ export default {
             }
         },
         updateWallsSquare(){
-            this.room.square.walls = this.room.perimeter * +(this.room.height)
+            this.room.square.walls = (this.room.perimeter * +(this.room.height)).toFixed(2);
         },
         updatePerimeterAndSquares(){
             this.updatePerimeter();
             this.updateCeilingAndFloorSquare();
             this.updateWallsSquare();
-        },
-        getJobTitleById(id){
-            let find = "";
-            for (let i in this.work_types){
-                if (this.work_types[i].id === parseInt(id)){
-                   find = this.work_types[i].title + ` (id=${this.work_types[i].id})`;
-
-                   break;
-                }
-            }
-            return find;
-        },
-        getJobCostById(id){
-            let job_cost = 0;
-            let adding_job_info_string = "";
-            const currency = "₽";
-            for (let i in this.work_types){
-                if (this.work_types[i].id === (id)){
-                    job_cost = this.work_types[i].cost;
-
-                    switch (id){
-                        case 2:
-                            job_cost *= this.room.perimeter;
-                            adding_job_info_string = `${this.room.perimeter} x ${job_cost} ${currency}`;
-                            break;
-                        case 3:
-                            adding_job_info_string = `${this.room.perimeter} x ${job_cost} ${currency}`;
-                            job_cost *= this.room.perimeter;
-                            break;
-                        case 4:
-                            adding_job_info_string = `${this.room.square.ceiling} x ${job_cost} ${currency}`;
-                            job_cost *= this.room.square.ceiling;
-                            break;
-                        case 5:
-                            adding_job_info_string = `${this.room.square.walls} x ${job_cost} ${currency}`;
-                            job_cost *= this.room.square.walls;
-                            break;
-                        case 6:
-                            adding_job_info_string = `${this.room.square.ceiling} x ${job_cost} ${currency}`;
-                            job_cost *= this.room.square.ceiling;
-                            break;
-                        case 7:
-                            adding_job_info_string = `${this.room.square.walls} x ${job_cost} ${currency}`;
-                            job_cost *= this.room.square.walls;
-                            break;
-                        case 8:
-                            adding_job_info_string = `${this.room.square.ceiling} x ${job_cost} ${currency}`;
-                            job_cost *= this.room.square.ceiling;
-                            break;
-                        case 9:
-                            adding_job_info_string = `${this.room.square.walls} x ${job_cost} ${currency}`;
-                            job_cost *= this.room.square.walls;
-                            break;
-                        case 10:
-                            adding_job_info_string = `${this.room.square.floor} x ${job_cost} ${currency}`;
-                            job_cost *= this.room.square.floor;
-                            break;
-                        case 11:
-                            adding_job_info_string = `${this.room.square.floor} x ${job_cost} ${currency}`;
-                            job_cost *= this.room.square.floor;
-                            break;
-                        case 12:
-                            adding_job_info_string = `${this.room.perimeter} x ${job_cost} ${currency}`;
-                            job_cost *= this.room.perimeter;
-                            break;
-                        case 27:
-                            adding_job_info_string = `${this.room.square.ceiling} x ${job_cost} ${currency}`;
-                            job_cost *= this.room.square.ceiling;
-                            break;
-                    }
-
-                    break;
-                }
-            }
-            return {
-                job_cost,
-                adding_job_info_string,
-            };
-        },
-
-        addCalcedJob(){
-            //console.log('addCalcedJob');
-            this.addedJobs_i++;
-
-            let tmp_job = {}
-            tmp_job.id = this.addedJobs_i;
-            tmp_job.job_id = this.currentPickedJob; // choosed id
-
-            let job_cost = this.getJobCostById(this.currentPickedJob);
-            tmp_job.summ = job_cost['job_cost'];
-            tmp_job.adding_job_info_string = job_cost['adding_job_info_string'];
-
-            tmp_job.title = this.getJobTitleById(tmp_job.job_id);
-            //console.log(tmp_job);
-
-            this.$store.commit('incValueToJobsResultingSumm', tmp_job.summ);
-
-            this.addedJobs.push(tmp_job);
         },
 
         addWindow(){
@@ -657,7 +497,6 @@ export default {
     computed:{
         ...mapState({
             addedJobs: state => state.addedJobs,
-            currPickedJob: state => state.currentPickedJob,
         }),
         ...mapGetters({
             jobsSum: 'jobsSum',
