@@ -116,9 +116,6 @@
 
         <mg-grid-icon-button @click="addCalcedCeil">Добавить всю сумму</mg-grid-icon-button>
 
-        <BuildingMaterial>
-        </BuildingMaterial>
-
     </div>
 </template>
 

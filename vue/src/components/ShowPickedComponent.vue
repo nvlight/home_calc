@@ -62,7 +62,7 @@ import {mapGetters, mapState, mapActions} from "vuex";
 import CeilingCalc from "./CeilingCalc.vue";
 import LaminateCalc from "./LaminateCalc.vue";
 import DoorstepCalc from "./DoorstepCalc.vue";
-import BaseboardsCalc from "./BaseboardsCalc.vue";
+import BaseboardsCalc from "./calc/BaseboardsCalc.vue";
 import WallpaperCalc from "./WallpaperCalc.vue";
 import CeilingpaperCalc from "./CeilingpaperCalc.vue";
 import PuttyCeilingCalc from "./PuttyCeilingCalc.vue";

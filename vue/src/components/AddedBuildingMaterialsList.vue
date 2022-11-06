@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-2">
-            <h2 class="font-semibold text-xl text-center">Строительные материалы:</h2>
+            <h2 class="font-semibold text-xl text-center">2. Строительные материалы:</h2>
 
             <div v-if="!addedMaterials?.length">
                 <span class="block text-center">Список пуст</span>
@@ -20,7 +20,7 @@
                 </div>
                 <!-- MaterialSumm -->
                 <div class="mt-3">
-                    <span class="text-2xl">Стоимость строительных материалов: {{materialsSum}}&nbsp;₽</span>
+                    <span class="text-2xl">Стоимость строительных материалов: {{materialsSum}}&nbsp;{{ currency }}</span>
                 </div>
                 <!--/ MaterialSumm -->
             </div>
@@ -39,9 +39,9 @@ export default {
     computed:{
         ...mapState({
             addedMaterials: state => state.materialsForBuy,
+            currency: state => state.currency,
         }),
       ...mapGetters({
-
       }),
     },
 }

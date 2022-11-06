@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-6 lg:px-8">
+    <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-2 sm:px-2 lg:px-2">
         <div class="max-w-md w-full space-y-2">
             <h2 class="font-semibold text-xl text-center">1. Виды работ:</h2>
 

@@ -2,16 +2,7 @@
     <h3 class="text-center text-2xl font-semibold">Подсчет плинтусов</h3>
 
     <div class="mt-2 flex justify-between">
-        <label class="">
-            <span>Периметр</span>
-            <input
-                type="text"
-                v-model="perimeter"
-                class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                   rounded-b-md rounded-t-md
-                   focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="количество дверей">
-        </label>
+        <mg-input-labeled v-model="perimeter">Периметр</mg-input-labeled>
         <label class="">
             <span>Цена</span>
             <input
@@ -95,7 +86,7 @@
 
 <script>
 import {mapGetters, mapState, mapActions} from "vuex";
-import MaterialsForBuyBlock from "./additional/MaterialsForBuyBlock.vue";
+import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
 
 export default {
     name: "baseboards-calc",
