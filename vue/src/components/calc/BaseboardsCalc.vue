@@ -1,6 +1,8 @@
 <template>
     <h3 class="text-center text-2xl font-semibold">Подсчет плинтусов</h3>
 
+    <mg-button @click="setDefaultPerimeter">Установить периметр по умолчанию</mg-button>
+
     <div class="mt-2 flex justify-between">
         <mg-input-labeled v-model="perimeter">Периметр</mg-input-labeled>
         <label class="">
@@ -20,56 +22,16 @@
     </div>
 
     <h3 class="font-semibold mt-3">Ввод углов комнаты для подсчета уголков</h3>
-    <div v-if="this.$store.state.debug" class="border-dotted border-2 p-3 border-red-400">
-        <div>room.internalCorners: {{room.internalCorners}}</div>
-        <div>room.outerCorners: {{room.outerCorners}}</div>
-        <div>room.connectors: {{room.connectors}}</div>
-        <div>room.stubs: {{room.stubs}}</div>
-    </div>
+    <mg-button @click="setDefaultsBaseboardAccessories">Установить количество принадлежностей по умолчанию</mg-button>
+
     <div class="Baseboards_consumables">
         <div class="mt-2 flex justify-between">
-            <label class="">
-                <span>Внутренние углы</span>
-                <input
-                    type="text"
-                    v-model="room.internalCorners"
-                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                   rounded-b-md rounded-t-md
-                   focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="4">
-            </label>
-            <label class="">
-                <span>Внешние углы</span>
-                <input
-                    type="text"
-                    v-model="room.outerCorners"
-                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                   rounded-b-md rounded-t-md
-                   focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="4">
-            </label>
+            <mg-input-labeled v-model="internalCorners">Внутренние углы</mg-input-labeled>
+            <mg-input-labeled v-model="outerCorners">Внешние углы</mg-input-labeled>
         </div>
-        <div class="mt-2 flex justify-between">
-            <label class="">
-                <span>Соединители <br>&nbsp;</span>
-                <input
-                    type="text"
-                    v-model="room.connectors"
-                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                   rounded-b-md rounded-t-md
-                   focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="11">
-            </label>
-            <label class="">
-                <span>Заглушки <br>(пара, правая и левая)</span>
-                <input
-                    type="text"
-                    v-model="room.stubs"
-                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                   rounded-b-md rounded-t-md
-                   focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="1">
-            </label>
+        <div class="mt-2 flex justify-between items-center">
+            <mg-input-labeled v-model="connectors">Соединители</mg-input-labeled>
+            <mg-input-labeled v-model="stubs">Заглушки <br>(пара, правая и левая)</mg-input-labeled>
         </div>
     </div>
 
@@ -108,6 +70,11 @@ export default {
         return{
             perimeter: 0,
             price: 70,
+
+            internalCorners: 0,
+            outerCorners: 0,
+            connectors: 0,
+            stubs: 0,
         }
     },
     methods:{
@@ -116,6 +83,28 @@ export default {
             incrementAddedJobNum: 'incrementAddedJobNum',
             incValueToJobsResultingSum: 'incValueToJobsResultingSum',
         }),
+
+        getDefaultPerimeter(){
+            return  +this.room.sizes.s1 +
+                    +this.room.sizes.s2 +
+                    +this.room.sizes.s3 +
+                    +this.room.sizes.s4
+        },
+        setDefaultPerimeter(){
+            this.perimeter = this.getDefaultPerimeter();
+        },
+
+        setDefaultsBaseboardAccessories(){
+            this.internalCorners = this.room.internalCorners;
+            this.outerCorners = this.room.outerCorners;
+            this.connectors = this.room.connectors;
+            this.stubs = this.room.stubs;
+        },
+
+        setDefaults(){
+            this.setDefaultPerimeter();
+            this.setDefaultsBaseboardAccessories();
+        },
 
         addCalcedBaseboards(){
             this.incrementAddedJobNum();
@@ -134,6 +123,8 @@ export default {
 
         addMaterials(){
         },
+
+
     },
     computed:{
         ...mapState({
@@ -156,19 +147,22 @@ export default {
             const arr = [];
             arr.push({
                 title: 'Плинтуса',
-                description: this.perimeter + ' м.',
+                amount: this.perimeter,
+                unit_name: 'м.',
             },)
-            const index_for_check = [
-                {title: 'internalCorners', descripiton: 'Внутренние углы',},
-                {title: 'outerCorners', descripiton: 'Внешние углы',},
-                {title: 'connectors', descripiton: 'Соединители',},
-                {title: 'stubs', descripiton: 'Заглушки',},
+            const ar = [
+                {var_name: 'internalCorners', title: 'Внутренние углы', unit_name: 'шт.',},
+                {var_name: 'outerCorners', title: 'Внешние углы', unit_name: 'шт.',},
+                {var_name: 'connectors', title: 'Соединители', unit_name: 'шт.',},
+                {var_name: 'stubs', title: 'Заглушки', unit_name: 'пар, левая и правая',},
             ];
-            for(let i=0; i<index_for_check.length; i++){
-                if (this.room[index_for_check[i].title]){
+
+            for(let i=0; i<ar.length; i++){
+                if (this[ar[i].var_name]){
                     arr.push({
-                        title: index_for_check[i].descripiton,
-                        description: this.room[index_for_check[i].title],
+                        title: ar[i].title,
+                        amount: this[ar[i].var_name],
+                        unit_name: ar[i].unit_name,
                     });
                 }
             }
@@ -176,7 +170,7 @@ export default {
         }
     },
     mounted() {
-        this.perimeter = (this.room.perimeter);
+        this.setDefaults();
     }
 }
 </script>

@@ -1,8 +1,5 @@
 <template>
-    <div class="mt-2">
-
-    </div>
-    <div class="font-medium">Материалы к покупке:</div>
+    <div class="font-medium mt-2">Материалы к покупке:</div>
     <div
         v-for="(material, index) in materials"
         :key="index"
