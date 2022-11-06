@@ -3,51 +3,32 @@
         <CeilingCalc :room="room"></CeilingCalc>
     </div>
     <div v-else-if="currentPickedJob == 10">
-        <LaminateCalc
-            :currentPickedJob="currentPickedJob"
-            :room="room">
-        </LaminateCalc>
+        <LaminateCalc :room="room"></LaminateCalc>
     </div>
     <div v-else-if="currentPickedJob == 13">
-        <DoorstepCalc
-            :room="room"
-            :currentPickedJob="currentPickedJob"
-        ></DoorstepCalc>
+        <DoorstepCalc :room="room"></DoorstepCalc>
     </div>
     <div v-else-if="currentPickedJob == 12">
         <baseboards-calc :room="room"></baseboards-calc>
     </div>
-
     <div v-else-if="currentPickedJob == 7">
-        <wallpaper-calc
-            :currentPickedJob="currentPickedJob"
-            :room="room">
-        </wallpaper-calc>
+        <wallpaper-calc :room="room"></wallpaper-calc>
     </div>
-
     <div v-else-if="currentPickedJob == 6">
-        <ceilingpaper-calc
-            :currentPickedJob="currentPickedJob"
-            :room="room">
-        </ceilingpaper-calc>
+        <ceilingpaper-calc :room="room"></ceilingpaper-calc>
     </div>
-
     <div v-else-if="currentPickedJob == 4">
         <putty-ceiling-calc :room="room"></putty-ceiling-calc>
     </div>
-
     <div v-else-if="currentPickedJob == 5">
         <putty-walls-calc :room="room"></putty-walls-calc>
     </div>
-
     <div v-else-if="currentPickedJob == 2">
         <cornice-calc :room="room"></cornice-calc>
     </div>
-
     <div v-else-if="currentPickedJob == 9">
         <drywall-calc :room="room"></drywall-calc>
     </div>
-
     <div v-else-if="currentPickedJob == 8">
         <drywall-ceiling-calc :room="room"></drywall-ceiling-calc>
     </div>
@@ -55,16 +36,15 @@
 </template>
 
 <script>
-import {mapGetters, mapState, mapActions} from "vuex";
-import CeilingCalc from "./CeilingCalc.vue";
-import LaminateCalc from "./LaminateCalc.vue";
-import DoorstepCalc from "./DoorstepCalc.vue";
+import CeilingCalc from "./calc/CeilingCalc.vue";
+import LaminateCalc from "./calc/LaminateCalc.vue";
+import DoorstepCalc from "./calc/DoorstepCalc.vue";
 import BaseboardsCalc from "./calc/BaseboardsCalc.vue";
-import WallpaperCalc from "./WallpaperCalc.vue";
-import CeilingpaperCalc from "./CeilingpaperCalc.vue";
-import PuttyCeilingCalc from "./PuttyCeilingCalc.vue";
-import PuttyWallsCalc from "./PuttyWallsCalc.vue";
-import CorniceCalc from "./CorniceCalc.vue";
+import WallpaperCalc from "./calc/WallpaperCalc.vue";
+import CeilingpaperCalc from "./calc/CeilingpaperCalc.vue";
+import PuttyCeilingCalc from "./calc/PuttyCeilingCalc.vue";
+import PuttyWallsCalc from "./calc/PuttyWallsCalc.vue";
+import CorniceCalc from "./calc/CorniceCalc.vue";
 import DrywallCalc from "./calc/DrywallCalc.vue";
 import DrywallCeilingCalc from "./calc/DrywallCeilingCalc.vue";
 

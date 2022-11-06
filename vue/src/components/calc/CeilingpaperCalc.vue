@@ -1,5 +1,5 @@
 <template>
-    <h3 class="text-center text-xl font-semibold">Подсчет обоев, потолок</h3>
+    <h3 class="text-center text-xl font-semibold">{{ title }}</h3>
 
     <div>
         <mg-button @click="setDefaultRoomSizesHandler">установить размеры комнаты по умолчанию</mg-button>
@@ -22,9 +22,9 @@
 
     <div class="mt-3 flex items-center">
         <div class="w-7/12">
-            <div>Длина: <span>{{perimeter}} м.</span></div>
-            <div>Ширина: <span>{{height}} м.</span></div>
-            <div>Площадь: <span>{{squareCeiling}} кв.м.</span></div>
+            <div>Длина: <span class="font-semibold">{{perimeter}} м.</span></div>
+            <div>Ширина: <span class="font-semibold">{{height}} м.</span></div>
+            <div>Площадь: <span class="font-semibold">{{squareCeiling}} кв.м.</span></div>
             <div class="mt-2" v-if="squareCeiling !== resulCeilingSquare">Площадь (общая): {{ resulCeilingSquare }} кв.м.
                 <br>с учетом +/-
             </div>
@@ -49,7 +49,7 @@
         <span class="font-semibold">{{sum}} {{currency}}</span>
     </div>
 
-    <mg-button @click="addCalcedWallpapers">Добавить сумму</mg-button>
+    <mg-button @click="addCalced">Добавить сумму</mg-button>
 
     <div class="mt-2">
         <div>Длина рулона: 10.05 м.</div>
@@ -85,7 +85,7 @@
 
 <script>
 import {mapState, mapActions,} from 'vuex'
-import MaterialsForBuyBlock from "./additional/MaterialsForBuyBlock.vue";
+import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
 
 export default {
     name: "ceilingpaper-calc",
@@ -96,14 +96,12 @@ export default {
             type: Object,
             required: true,
         },
-        'currentPickedJob':{
-            type: Number,
-            required: true,
-        }
     },
     data() {
         return {
-            currRoom: {},
+            title: 'Подсчет обоев, потолок',
+            currentPickedJob: 0,
+
             sizes: {
                 s1: 0,
                 s2: 0,
@@ -134,19 +132,23 @@ export default {
             this.sizes = Object.assign({}, this.room.sizes);
         },
 
-        addCalcedWallpapers(){
+        createJob() {
+            const job = {}
+            job.title = `${this.title} (id=${this.currentPickedJob})`;
+            job.id = this.addedJobNum;
+            job.room_id = this.room.id;
+            job.job_id = this.currentPickedJob;
+            job.sum = this.totalAmount.price;
+            job.adding_job_info_string = this.totalAmount.adding_job_info_string;
+            return job;
+        },
+        addCalced() {
             this.incrementAddedJobNum();
 
-            let tmp_job = {}
-            tmp_job.title = "Обои, наклейка, потолок" + ` (id=${this.currentPickedJob})`;
-            tmp_job.id = this.addedJobNum;
-            tmp_job.room_id = this.room.id;
-            tmp_job.job_id = this.currentPickedJob;
-            tmp_job.sum = this.totalAmount.price;
-            tmp_job.adding_job_info_string = this.totalAmount.adding_job_info_string;
+            const job = this.createJob();
 
-            this.incValueToJobsResultingSum(tmp_job.sum);
-            this.addJob(tmp_job);
+            this.incValueToJobsResultingSum(job.sum);
+            this.addJob(job);
         },
 
     },
@@ -213,9 +215,11 @@ export default {
     },
 
     mounted() {
-        this.currRoom = Object.assign({}, this.room);
-
         this.setDefaultRoomSizesHandler();
+
+        if (sessionStorage.getItem('currentPickedJob')) {
+            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
+        }
     },
 
 }

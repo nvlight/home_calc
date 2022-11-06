@@ -274,12 +274,7 @@
 </template>
 
 <script>
-import CeilingCalc from "../components/CeilingCalc.vue";
-import LaminateCalc from "../components/LaminateCalc.vue";
-import DoorstepCalc from "./DoorstepCalc.vue";
-import BaseboardsCalc from "./calc/BaseboardsCalc.vue";
 import {mapState, mapActions, mapGetters} from "vuex";
-import WallpaperCalc from "./WallpaperCalc.vue";
 import ShowPickedComponent from "./ShowPickedComponent.vue";
 import AddedJobList from "./AddedJobList.vue";
 import AddedBuildingMaterialsList from "./AddedBuildingMaterialsList.vue";
@@ -289,8 +284,7 @@ import BuildingMaterial from "./BuildingMaterial.vue";
 export default {
     name: "room-item",
     components: {
-        WallpaperCalc, DoorstepCalc, CeilingCalc, LaminateCalc, BaseboardsCalc, ShowPickedComponent, AddedJobList,
-        AddedBuildingMaterialsList, RoomJobsSum, BuildingMaterial,
+        ShowPickedComponent, AddedJobList, AddedBuildingMaterialsList, RoomJobsSum, BuildingMaterial,
     },
     props: {
         number: Number,

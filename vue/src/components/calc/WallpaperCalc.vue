@@ -1,5 +1,5 @@
 <template>
-    <h3 class="text-center text-xl font-semibold">Подсчет обоев, стены</h3>
+    <h3 class="text-center text-xl font-semibold">{{ title }}</h3>
 
     <div>
         <mg-button @click="setDefaultRoomSizesHandler">установить размеры комнаты по умолчанию</mg-button>
@@ -24,10 +24,10 @@
     </div>
 
     <div class="mt-3">
-        <div>Периметр: <span>{{perimeter}} м.</span></div>
-        <div>Площадь потолка: <span>{{squareCeiling}} кв.м.</span></div>
-        <div>Площадь пола: <span>{{squareFloor}} кв.м.</span></div>
-        <div>Площадь стен: <span>{{squareWalls}} кв.м.</span></div>
+        <div>Периметр: <span class="font-semibold">{{perimeter}} </span> м.</div>
+        <div>Площадь потолка: <span class="font-semibold">{{squareCeiling}} </span> кв.м.</div>
+        <div>Площадь пола: <span class="font-semibold">{{squareFloor}} </span> кв.м.</div>
+        <div>Площадь стен: <span class="font-semibold">{{squareWalls}} </span> кв.м.</div>
     </div>
 
     <div class="mt-2 flex justify-between">
@@ -48,7 +48,7 @@
         <span class="font-semibold">{{sum}} {{currency}}</span>
     </div>
 
-    <mg-button @click="addCalcedWallpapers">Добавить сумму</mg-button>
+    <mg-button @click="addCalced">Добавить сумму</mg-button>
 
     <div class="mt-2">
         <div>Длина рулона: 10.05 м.</div>
@@ -70,7 +70,7 @@
         <div>
             <span class="font-semibold">{{Math.ceil(rolls)}}</span>
             <template v-if="rolls !== Math.ceil(rolls)">
-                (<span class="font-semibold">{{rolls}}</span>)
+                (<span class="font-semibold">{{rolls.toFixed(2)}}</span>)
             </template>
         </div>
     </div>
@@ -84,7 +84,7 @@
 
 <script>
 import {mapState, mapActions,} from 'vuex'
-import MaterialsForBuyBlock from "./additional/MaterialsForBuyBlock.vue";
+import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
 
 export default {
     name: "wallpaper-calc",
@@ -95,14 +95,12 @@ export default {
             type: Object,
             required: true,
         },
-        'currentPickedJob':{
-            type: Number,
-            required: true,
-        }
     },
     data() {
         return {
-            currRoom: {},
+            title: "Подсчет обоев, стены",
+            currentPickedJob: 0,
+
             sizes: {
                 s1: 0,
                 s2: 0,
@@ -135,19 +133,23 @@ export default {
             this.height = this.room.height;
         },
 
-        addCalcedWallpapers(){
+        createJob() {
+            const job = {}
+            job.title = `${this.title} (id=${this.currentPickedJob})`;
+            job.id = this.addedJobNum;
+            job.room_id = this.room.id;
+            job.job_id = this.currentPickedJob;
+            job.sum = this.totalAmount.price;
+            job.adding_job_info_string = this.totalAmount.adding_job_info_string;
+            return job;
+        },
+        addCalced() {
             this.incrementAddedJobNum();
 
-            let tmp_job = {}
-            tmp_job.title = "Обои, наклейка, стены" + ` (id=${this.currentPickedJob})`;
-            tmp_job.id = this.addedJobNum;
-            tmp_job.room_id = this.room.id;
-            tmp_job.job_id = this.currentPickedJob;
-            tmp_job.sum = this.totalAmount.price;
-            tmp_job.adding_job_info_string = this.totalAmount.adding_job_info_string;
+            const job = this.createJob();
 
-            this.incValueToJobsResultingSum(tmp_job.sum);
-            this.addJob(tmp_job);
+            this.incValueToJobsResultingSum(job.sum);
+            this.addJob(job);
         },
 
     },
@@ -161,7 +163,7 @@ export default {
         }),
 
         perimeter(){
-            return +(this.sizes.s1) +
+            return  +(this.sizes.s1) +
                     +(this.sizes.s2) +
                     +(this.sizes.s3) +
                     +(this.sizes.s4);
@@ -220,9 +222,11 @@ export default {
     },
 
     mounted() {
-        this.currRoom = Object.assign({}, this.room);
-
         this.setDefaultRoomSizesHandler();
+
+        if (sessionStorage.getItem('currentPickedJob')) {
+            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
+        }
     },
 
 }

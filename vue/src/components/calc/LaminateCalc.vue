@@ -156,10 +156,6 @@ export default {
             type: Object,
             required: true,
         },
-        'currentPickedJob':{
-            type: Number,
-            required: true,
-        }
     },
     emits: [],
     data(){
@@ -198,8 +194,10 @@ export default {
                     price: 250,
                 },
             ],
-            selected_id: 0,
+            selected_id: 1,
             laminateToBuy: 0,
+
+            currentPickedJob: 0,
         }
     },
     methods: {
@@ -282,6 +280,14 @@ export default {
             this.incValueToJobsResultingSum(tmp_job.sum);
             this.addJob(tmp_job);
         },
+
+        setDefaults(){
+            this.setDefaultRoomSizes();
+        },
+
+        setDefaultRoomSizes() {
+            this.sizes = Object.assign({}, this.room.sizes);
+        },
     },
     computed: {
         ...mapState({
@@ -306,7 +312,13 @@ export default {
     created() {
     },
     mounted() {
+        this.setDefaults();
+
         this.laminateToBuy = this.getActualSquares().floor;
+
+        if (sessionStorage.getItem('currentPickedJob')){
+            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
+        }
     }
 }
 </script>

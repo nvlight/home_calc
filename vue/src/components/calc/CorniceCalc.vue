@@ -47,12 +47,10 @@
 
 <script>
 import {mapState, mapActions} from "vuex";
-import MgCheckbox from "./UI/MgCheckbox.vue";
 
 export default {
     name: 'cornice-calc',
-    components: {MgCheckbox},
-
+    components: {},
     props: {
         'room':{
             type: [Object],

@@ -123,10 +123,9 @@
 </template>
 
 <script>
-import BuildingMaterial from "../components/BuildingMaterial.vue";
-import store from "../store/index.js";
+import BuildingMaterial from "../../components/BuildingMaterial.vue";
 import {mapState, mapGetters, mapActions, mapMutations} from "vuex";
-import MaterialsForBuyBlock from "./additional/MaterialsForBuyBlock.vue";
+import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
 
 export default {
     name: 'CeilingCalc',

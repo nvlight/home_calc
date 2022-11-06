@@ -61,7 +61,7 @@
         <span class="font-semibold">{{sum}} {{currency}}</span>
     </div>
 
-    <mg-button @click="addCalcedPuttyWalls">Добавить сумму</mg-button>
+    <mg-button @click="addCalced">Добавить сумму</mg-button>
 
     <materials-for-buy-block
         :materials="materials"
@@ -72,9 +72,11 @@
 
 <script>
 import {mapState, mapActions} from "vuex";
+import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
 
 export default {
     name: 'putty-walls-calc',
+    components: {MaterialsForBuyBlock},
     props: {
         'room': {
             type: Object,
@@ -84,6 +86,7 @@ export default {
     data(){
         return {
             title: 'Шпатлевка, стены',
+            currentPickedJob: 0,
 
             sizes: {
                 s1: 0,
@@ -116,26 +119,29 @@ export default {
             this.height = this.room.height;
         },
 
-        addCalcedPuttyWalls(){
+        createJob() {
+            const job = {}
+            job.title = `${this.title} (id=${this.currentPickedJob})`;
+            job.id = this.addedJobNum;
+            job.room_id = this.room.id;
+            job.job_id = this.currentPickedJob;
+            job.sum = this.totalAmount.price;
+            job.adding_job_info_string = this.totalAmount.adding_job_info_string;
+            return job;
+        },
+        addCalced() {
             this.incrementAddedJobNum();
 
-            let tmp_job = {}
-            tmp_job.title = `${this.title} (id=${this.currentPickedJob})`;
-            tmp_job.id = this.addedJobNum;
-            tmp_job.room_id = this.room.id;
-            tmp_job.job_id = this.currentPickedJob;
-            tmp_job.sum = this.totalAmount.price;
-            tmp_job.adding_job_info_string = this.totalAmount.adding_job_info_string;
+            const job = this.createJob();
 
-            this.incValueToJobsResultingSum(tmp_job.sum);
-            this.addJob(tmp_job);
+            this.incValueToJobsResultingSum(job.sum);
+            this.addJob(job);
         },
     },
     computed:{
         ...mapState({
             currency: state => state.currency,
             addedJobNum: state => state.addedJobNum,
-            currentPickedJob: state => state.currentPickedJob,
         }),
 
         perimeter(){
@@ -174,10 +180,7 @@ export default {
 
         materials(){
             const arr = [];
-            arr.push({
-                title: 'Обои',
-                description: this.squareWalls + ' кв.м.',
-            },)
+            arr.push({title: 'Шпатлевка "SATENTEK" 25 кг.', amount: 0, unit_name: 'мешков.',});
             return arr;
         },
         totalAmount() {
@@ -225,8 +228,13 @@ export default {
     },
     mounted() {
         this.setDefaultRoomSizesHandler();
+
         this.doors   = Object.assign([], this.room.doors);
         this.windows = Object.assign([], this.room.windows);
+
+        if (sessionStorage.getItem('currentPickedJob')) {
+            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
+        }
     }
 }
 </script>
