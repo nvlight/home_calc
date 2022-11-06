@@ -15,10 +15,7 @@
         ></DoorstepCalc>
     </div>
     <div v-else-if="currentPickedJob == 12">
-        <baseboards-calc
-            :currentPickedJob="currentPickedJob"
-            :room="room">
-        </baseboards-calc>
+        <baseboards-calc :room="room"></baseboards-calc>
     </div>
 
     <div v-else-if="currentPickedJob == 7">

@@ -1,22 +1,12 @@
 <template>
-    <h3 class="text-center text-2xl font-semibold">Подсчет плинтусов</h3>
+    <h3 class="text-center text-2xl font-semibold">{{ title }}</h3>
 
     <mg-button @click="setDefaultPerimeter">Установить периметр по умолчанию</mg-button>
 
     <div class="mt-2 flex justify-between">
         <mg-input-labeled v-model="perimeter">Периметр</mg-input-labeled>
-        <label class="">
-            <span>Цена</span>
-            <input
-                type="text"
-                v-model="price"
-                class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                   rounded-b-md rounded-t-md
-                   focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="цена">
-        </label>
+        <mg-input-labeled v-model="price">Цена</mg-input-labeled>
     </div>
-
     <div class="mt-2">
         <div>Cумма: {{sum}} {{currency}}</div>
     </div>
@@ -35,13 +25,12 @@
         </div>
     </div>
 
-    <mg-button @click="addCalcedBaseboards">Добавить сумму</mg-button>
+    <mg-button @click="addCalced">Добавить сумму</mg-button>
 
     <materials-for-buy-block
         :materials="materials"
         :room="room"
     ></materials-for-buy-block>
-
     <mg-button @click="addMaterials">Добавить материалы</mg-button>
 
 </template>
@@ -57,10 +46,6 @@ export default {
             type: Object,
             required: true,
         },
-        'currentPickedJob':{
-            type: Number,
-            required: true,
-        }
     },
     components: {
         MaterialsForBuyBlock,
@@ -68,6 +53,9 @@ export default {
     emits: [],
     data(){
         return{
+            title: 'Подсчет плинтусов',
+            currentPickedJob: 0,
+
             perimeter: 0,
             price: 70,
 
@@ -106,25 +94,28 @@ export default {
             this.setDefaultsBaseboardAccessories();
         },
 
-        addCalcedBaseboards(){
+        createJob(){
+            const job = {}
+            job.title = `${this.title} (id=${this.currentPickedJob})`;
+            job.id = this.addedJobNum;
+            job.room_id = this.room.id;
+            job.job_id = this.currentPickedJob;
+            job.sum = this.totalAmount.price;
+            job.adding_job_info_string = this.totalAmount.adding_job_info_string;
+            return job;
+        },
+
+        addCalced(){
             this.incrementAddedJobNum();
 
-            let tmp_job = {}
-            tmp_job.title = "Плинтуса, установка" + ` (id=${this.currentPickedJob})`;
-            tmp_job.id = this.addedJobNum;
-            tmp_job.room_id = this.room.id;
-            tmp_job.job_id = this.currentPickedJob;
-            tmp_job.sum = this.totalAmount.price;
-            tmp_job.adding_job_info_string = this.totalAmount['adding_job_info_string'];
+            const job = this.createJob();
 
-            this.incValueToJobsResultingSum(tmp_job.sum);
-            this.addJob(tmp_job);
+            this.incValueToJobsResultingSum(job.sum);
+            this.addJob(job);
         },
 
         addMaterials(){
         },
-
-
     },
     computed:{
         ...mapState({
@@ -171,6 +162,10 @@ export default {
     },
     mounted() {
         this.setDefaults();
+
+        if (sessionStorage.getItem('currentPickedJob')){
+            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
+        }
     }
 }
 </script>
