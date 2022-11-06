@@ -62,6 +62,12 @@
     </div>
 
     <mg-button @click="addCalcedPuttyWalls">Добавить сумму</mg-button>
+
+    <materials-for-buy-block
+        :materials="materials"
+        :room="room"
+    ></materials-for-buy-block>
+
 </template>
 
 <script>
@@ -85,7 +91,7 @@ export default {
                 s3: 0,
                 s4: 0,
             },
-            height: 2.3,
+            height: 0,
 
             incSquareCount: 0,
             decSquareCount: 0,
@@ -107,6 +113,7 @@ export default {
         },
         setDefaultRoomSizes(){
             this.sizes = Object.assign({}, this.room.sizes);
+            this.height = this.room.height;
         },
 
         addCalcedPuttyWalls(){

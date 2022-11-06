@@ -1,20 +1,22 @@
 <template>
-    <div class="font-medium mt-2">Материалы к покупке:</div>
-    <div
-        v-for="(material, index) in materials"
-        :key="index"
-        class="flex justify-between"
-    >
-        <div>
-            <span>{{index+1}}. </span>
-            <span>{{material.title}}: </span>
-        </div>
-        <div class="ml-1 self-center">
-            <span class="font-semibold">{{material.amount}}</span>
-            <span>&nbsp;{{material.unit_name}}</span>
-        </div>
+    <template v-if="materials.length">
+        <div class="font-medium mt-2">Материалы к покупке:</div>
+        <div
+            v-for="(material, index) in materials"
+            :key="index"
+            class="flex justify-between"
+        >
+            <div>
+                <span>{{index+1}}. </span>
+                <span>{{material.title}}: </span>
+            </div>
+            <div class="ml-1 self-center">
+                <span class="font-semibold">{{material.amount}}</span>
+                <span>&nbsp;{{material.unit_name}}</span>
+            </div>
 
-    </div>
+        </div>
+    </template>
 </template>
 
 <script>
