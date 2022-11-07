@@ -14,7 +14,7 @@
 
 <script>
 import roomItem from "./RoomItem.vue";
-import {mapState} from "vuex";
+import {mapState, mapActions} from "vuex";
 
 export default {
     name: "room-list",
@@ -26,6 +26,10 @@ export default {
         }
     },
     methods:{
+        ...mapActions({
+            loadRooms: 'room/getRooms',
+        }),
+
         // интересно, но окна добавляются для всех комнат
         addWindowHandler(res){
             const room = this.rooms.filter(
@@ -77,6 +81,7 @@ export default {
         }),
     },
     mounted() {
+        this.loadRooms();
     }
 }
 </script>

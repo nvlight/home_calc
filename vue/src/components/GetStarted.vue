@@ -88,10 +88,12 @@
         </header>
         <main>
 
-            <room-add-del></room-add-del>
+            <div class="flex justify-center mt-2">
+                <add-room-button class="content-center  items-center"></add-room-button>
+            </div>
 
             <div class="main_wrapper">
-                <div class="flex">
+                <div class="flex flex-wrap">
                     <!-- Replace with your content -->
                     <room-list>
                     </room-list>
@@ -111,7 +113,7 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import RoomList from "./RoomList.vue";
-import RoomAddDel from "./RoomAddDel.vue";
+import AddRoomButton from "./AddRoomButton.vue";
 import {computed} from "vue";
 import store from "../store/index.js";
 import router from "../router/index.js";
