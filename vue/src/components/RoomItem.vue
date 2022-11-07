@@ -3,7 +3,10 @@
     <div class="min-h-full flex items-center justify-start pt-4 pb-2 px-2 sm:px-2 lg:px-2">
         <div class="max-w-md w-full space-y-2">
 
-            <h1 class="font-semibold text-xl text-center">Комната {{number+1}}</h1>
+            <div class="flex justify-between items-center">
+                <h1 class="font-semibold text-xl text-center">Комната {{number}}</h1>
+                <mg-trash-icon-button @click="$store.dispatch('room/deleteRoom', number)"></mg-trash-icon-button>
+            </div>
             <h1 class="font-light text-xl">Шаг 1. Введите размеры комнаты</h1>
 
             <div class="rounded-md shadow-sm flex">

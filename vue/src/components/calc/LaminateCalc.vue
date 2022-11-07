@@ -21,7 +21,7 @@
             :value="pot.id">{{pot.name}} - ({{ pot.price }} {{ currency }})
         </option>
     </select>
-    <div v-if="this.$store.state.debug" class="mt-3 border-dotted border-2 p-3 border-red-400">
+    <div v-if="$store.state.debug" class="mt-3 border-dotted border-2 p-3 border-red-400">
         <div>selected_id: {{selected_id}}</div>
         <div>selectedPrice: {{selectedPrice}}</div>
     </div>

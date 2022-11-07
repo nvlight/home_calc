@@ -1,5 +1,6 @@
 import {createStore} from "vuex";
 import axiosClient from "../axios.js";
+import {roomModule} from "./roomModule.js";
 
 const store = createStore({
     state:{
@@ -239,7 +240,7 @@ const store = createStore({
         }
     },
     modules:{
-
+        room: roomModule,
     },
 })
 
