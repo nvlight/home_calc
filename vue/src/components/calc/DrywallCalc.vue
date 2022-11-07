@@ -5,7 +5,7 @@
         <mg-button @click="setDefaultRoomSizesHandler">установить размеры комнаты по умолчанию</mg-button>
     </div>
 
-    <div class="rounded-md shadow-sm flex mt-2">
+    <div class="flex mt-2">
         <div class="mr-2">
             <mg-input-labeled v-model="sizes.s1" :placeholder="'кв.м.'">Сторона 1</mg-input-labeled>
         </div>

@@ -1,156 +1,67 @@
 <template>
-    <h3 class="text-center text-2xl font-semibold">Подсчет ламината</h3>
+    <h3 class="text-center text-2xl font-semibold">{{ title }}</h3>
 
     <div>
-        <fieldset>
-            <div class="mt-4 space-y-4">
-                <div class="flex items-start">
-                    <div class="flex h-5 items-center">
-                        <input id="comments" name="comments" type="checkbox"
-                               class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500
-                                   focus:outline-none focus:ring-offset-2 focus:ring-indigo-500"
-                               @click="toggleCustomSizes"
-                               :checked="!toggleCustomSizes"
-                        >
-                    </div>
-                    <div class="ml-3 text-sm">
-                        <label for="comments" class="font-medium text-gray-700">Установить кастомные размеры пола</label>
-                    </div>
-                </div>
-
-            </div>
-        </fieldset>
+        <mg-button @click="setDefaults">установить размеры комнаты по умолчанию</mg-button>
     </div>
 
-    <div
-        v-if="isCustomSizes"
-        class="flex"
-    >
-        <div class="mr-2">
-            <label>
-                <span>Сторона 1</span>
-                <input
-                    @change="updatePerimeterAndSquares"
-                    v-model="customSizes.s1" type="text" autocomplete="s1" required
-                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                               rounded-b-md rounded-t-md
-                               focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="Сторона 1">
-            </label>
-        </div>
-        <div class="mr-2">
-            <label>
-                <span>Сторона 2</span>
-                <input
-                    @change="updatePerimeterAndSquares"
-                    v-model="customSizes.s2" type="text" autocomplete="s2" required
-                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                               rounded-b-md rounded-t-md
-                               focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="Сторона 2">
-            </label>
-        </div>
-        <div class="mr-2">
-            <label>
-                <span>Сторона 3</span>
-                <input
-                    @change="updatePerimeterAndSquares"
-                    id="a3" name="a3" v-model="customSizes.s3" type="text" autocomplete="s3" required
-                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                               rounded-b-md rounded-t-md
-                               focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="Сторона 3">
-            </label>
-        </div>
-        <div class="mr-2">
-            <label>
-                <span>Сторона 4</span>
-                <input
-                    @change="updatePerimeterAndSquares"
-                    v-model="customSizes.s4" type="text" autocomplete="current-password" required
-                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                               rounded-b-md rounded-t-md
-                               focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="Сторона 4">
-            </label>
-        </div>
-
-        <div class="pt-3 hidden">
-            <div>
-                Периметр: <span><strong>{{perimeter}}</strong> м.</span>
-            </div>
-            <div>
-                <span>Площадь потолка: </span>
-                <span><strong>{{square.ceiling}}</strong> кв.м.</span>
-            </div>
-            <div>
-                <span>Площадь пола: </span>
-                <span><strong>{{square.floor}}</strong> кв.м.</span>
-            </div>
-            <div>
-                <span>Площадь стен: </span>
-                <span><strong>{{square.walls}}</strong> кв.м.</span>
-            </div>
-        </div>
-
+    <div class="flex mt-2 justify-between">
+        <mg-input-labeled class="pr-1" v-model="sizes.s1" :placeholder="'кв.м.'">Сторона 1</mg-input-labeled>
+        <mg-input-labeled class="pl-1 pr-1" v-model="sizes.s2" :placeholder="'кв.м.'">Сторона 2</mg-input-labeled>
+        <mg-input-labeled class="pl-1 pr-1" v-model="sizes.s3" :placeholder="'кв.м.'">Сторона 3</mg-input-labeled>
+        <mg-input-labeled class="pl-1" v-model="sizes.s4" :placeholder="'кв.м.'">Сторона 4</mg-input-labeled>
     </div>
 
-    <div class="mt-3">
-        <span>Площадь пола: </span>
-        <span><strong>{{square.floor}}</strong> кв.м.</span>
-    </div>
-
-    <select
-        @change="calcFloor()"
-        v-model="selected_id"
-        name="floor_type" id="floor_type"
-        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
-            sm:text-sm mb-3"
-    >
+    <select v-model="selected_id"
+        class="mt-2 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
+            sm:text-sm mb-3">
         <option value="0">выберите ширину ламината</option>
         <option
             v-for="(pot,index) in prices"
             :value="pot.id">{{pot.name}} - ({{ pot.price }} {{ currency }})
         </option>
     </select>
+    <div v-if="this.$store.state.debug" class="mt-3 border-dotted border-2 p-3 border-red-400">
+        <div>selected_id: {{selected_id}}</div>
+        <div>selectedPrice: {{selectedPrice}}</div>
+    </div>
 
-    <div class="laminatePriceByOneMesure">
-        <div class="mt-2 ">
-            <label class="flex items-center">
-                <span>Цена за 1 кв.м.</span>
-                <input
-                    v-model="price" type="text" autocomplete="s1" required
-                    class="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                           rounded-b-md rounded-t-md
-                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm
-                           w-1/6 ml-2
-                            "
-                    placeholder="Цена ламината">
-            </label>
+
+    <div class="mt-3 flex items-center">
+        <div class="w-7/12">
+            <div class="mt-3">
+                <div>Периметр: <span class="font-semibold">{{perimeter}} м.</span></div>
+                <div>Площадь пола: <span class="font-semibold">{{squareFloorAfterIncDec}} м.</span></div>
+            </div>
+        </div>
+        <div class="w-5/12">
+            <div class="">
+                <mg-input-labeled v-model="incSquareCount">Прибавить м.</mg-input-labeled>
+                <mg-input-labeled v-model="decSquareCount">Убавить м.</mg-input-labeled>
+            </div>
         </div>
     </div>
 
-    <div class="laminateFullPrice mt-2">
-        <p>
-            <span>Цена укладки:</span>
-            <span class="ml-1 font-semibold">{{fullPrice}} {{currency}}</span>
-        </p>
-    </div>
+    <mg-input-labeled v-model="price">Цена за 1 кв.м.</mg-input-labeled>
+    <div class="mt-2">Цена укладки: <span class="font-semibold">{{sum}} {{currency}}</span></div>
     <mg-button @click="addCalcedLaminate">Добавить сумму</mg-button>
 
-    <div class="mt-2">
-        <div class="font-medium">Материалы к покупке:</div>
-        <div>Ламинат - {{laminateToBuy}} м.кв.</div>
-    </div>
+    <materials-for-buy-block
+        :materials="materials"
+        :room="room"
+    ></materials-for-buy-block>
     <mg-button @click="addMaterials">Добавить материалы</mg-button>
 
 </template>
 
 <script>
 import {mapGetters, mapState, mapActions} from "vuex";
+import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
 
 export default {
     name: "LaminateCalc",
+    components: {MaterialsForBuyBlock, },
+
     props:{
         room: {
             type: Object,
@@ -161,19 +72,17 @@ export default {
     data(){
         return {
             price: 200,
-            isCustomSizes: false,
-            customSizes : {
+            title: 'Подсчет ламината',
+
+            sizes : {
                 s1: 0,
                 s2: 0,
                 s3: 0,
                 s4: 0,
             },
-            square: {
-                ceiling: 0,
-                floor: 0,
-                walls: 0,
-            },
-            perimeter: 0,
+            incSquareCount: 0,
+            decSquareCount: 0,
+
             prices: [
                 {
                     id : 1,
@@ -194,6 +103,7 @@ export default {
                     price: 250,
                 },
             ],
+
             selected_id: 1,
             laminateToBuy: 0,
 
@@ -207,78 +117,16 @@ export default {
             incValueToJobsResultingSum: 'incValueToJobsResultingSum',
         }),
 
-        toggleCustomSizes(){
-            this.isCustomSizes = !(this.isCustomSizes);
-        },
-        getActualSizes(){
-            if (this.isCustomSizes){
-                return this.customSizes;
-            }
-            return this.room.sizes;
-        },
-        updatePerimeter() {
-            if (!this.isCustomSizes){
-                this.perimeter =
-                    +(this.room.sizes.s1) +
-                    +(this.room.sizes.s2) +
-                    +(this.room.sizes.s3) +
-                    +(this.room.sizes.s4);
-            }else{
-                this.perimeter =
-                    +(this.customSizes.s1) +
-                    +(this.customSizes.s2) +
-                    +(this.customSizes.s3) +
-                    +(this.customSizes.s4);
-            }
-        },
-        updateSquare(){
-            this.square.ceiling = (
-                +(this.getActualSizes().s1) *
-                +(this.getActualSizes().s2)
-            );
-            this.square.floor = this.square.ceiling;
-            this.square.walls = this.getActualPerimeter() * (this.room.height);
-        },
-        updatePerimeterAndSquares(){
-            //this.updatePerimeter();
-            this.updateSquare();
-        },
-        getActualPerimeter(){
-            this.updatePerimeter();
-            return this.perimeter;
-        },
-        getActualSquares(){
-            this.updateSquare();
-            return this.square;
-        },
         addCalcedLaminate(){
             if (this.selected_id === 0){
                 alert('Выберите ширину ламината!');
                 return;
             }
-            this.addCalcedSum(this.totalAmount);
+            this.addCalced(this.totalAmount);
         },
-        calcFloor(){
-            const changedPrice = this.prices.filter( t => t.id === this.selected_id )[0].price;
-            this.price = changedPrice;
-        },
+
         addMaterials(){
 
-        },
-
-        addCalcedSum(){
-            this.incrementAddedJobNum();
-
-            let tmp_job = {}
-            tmp_job.title = "Ламинат, укладка" + ` (id=${this.currentPickedJob})`;
-            tmp_job.id = this.addedJobNum;
-            tmp_job.room_id = this.room.id;
-            tmp_job.job_id = this.currentPickedJob;
-            tmp_job.sum = this.totalAmount.price;
-            tmp_job.adding_job_info_string = this.totalAmount['adding_job_info_string'];
-
-            this.incValueToJobsResultingSum(tmp_job.sum);
-            this.addJob(tmp_job);
         },
 
         setDefaults(){
@@ -288,6 +136,26 @@ export default {
         setDefaultRoomSizes() {
             this.sizes = Object.assign({}, this.room.sizes);
         },
+
+        createJob(){
+            const job = {}
+            job.title = `${this.title} (id=${this.currentPickedJob})`;
+            job.id = this.addedJobNum;
+            job.room_id = this.room.id;
+            job.job_id = this.currentPickedJob;
+            job.sum = this.totalAmount.price;
+            job.adding_job_info_string = this.totalAmount.adding_job_info_string;
+            return job;
+        },
+
+        addCalced(){
+            this.incrementAddedJobNum();
+
+            const job = this.createJob();
+
+            this.incValueToJobsResultingSum(job.sum);
+            this.addJob(job);
+        },
     },
     computed: {
         ...mapState({
@@ -295,26 +163,63 @@ export default {
             currency: state => state.currency,
         }),
 
-        fullPrice(){
-            return this.price * this.getActualSquares().floor;
+        perimeter(){
+            return  +(this.sizes.s1) +
+                    +(this.sizes.s2) +
+                    +(this.sizes.s3) +
+                    +(this.sizes.s4);
         },
+        perimeterCeil(){
+            return Math.ceil(this.perimeter);
+        },
+
+        squareFloor(){
+            return +(this.sizes.s1) * +(this.sizes.s2);
+        },
+
+        squareFloorCeiled(){
+            return Math.ceil(this.squareFloor)
+        },
+
+        squareFloorAfterIncDec(){
+            return +(this.squareFloorCeiled + +this.incSquareCount - +this.decSquareCount).toFixed(2);
+        },
+
+        selectedPrice(){
+            return this.prices.filter( t => t.id === this.selected_id )[0].price;
+        },
+
+        sum(){
+            const s = ( this.price * this.squareFloorAfterIncDec).toFixed(2);
+            //console.log(typeof s);
+            return +s;
+        },
+
         totalAmount() {
             return {
-                price: this.fullPrice,
+                price: this.sum,
                 adding_job_info_string:
-                    `Площадь пола: ${this.getActualSquares().floor} м.кв.,
+                    `Площадь пола: ${this.squareFloorAfterIncDec} м.кв.,
                     цена за 1 м.кв.: ${this.price} ${this.currency}`,
             };
         },
+
+        materials() {
+            const arr = [];
+            arr.push({title: 'Ламинат',   amount: this.squareFloorAfterIncDec, unit_name: 'м.кв.',});
+            arr.push({title: 'Подстилка', amount: this.squareFloorAfterIncDec, unit_name: 'м.кв.',});
+            return arr;
+        },
     },
     watch:{
+        selectedPrice(newValue){
+            this.price = +newValue;
+        },
     },
     created() {
     },
     mounted() {
         this.setDefaults();
-
-        this.laminateToBuy = this.getActualSquares().floor;
 
         if (sessionStorage.getItem('currentPickedJob')){
             this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
