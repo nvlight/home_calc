@@ -17,12 +17,9 @@ class RoomController extends Controller
     public function index()
     {
         $rooms = Room::all();
-        $lastId = Room::max('room_id');
-
-        $roomsJson = json_encode($rooms);
 
         return json_encode([
-            'rooms' => $rooms, 'lastId' => $lastId
+            'rooms' => $rooms,
         ]);
     }
 
@@ -50,8 +47,6 @@ class RoomController extends Controller
             // узнаю каким будет следущий автоинкремент ИД !
             $nextId = $statement[0]->Auto_increment;
 
-            $room->room_id = $nextId;
-
             try{
                 $r = ($request->all());
                 $r['id'] = $nextId;
@@ -78,23 +73,7 @@ class RoomController extends Controller
 
     public function store2()
     {
-        $room = new Room;
 
-        $room = Room::make([
-            'room_id' => 500,
-            'data' => json_encode(['sizes' => ['s1' => 0, 's2' => 0,'s3' => 0,'s4' => 0,], ]),
-        ]);
-        dump($room);
-        dump($room->getTable());
-        $statement = DB::select("show table status like '{$room->getTable()}'");
-        if ($statement){
-            $nextId = $statement[0]->Auto_increment;
-            dump($statement);
-            dump($nextId);
-        }
-
-        //$room->room_id = 333;
-        //$room->data = json_encode(['sizes' => ['s1' => 0, 's2' => 0,'s3' => 0,'s4' => 0,], ]);
     }
 
     /**
