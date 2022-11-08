@@ -92,8 +92,7 @@ export const roomModule = {
                 })
         },
 
-        createRoom({commit, dispatch, state}){
-            commit('incId');
+        createRoom({dispatch, state}){
             const room = Object.assign({}, state.emptyRoom);
 
             return dispatch('createRoomQuery', room);

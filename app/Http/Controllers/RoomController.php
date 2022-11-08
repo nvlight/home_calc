@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Room;
 use App\Http\Requests\StoreRoomRequest;
 use App\Http\Requests\UpdateRoomRequest;
+use Illuminate\Support\Facades\DB;
 
 class RoomController extends Controller
 {
@@ -44,23 +45,56 @@ class RoomController extends Controller
     public function store(StoreRoomRequest $request)
     {
         $room = new Room();
-        $room->room_id = 333;
-        $room->data = json_encode($request->all());
-        $saved = $room->save();
+        $statement = DB::select("show table status like '{$room->getTable()}'");
+        if ($statement){
+            // узнаю каким будет следущий автоинкремент ИД !
+            $nextId = $statement[0]->Auto_increment;
 
-        $room->room_id = $room->id;
-        $tmp = json_decode($room->data);
-        $tmp->id = $room->id;
+            $room->room_id = $nextId;
 
-        $room->data = json_encode($tmp);
-        $saved = $room->save();
+            try{
+                $r = ($request->all());
+                $r['id'] = $nextId;
+            }catch (\Exception $e){
+                $this->saveToLog($e);
+                $rs = ['success' => 0, 'message' => 'error'];
+                die(json_encode($rs));
+            }
 
+            $room->data = json_encode($r);
+            $saved = $room->save();
+
+            return response()->json([
+                'success' => 1,
+                'saved' => $saved,
+                'room_id' => $nextId,
+            ]);
+        }
         return response()->json([
             'success' => 1,
-            'room_id' => $room->id,
-            'add' => $request->all(),
-            'saved' => $saved,
+            'error' => 'some error!'
         ]);
+    }
+
+    public function store2()
+    {
+        $room = new Room;
+
+        $room = Room::make([
+            'room_id' => 500,
+            'data' => json_encode(['sizes' => ['s1' => 0, 's2' => 0,'s3' => 0,'s4' => 0,], ]),
+        ]);
+        dump($room);
+        dump($room->getTable());
+        $statement = DB::select("show table status like '{$room->getTable()}'");
+        if ($statement){
+            $nextId = $statement[0]->Auto_increment;
+            dump($statement);
+            dump($nextId);
+        }
+
+        //$room->room_id = 333;
+        //$room->data = json_encode(['sizes' => ['s1' => 0, 's2' => 0,'s3' => 0,'s4' => 0,], ]);
     }
 
     /**
@@ -110,5 +144,13 @@ class RoomController extends Controller
         return response()->json([
             'success' => 1,
         ]);
+    }
+
+    protected function saveToLog($e){
+        logger('error with ' . __METHOD__ . ' '
+            . implode(' | ', [
+                $e->getMessage(), $e->getLine(), $e->getCode(), $e->getFile()
+            ])
+        );
     }
 }
