@@ -45,6 +45,7 @@ export default {
     data(){
         return {
             addedJobsClone: [],
+            roomJobs: [],
         }
     },
     methods:{
@@ -75,7 +76,8 @@ export default {
         },
     },
     mounted() {
-    }
+
+    },
 }
 </script>
 

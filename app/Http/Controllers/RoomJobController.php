@@ -14,7 +14,9 @@ class RoomJobController extends Controller
      */
     public function index()
     {
-        //
+        $roomJobs = RoomJob::all();
+
+        return response()->json($roomJobs);
     }
 
     /**
@@ -98,9 +100,21 @@ class RoomJobController extends Controller
      * @param  \App\Models\RoomJob  $roomJob
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RoomJob $roomJob)
+    public function destroy(RoomJob $roomjob)
     {
-        //
+        try{
+            $roomjob->delete();
+        }catch (\Exception $e){
+            $this->saveToLog($e);
+            return response()->json([
+                'success' => 1,
+                'error' => 'some error!'
+            ]);
+        }
+
+        return response()->json([
+            'success' => 1,
+        ]);
     }
 
     protected function saveToLog($e){

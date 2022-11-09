@@ -2,6 +2,8 @@ import axiosClient from "../axios.js";
 
 export const roomModule = {
     state: {
+        loading: true,
+
         rooms: [
             // {
             //     id: 1,
@@ -88,6 +90,7 @@ export const roomModule = {
                         //roomParse.id = roomParse.room_id;
                         commit('insertRoom', roomParse);
                     });
+                    commit('setLoading', false);
 
                     return res;
                 })
@@ -148,6 +151,9 @@ export const roomModule = {
 
     },
     mutations: {
+        setLoading: (state, value) => {
+            state.loading = value;
+        },
 
         insertRoom: (state, room) => {
             state.rooms.push(room);

@@ -15,6 +15,24 @@ export const roomJobModule = {
         },
     },
     actions: {
+        getRoomJobs({commit, dispatch}){
+            let response;
+            response = axiosClient
+                .get("/roomjob")
+                .then((res)=>{
+                    //console.log(res.data)
+                    res.data.forEach(t => commit('addJob', t))
+
+                    //commit('incValueToJobsResultingSum', job.sum);
+                    return res;
+                })
+                .catch( (err) => {
+                    console.log('we got error:',err);
+                    //dispatch('decrementAddedJobNum');
+                })
+            return response;
+        },
+
         addJobToStore({commit, dispatch, state}, job){
             commit('incAddedJobNum');
             job.id = state.addedJobNum;
@@ -51,14 +69,25 @@ export const roomJobModule = {
         addJob({commit}, job){
             return commit('addJob', job);
         },
-        deleteJobHandler({commit, dispatch}, job_id){
-            //console.log(job_id);
-            const filtered = roomJobModule.state.addedJobs.filter(
-                t => t.id == job_id
-            );
-            commit('decValueTojobsResultingSum', filtered[0].sum);
+        deleteJobHandler({commit, dispatch}, roomjob){
+            //console.log('roomjob:', roomjob);
 
-            dispatch('deleteJob', job_id);
+            let response;
+            response = axiosClient
+                .delete(`/roomjob/${roomjob}`)
+                .then((res)=>{
+                    //console.log(res.data)
+                    if (res.data.success){
+                        const filtered = roomJobModule.state.addedJobs.filter(
+                            t => t.id == roomjob
+                        );
+                        commit('decValueTojobsResultingSum', filtered[0].sum);
+                        dispatch('deleteJob', roomjob);
+                    }
+
+                    return res;
+                })
+            return response;
         },
         deleteJob({commit}, job_id){
             return commit('deleteJob', job_id);

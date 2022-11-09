@@ -28,6 +28,7 @@ export default {
     methods:{
         ...mapActions({
             loadRooms: 'room/getRooms',
+            loadRoomJobs: 'roomJob/getRoomJobs',
         }),
 
         // интересно, но окна добавляются для всех комнат
@@ -78,10 +79,17 @@ export default {
     computed:{
         ...mapState({
             rooms: state => state.room.rooms,
+            roomLoading: state => state.room.loading,
         }),
+    },
+    watch:{
+        roomLoading(v1, v2){
+            this.loadRoomJobs();
+        },
     },
     mounted() {
         this.loadRooms();
+        //this.loadRoomJobs();
     }
 }
 </script>
