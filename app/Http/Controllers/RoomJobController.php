@@ -56,6 +56,7 @@ class RoomJobController extends Controller
 
         return response()->json([
             'success' => 1,
+            'save_id' => $rj->id,
             'saved' => $saved,
         ]);
     }

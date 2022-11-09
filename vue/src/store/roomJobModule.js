@@ -52,6 +52,7 @@ export const roomJobModule = {
                     //console.log(res.data)
                     commit('addJob', job);
                     commit('incValueToJobsResultingSum', job.sum);
+                    job.id = res.data.save_id;
                     return res;
                 })
                 .catch( (err) => {
@@ -97,6 +98,9 @@ export const roomJobModule = {
             return commit('incValueToJobsResultingSum', sum);
         },
 
+        setJobsResultingSum({commit}, value){
+            commit('setJobsResultingSum', value);
+        }
     },
     mutations: {
         incAddedJobNum: (state) => {
@@ -120,6 +124,10 @@ export const roomJobModule = {
         decValueTojobsResultingSum(state, sum){
             state.jobsResultingSum -= sum;
         },
+
+        setJobsResultingSum(state, value){
+            state.jobsResultingSum = value;
+        }
     },
     namespaced: true,
 }

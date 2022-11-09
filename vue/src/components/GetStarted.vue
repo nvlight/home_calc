@@ -101,9 +101,7 @@
                 </div>
             </div>
 
-            <div class="resultingSumm p-3">
-                <h1 class="text-2xl font-semibold">Общая стоимость работ: {{jobsResultingSum}} {{ currency }}</h1>
-            </div>
+            <job-resulting-sum></job-resulting-sum>
 
         </main>
     </div>
@@ -113,8 +111,9 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import RoomList from "./RoomList.vue";
+import JobResultingSum from "./JobResultingSum.vue";
 import AddRoomButton from "./AddRoomButton.vue";
-import {computed} from "vue";
+import {computed, watch} from "vue";
 import store from "../store/index.js";
 import router from "../router/index.js";
 
