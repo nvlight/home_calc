@@ -20,8 +20,8 @@
                             </mg-trash-icon-button>
                         </div>
                     </div>
-                    <div v-if="job.adding_job_info_string">
-                        [{{ job.adding_job_info_string }}]
+                    <div v-if="job.main_info">
+                        [{{ job.main_info }}]
                     </div>
                 </div>
             </div>

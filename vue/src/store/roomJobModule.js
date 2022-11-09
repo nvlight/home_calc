@@ -15,27 +15,38 @@ export const roomJobModule = {
         },
     },
     actions: {
-        createRoomJob({dispatch, state}){
-            const room = Object.assign({}, state.emptyRoom);
-
-            return dispatch('createRoomQuery', room);
+        addJobToStore({commit, dispatch, state}, job){
+            commit('incAddedJobNum');
+            job.id = state.addedJobNum;
+            dispatch('createRoomJob', job);
         },
 
-        createRoomJobQuery({commit, dispatch, getters}, room){
+        createRoomJob({dispatch, state}, job){
+            //const room = Object.assign({}, state.emptyRoom);
+            return dispatch('createRoomJobQuery', job);
+        },
+
+        createRoomJobQuery({commit, dispatch, getters}, job){
             let response;
             response = axiosClient
-                .post("/room", room)
+                .post("/roomjob", job)
                 .then((res)=>{
-                    console.log(res.data)
-                    room.id = res.data.room_id
-                    commit('insertRoom', room)
+                    //console.log(res.data)
+                    commit('addJob', job);
+                    commit('incValueToJobsResultingSum', job.sum);
                     return res;
+                })
+                .catch( (err) => {
+                    dispatch('decrementAddedJobNum');
                 })
             return response;
         },
 
         incrementAddedJobNum({commit}){
             return commit('incAddedJobNum');
+        },
+        decrementAddedJobNum({commit}){
+            return commit('decAddedJobNum');
         },
         addJob({commit}, job){
             return commit('addJob', job);
@@ -61,6 +72,9 @@ export const roomJobModule = {
     mutations: {
         incAddedJobNum: (state) => {
             state.addedJobNum++;
+        },
+        decAddedJobNum: (state) => {
+            state.addedJobNum--;
         },
         addJob: (state, job) => {
             state.addedJobs.push(job);
