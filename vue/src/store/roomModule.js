@@ -42,6 +42,7 @@ export const roomModule = {
 
         emptyRoom: {
             id: 0,
+            title: 'Имя комнаты',
             sizes : {
                 s1: 0,
                 s2: 0,
@@ -111,13 +112,18 @@ export const roomModule = {
             return response;
         },
 
-        updateRoom({commit, dispatch, getters}, id){
+        updateRoom({commit, dispatch, getters}, dt){
+            const id = dt.number;
+            //console.log('room title: ', title);
+            //console.log('room id: ', id);
             commit('setUpdateRoomId', id);
             const room = getters.getRoomById;
+            room.title = dt.title;
             dispatch('updateRoomQuery', room);
         },
 
         updateRoomQuery({commit, dispatch, getters}, room){
+            //console.log(dt);
             let response;
             response = axiosClient
                 .patch(`/room/${room.id}`, room)

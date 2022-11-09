@@ -3,10 +3,16 @@
     <div class="min-h-full flex items-center justify-start pt-4 pb-2 px-2 sm:px-2 lg:px-2">
         <div class="max-w-md w-full space-y-2">
 
-            <div class="flex justify-between items-center">
-                <h1 class="font-semibold text-xl text-center">{{number}}. </h1>
+            <div class="flex  ">
+                <div class="w-full flex items-center">
+                    <div class="font-semibold text-xl"> {{number}}.</div>
+                    <div class="w-full ml-2 mr-2">
+                        <mg-input-labeled classes="md:text-xl" v-model="title"></mg-input-labeled>
+                    </div>
+
+                </div>
                 <div class="flex justify-between items-center">
-                    <button @click="updateRoom(number)">
+                    <button @click="updateRoom({number, title})">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-green-700">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
                         </svg>
@@ -311,6 +317,10 @@ export default {
     ],
     data(){
         return {
+            projectId: 0,
+            projectName: '',
+            title: 'Имя комнаты',
+
             currentPickedJob: 0,
 
             workTypes: [
@@ -422,6 +432,7 @@ export default {
     created(){
     },
     mounted(){
+        this.title = this.room.title;
 
         if (sessionStorage.getItem('currentPickedJob')){
             this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');

@@ -110,6 +110,8 @@ class RoomController extends Controller
         try{
             $r = ($request->all());
             $room->data = json_encode($r);
+            $room->title = $r['title'];
+            $saved = $room->save();
         }catch (\Exception $e){
             $this->saveToLog($e);
 
@@ -118,7 +120,6 @@ class RoomController extends Controller
                 'error' => 'some error!'
             ]);
         }
-        $saved = $room->save();
 
         return response()->json([
             'success' => 1,
