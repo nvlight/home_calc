@@ -107,7 +107,24 @@ class RoomController extends Controller
      */
     public function update(UpdateRoomRequest $request, Room $room)
     {
-        //
+        try{
+            $r = ($request->all());
+            $room->data = json_encode($r);
+        }catch (\Exception $e){
+            $this->saveToLog($e);
+
+            return response()->json([
+                'success' => 1,
+                'error' => 'some error!'
+            ]);
+        }
+        $saved = $room->save();
+
+        return response()->json([
+            'success' => 1,
+            'saved' => $saved,
+            'room_id' => $room->id,
+        ]);
     }
 
     /**

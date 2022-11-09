@@ -61,14 +61,14 @@ export const roomModule = {
             connectors: 0, // соединение
             stubs: 0, // заглушка
         },
-        saveRoomId: 0,
+        updateRoomId: 0,
     },
     getters: {
         getRoomById(){
             //console.log('getRoomById', roomModule.state.setSaveRoomId);
             const find =
                 roomModule.state.rooms.filter(
-                    t => t.id === roomModule.state.saveRoomId
+                    t => t.id === roomModule.state.updateRoomId
                 );
 
             return find[0];
@@ -111,23 +111,30 @@ export const roomModule = {
             return response;
         },
 
-        saveRoom({commit, dispatch, getters}, id){
-            commit('setSaveRoomId', id);
+        updateRoom({commit, dispatch, getters}, id){
+            commit('setUpdateRoomId', id);
             const room = getters.getRoomById;
-            //console.log(room);
-            //console.log(JSON.stringify(room));
-            dispatch('saveRoomQuery', room);
+            dispatch('updateRoomQuery', room);
         },
 
-        saveRoomQuery({commit, dispatch, getters}, room){
+        updateRoomQuery({commit, dispatch, getters}, room){
             let response;
             response = axiosClient
-                .post("/room", room)
+                .patch(`/room/${room.id}`, room)
                 .then((res)=>{
                     //console.log(res.data)
                     return res;
                 })
             return response;
+        },
+
+        updateRoom1({commit}, room){
+            return axiosClient
+                .patch("/room" + room.id)
+                .then((res)=>{
+                    console.log(res.data)
+                    return res;
+                })
         },
 
         deleteRoom({commit}, roomId){
@@ -140,24 +147,6 @@ export const roomModule = {
                     return res;
                 })
             return response;
-        },
-
-        deleteRoomHandler({commit, dispatch, state}, roomId){
-            const filtered = state.rooms.filter(
-                t => t.id == roomId
-            );
-            //commit('decValueTojobsResultingSum', filtered[0].sum);
-
-            dispatch('deleteRoom', roomId);
-        },
-
-        updateRoom({commit}, room){
-            return axiosClient
-                .patch("/room" + room.id)
-                .then((res)=>{
-                    console.log(res.data)
-                    return res;
-                })
         },
     },
     mutations: {
@@ -172,8 +161,8 @@ export const roomModule = {
             );
         },
 
-        setSaveRoomId: (state, id) => {
-            state.saveRoomId = id;
+        setUpdateRoomId: (state, id) => {
+            state.updateRoomId = id;
         },
 
     },

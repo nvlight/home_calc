@@ -72,6 +72,10 @@
         </div>
     </div>
 
+    <materials-for-buy-block
+        :materials="materials"
+        :room="room"
+    ></materials-for-buy-block>
     <mg-button @click="">Добавить материалы</mg-button>
 </template>
 
