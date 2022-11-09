@@ -102,9 +102,9 @@ export default {
     },
     methods:{
         ...mapActions({
-            incrementAddedJobNum: 'incrementAddedJobNum',
-            incValueToJobsResultingSum: 'incValueToJobsResultingSum',
-            addJob: 'addJob',
+            incrementAddedJobNum: 'roomJob/incrementAddedJobNum',
+            incValueToJobsResultingSum: 'roomJob/incValueToJobsResultingSum',
+            addJob: 'roomJob/addJob',
         }),
 
         setDefaultActionsHandler(){
@@ -135,7 +135,7 @@ export default {
     computed:{
         ...mapState({
             currency: state => state.currency,
-            addedJobNum: state => state.addedJobNum,
+            addedJobNum: state => state.roomJob.addedJobNum,
         }),
 
         perimeter(){

@@ -142,7 +142,7 @@ const currency = computed(() => {
 });
 
 const jobsResultingSum = computed(() => {
-    return store.state.jobsResultingSum;
+    return store.state.roomJob.jobsResultingSum;
 });
 
 function logout(){

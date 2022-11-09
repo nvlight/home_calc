@@ -408,7 +408,7 @@ export default {
             addedJobs: state => state.addedJobs,
         }),
         ...mapGetters({
-            jobsSum: 'jobsSum',
+            jobsSum: 'roomJob/jobsSum',
         }),
 
         perimeter(){

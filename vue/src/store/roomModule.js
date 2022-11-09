@@ -134,15 +134,6 @@ export const roomModule = {
             return response;
         },
 
-        updateRoom1({commit}, room){
-            return axiosClient
-                .patch("/room" + room.id)
-                .then((res)=>{
-                    console.log(res.data)
-                    return res;
-                })
-        },
-
         deleteRoom({commit}, roomId){
             let response;
             response = axiosClient
@@ -154,6 +145,7 @@ export const roomModule = {
                 })
             return response;
         },
+
     },
     mutations: {
 

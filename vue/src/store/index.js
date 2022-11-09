@@ -1,6 +1,7 @@
 import {createStore} from "vuex";
 import axiosClient from "../axios.js";
 import {roomModule} from "./roomModule.js";
+import {roomJobModule} from "./roomJobModule.js";
 
 const store = createStore({
     state:{
@@ -12,10 +13,9 @@ const store = createStore({
         currency: "₽",
         materialsForBuyCount: 0,
         materialsForBuy: [],
-        jobsResultingSum: 0,
+
         roomsJobsResultSumArray: [],
-        addedJobNum: 0,
-        addedJobs: [],
+
         currentRoomJobsSum: 0,
         currentPickedJob: 0,
 
@@ -105,11 +105,7 @@ const store = createStore({
         ],
     },
     getters:{
-        jobsSum(){
-            const sum = store.state.addedJobs
-                .reduce( (previousValue, currentValue) => previousValue + currentValue.sum, 0 );
-            return sum;
-        },
+
     },
     actions:{
         // 12345678aA@
@@ -167,26 +163,6 @@ const store = createStore({
                     return response;
                 })
         },
-        incrementAddedJobNum({commit}){
-            return commit('incAddedJobNum');
-        },
-        addJob({commit}, job){
-            return commit('addJob', job);
-        },
-        deleteJobHandler({commit, dispatch}, job_id){
-            const filtered = store.state.addedJobs.filter(
-                t => t.id == job_id
-            );
-            commit('decValueTojobsResultingSum', filtered[0].sum);
-
-            dispatch('deleteJob', job_id);
-        },
-        deleteJob({commit}, job_id){
-            return commit('deleteJob', job_id);
-        },
-        incValueToJobsResultingSum({commit}, sum){
-            return commit('incValueToJobsResultingSum', sum);
-        },
 
         setCurrentPickedJob({commit}, id){
             return commit('setCurrentPickedJob', id);
@@ -206,12 +182,6 @@ const store = createStore({
 
             state.materialsForBuyCount--;
         },
-        incValueToJobsResultingSum(state, sum){
-            state.jobsResultingSum += sum;
-        },
-        decValueTojobsResultingSum(state, sum){
-            state.jobsResultingSum -= sum;
-        },
         setUser: (state, userData) => {
             state.user.token = userData.token;
             state.user.data  = userData.user;
@@ -222,17 +192,6 @@ const store = createStore({
             state.user.token = null;
             sessionStorage.removeItem('TOKEN');
         },
-        incAddedJobNum: (state) => {
-            state.addedJobNum++;
-        },
-        addJob: (state, job) => {
-            state.addedJobs.push(job);
-        },
-        deleteJob: (state, job_id) => {
-            state.addedJobs = state.addedJobs.filter(
-                t => t.id != job_id
-            );
-        },
 
         setCurrentPickedJob: (state, id) => {
             state.currentPickedJob = +id;
@@ -241,6 +200,7 @@ const store = createStore({
     },
     modules:{
         room: roomModule,
+        roomJob: roomJobModule,
     },
 })
 

@@ -49,16 +49,16 @@ export default {
     },
     methods:{
         ...mapActions({
-            deleteJob: 'deleteJobHandler',
+            deleteJob: 'roomJob/deleteJobHandler',
         }),
     },
     computed:{
         ...mapState({
             currency: state => state.currency,
-            addedJobs: state => state.addedJobs,
+            addedJobs: state => state.roomJob.addedJobs,
         }),
         ...mapGetters({
-            jobsSum: 'jobsSum',
+            jobsSum: 'roomJob/jobsSum',
         }),
     },
     watch:{

@@ -27,7 +27,7 @@ export default {
     computed: {
         ...mapState({
             currency: state => state.currency,
-            addedJobs: state => state.addedJobs,
+            addedJobs: state => state.roomJob.addedJobs,
         }),
         jobsSum(){
            //return this.$store.getters.getRoomJobsSum(this.room_id);
