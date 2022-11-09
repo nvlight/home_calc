@@ -6,23 +6,32 @@ export const roomJobModule = {
         addedJobs: [],
 
         jobsResultingSum: 0,
+        jobsSum: 0,
     },
     getters: {
-        jobsSum(){
-            const sum = roomJobModule.state.addedJobs
+        jobsSum(state){
+            const sum = state.addedJobs
                 .reduce( (previousValue, currentValue) => previousValue + currentValue.sum, 0 );
             return sum;
         },
     },
     actions: {
-        getRoomJobs({commit, dispatch}){
+        getJobsSum({state, getters}){
+            return getters.jobsSum;
+        },
+        updateJobsSum({commit, state}){
+            //const sum = state.addedJobs.reduce( (previousValue, currentValue) => previousValue + currentValue.sum, 0 );
+            //commit('setJobsSum', sum);
+        },
+
+        getRoomJobs({commit, dispatch, state}){
             let response;
             response = axiosClient
                 .get("/roomjob")
                 .then((res)=>{
                     //console.log(res.data)
                     res.data.forEach(t => commit('addJob', t))
-
+                    dispatch('updateJobsSum');
                     //commit('incValueToJobsResultingSum', job.sum);
                     return res;
                 })
@@ -53,6 +62,7 @@ export const roomJobModule = {
                     commit('addJob', job);
                     commit('incValueToJobsResultingSum', job.sum);
                     job.id = res.data.save_id;
+                    dispatch('updateJobsSum');
                     return res;
                 })
                 .catch( (err) => {
@@ -84,6 +94,7 @@ export const roomJobModule = {
                         );
                         commit('decValueTojobsResultingSum', filtered[0].sum);
                         dispatch('deleteJob', roomjob);
+                        dispatch('updateJobsSum');
                     }
 
                     return res;
@@ -127,6 +138,10 @@ export const roomJobModule = {
 
         setJobsResultingSum(state, value){
             state.jobsResultingSum = value;
+        },
+
+        setJobsSum(state, value){
+            state.jobsSum = value;
         }
     },
     namespaced: true,

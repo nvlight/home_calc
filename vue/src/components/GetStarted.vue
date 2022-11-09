@@ -140,9 +140,9 @@ const currency = computed(() => {
     return store.state.currency;
 });
 
-const jobsResultingSum = computed(() => {
-    return store.state.roomJob.jobsResultingSum;
-});
+// const jobsResultingSum = computed(() => {
+//     return store.state.roomJob.jobsResultingSum;
+// });
 
 function logout(){
     store.dispatch('logout')

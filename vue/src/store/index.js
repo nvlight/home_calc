@@ -105,7 +105,9 @@ const store = createStore({
         ],
     },
     getters:{
-
+        testVal(state){
+            return 347;
+        }
     },
     actions:{
         // 12345678aA@

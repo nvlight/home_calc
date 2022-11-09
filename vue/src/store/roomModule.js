@@ -67,6 +67,9 @@ export const roomModule = {
         updateRoomId: 0,
     },
     getters: {
+        jobsSum(){
+            return 555;
+        },
         getRoomById(){
             //console.log('getRoomById', roomModule.state.setSaveRoomId);
             const find =
