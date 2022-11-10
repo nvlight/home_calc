@@ -12,7 +12,7 @@
         <mg-input-labeled class="pl-1" v-model="sizes.s4" :placeholder="'кв.м.'">Сторона 4</mg-input-labeled>
 
         <div class="ml-2">
-            <mg-input-labeled v-model="room.height">Высота</mg-input-labeled>
+            <mg-input-labeled v-model="height">Высота</mg-input-labeled>
         </div>
     </div>
 
@@ -81,7 +81,7 @@ export default {
     emits: [],
     data(){
         return {
-            price: 200,
+            price: 0,
             title: 'Плитка, стены',
 
             sizes : {
