@@ -41,7 +41,7 @@
         <span class="font-semibold">{{sum}} {{currency}}</span>
     </div>
 
-    <mg-button @click="addCalcedCornices">Добавить сумму</mg-button>
+    <mg-button @click="addCalced">Добавить сумму</mg-button>
 
 </template>
 
@@ -80,24 +80,21 @@ export default {
     },
     methods: {
         ...mapActions({
-            incrementAddedJobNum: 'incrementAddedJobNum',
-            incValueToJobsResultingSum: 'incValueToJobsResultingSum',
-            addJob: 'addJob',
+            addJob: 'roomJob/createRoomJob',
         }),
 
-        addCalcedCornices(){
-            this.incrementAddedJobNum();
+        createJob(){
+            const job = {}
+            job.title = `${this.title} (id=${this.currentPickedJob})`;
+            job.room_id = this.room.id;
+            job.job_id = this.currentPickedJob;
+            job.sum = this.totalAmount.price;
+            job.main_info = this.totalAmount.adding_job_info_string;
+            return job;
+        },
 
-            let tmp_job = {}
-            tmp_job.title = `${this.title} (id=${this.currentPickedJob})`;
-            tmp_job.id = this.addedJobNum;
-            tmp_job.room_id = this.room.id;
-            tmp_job.job_id = this.currentPickedJob;
-            tmp_job.sum = this.totalAmount.price;
-            tmp_job.adding_job_info_string = this.totalAmount.adding_job_info_string;
-
-            this.incValueToJobsResultingSum(tmp_job.sum);
-            this.addJob(tmp_job);
+        addCalced(){
+            this.addJob(this.createJob());
         },
 
         setDefaultSizes(){
@@ -107,7 +104,6 @@ export default {
     computed:{
         ...mapState({
             currency: state => state.currency,
-            addedJobNum: state => state.addedJobNum,
         }),
 
         perimeter(){

@@ -156,7 +156,6 @@ export default {
     computed:{
         ...mapState({
             currency: state => state.currency,
-            addedJobNum: state => state.addedJobNum,
         }),
 
         perimeter(){

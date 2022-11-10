@@ -294,7 +294,6 @@ export default {
     },
     computed: {
         ...mapState({
-            addedJobNum: state => state.addedJobNum,
             currency: state => state.currency,
         }),
 

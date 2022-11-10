@@ -72,7 +72,7 @@ export default {
     data(){
         return {
             price: 200,
-            title: 'Подсчет ламината',
+            title: 'Ламинат',
 
             sizes : {
                 s1: 0,
@@ -112,9 +112,7 @@ export default {
     },
     methods: {
         ...mapActions({
-            addJob: 'addJob',
-            incrementAddedJobNum: 'incrementAddedJobNum',
-            incValueToJobsResultingSum: 'incValueToJobsResultingSum',
+            addJob: 'roomJob/createRoomJob',
         }),
 
         addCalcedLaminate(){
@@ -140,26 +138,19 @@ export default {
         createJob(){
             const job = {}
             job.title = `${this.title} (id=${this.currentPickedJob})`;
-            job.id = this.addedJobNum;
             job.room_id = this.room.id;
             job.job_id = this.currentPickedJob;
             job.sum = this.totalAmount.price;
-            job.adding_job_info_string = this.totalAmount.adding_job_info_string;
+            job.main_info = this.totalAmount.adding_job_info_string;
             return job;
         },
 
         addCalced(){
-            this.incrementAddedJobNum();
-
-            const job = this.createJob();
-
-            this.incValueToJobsResultingSum(job.sum);
-            this.addJob(job);
+            this.addJob(this.createJob());
         },
     },
     computed: {
         ...mapState({
-            addedJobNum: state => state.addedJobNum,
             currency: state => state.currency,
         }),
 

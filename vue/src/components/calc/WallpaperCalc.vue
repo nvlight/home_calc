@@ -120,9 +120,7 @@ export default {
 
     methods:{
         ...mapActions({
-            incrementAddedJobNum: 'incrementAddedJobNum',
-            incValueToJobsResultingSum: 'incValueToJobsResultingSum',
-            addJob: 'addJob',
+            addJob: 'roomJob/createRoomJob',
         }),
 
         setDefaultRoomSizesHandler(){
@@ -136,20 +134,14 @@ export default {
         createJob() {
             const job = {}
             job.title = `${this.title} (id=${this.currentPickedJob})`;
-            job.id = this.addedJobNum;
             job.room_id = this.room.id;
             job.job_id = this.currentPickedJob;
             job.sum = this.totalAmount.price;
-            job.adding_job_info_string = this.totalAmount.adding_job_info_string;
+            job.main_info = this.totalAmount.adding_job_info_string;
             return job;
         },
         addCalced() {
-            this.incrementAddedJobNum();
-
-            const job = this.createJob();
-
-            this.incValueToJobsResultingSum(job.sum);
-            this.addJob(job);
+            this.addJob(this.createJob());
         },
 
     },
@@ -159,7 +151,6 @@ export default {
 
         ...mapState({
             currency: state => state.currency,
-            addedJobNum: state => state.addedJobNum,
         }),
 
         perimeter(){
