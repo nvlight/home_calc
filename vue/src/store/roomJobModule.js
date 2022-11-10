@@ -2,11 +2,8 @@ import axiosClient from "../axios.js";
 
 export const roomJobModule = {
     state: {
-        addedJobNum: 0,
         addedJobs: [],
 
-        jobsResultingSum: 0,
-        jobsSum: 0,
     },
     getters: {
         jobsSum(state){
@@ -16,85 +13,57 @@ export const roomJobModule = {
         },
     },
     actions: {
-        getJobsSum({state, getters}){
-            return getters.jobsSum;
-        },
-        updateJobsSum({commit, state}){
-            //const sum = state.addedJobs.reduce( (previousValue, currentValue) => previousValue + currentValue.sum, 0 );
-            //commit('setJobsSum', sum);
-        },
-
-        getRoomJobs({commit, dispatch, state}){
+        getRoomJobs({commit}){
             let response;
             response = axiosClient
                 .get("/roomjob")
                 .then((res)=>{
                     //console.log(res.data)
                     res.data.forEach(t => commit('addJob', t))
-                    dispatch('updateJobsSum');
-                    //commit('incValueToJobsResultingSum', job.sum);
                     return res;
                 })
                 .catch( (err) => {
                     console.log('we got error:',err);
-                    //dispatch('decrementAddedJobNum');
                 })
             return response;
         },
 
-        addJobToStore({commit, dispatch, state}, job){
-            commit('incAddedJobNum');
-            job.id = state.addedJobNum;
+        addJobToStore({dispatch}, job){
             dispatch('createRoomJob', job);
         },
 
         createRoomJob({dispatch, state}, job){
-            //const room = Object.assign({}, state.emptyRoom);
             return dispatch('createRoomJobQuery', job);
         },
 
-        createRoomJobQuery({commit, dispatch, getters}, job){
+        createRoomJobQuery({commit}, job){
             let response;
             response = axiosClient
                 .post("/roomjob", job)
                 .then((res)=>{
                     //console.log(res.data)
-                    commit('addJob', job);
-                    commit('incValueToJobsResultingSum', job.sum);
                     job.id = res.data.save_id;
-                    dispatch('updateJobsSum');
+                    commit('addJob', job);
                     return res;
                 })
                 .catch( (err) => {
-                    dispatch('decrementAddedJobNum');
                 })
             return response;
         },
 
-        incrementAddedJobNum({commit}){
-            return commit('incAddedJobNum');
-        },
-        decrementAddedJobNum({commit}){
-            return commit('decAddedJobNum');
-        },
         addJob({commit}, job){
             return commit('addJob', job);
         },
-        deleteJobHandler({commit, dispatch}, roomjob){
+        deleteJobHandler({dispatch}, roomjobId){
             //console.log('roomjob:', roomjob);
 
             let response;
             response = axiosClient
-                .delete(`/roomjob/${roomjob}`)
+                .delete(`/roomjob/${roomjobId}`)
                 .then((res)=>{
                     //console.log(res.data)
                     if (res.data.success){
-                        const filtered = roomJobModule.state.addedJobs.filter(
-                            t => t.id == roomjob
-                        );
-                        commit('decValueTojobsResultingSum', filtered[0].sum);
-                        dispatch('deleteJob', roomjob);
-                        dispatch('updateJobsSum');
+                        dispatch('deleteJob', roomjobId);
                     }
 
                     return res;
@@ -105,44 +74,16 @@ export const roomJobModule = {
             return commit('deleteJob', job_id);
         },
 
-        incValueToJobsResultingSum({commit}, sum){
-            return commit('incValueToJobsResultingSum', sum);
-        },
-
-        setJobsResultingSum({commit}, value){
-            commit('setJobsResultingSum', value);
-        }
     },
     mutations: {
-        incAddedJobNum: (state) => {
-            state.addedJobNum++;
-        },
-        decAddedJobNum: (state) => {
-            state.addedJobNum--;
-        },
         addJob: (state, job) => {
             state.addedJobs.push(job);
         },
-        deleteJob: (state, job_id) => {
+        deleteJob: (state, roomjobId) => {
             state.addedJobs = state.addedJobs.filter(
-                t => t.id != job_id
+                t => t.id != roomjobId
             );
         },
-
-        incValueToJobsResultingSum(state, sum){
-            state.jobsResultingSum += sum;
-        },
-        decValueTojobsResultingSum(state, sum){
-            state.jobsResultingSum -= sum;
-        },
-
-        setJobsResultingSum(state, value){
-            state.jobsResultingSum = value;
-        },
-
-        setJobsSum(state, value){
-            state.jobsSum = value;
-        }
     },
     namespaced: true,
 }
