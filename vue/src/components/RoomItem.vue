@@ -286,7 +286,7 @@
     <added-building-materials-list></added-building-materials-list>
     <!-- / added Building materials list -->
 
-    <BuildingMaterial></BuildingMaterial>
+<!--    <BuildingMaterial></BuildingMaterial>-->
 
 </template>
 

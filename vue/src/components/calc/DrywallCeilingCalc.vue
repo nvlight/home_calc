@@ -84,7 +84,7 @@ export default {
             incSquareCount: 0,
             decSquareCount: 0,
 
-            price: 200,
+            price: 250,
 
             profileStep: 0.4,
             suspensionStep: 0.5,
@@ -96,15 +96,12 @@ export default {
                 samor35sm_metall: 0,
             },
 
-
             currentPickedJob: 0,
         }
     },
     methods:{
         ...mapActions({
-            incrementAddedJobNum: 'roomJob/incrementAddedJobNum',
-            incValueToJobsResultingSum: 'roomJob/incValueToJobsResultingSum',
-            addJob: 'roomJob/addJob',
+            addJob: 'roomJob/createRoomJob',
         }),
 
         setDefaultActionsHandler(){
@@ -119,18 +116,17 @@ export default {
             job.job_id = this.currentPickedJob;
             job.sum = this.totalAmount.price;
             job.main_info = this.totalAmount.adding_job_info_string;
-
             return job;
         },
 
         addCalced(){
-            this.$store.dispatch('roomJob/addJobToStore', this.createJob());
+            //this.$store.dispatch('roomJob/addJobToStore', this.createJob());
+            this.addJob(this.createJob());
         },
     },
     computed:{
         ...mapState({
             currency: state => state.currency,
-            addedJobNum: state => state.roomJob.addedJobNum,
         }),
 
         perimeter(){

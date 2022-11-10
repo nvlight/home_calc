@@ -28,10 +28,6 @@ export const roomJobModule = {
             return response;
         },
 
-        addJobToStore({dispatch}, job){
-            dispatch('createRoomJob', job);
-        },
-
         createRoomJob({dispatch, state}, job){
             return dispatch('createRoomJobQuery', job);
         },

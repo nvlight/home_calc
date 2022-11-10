@@ -252,9 +252,7 @@ export default {
     },
     methods: {
         ...mapActions({
-            addJob: 'addJob',
-            incrementAddedJobNum: 'incrementAddedJobNum',
-            incValueToJobsResultingSum: 'incValueToJobsResultingSum',
+            addJob: 'roomJob/createRoomJob',
         }),
 
         getDefaultPerimeter() {
@@ -283,21 +281,15 @@ export default {
         createJob() {
             const job = {}
             job.title = `${this.title} (id=${this.currentPickedJob})`;
-            job.id = this.addedJobNum;
             job.room_id = this.room.id;
             job.job_id = this.currentPickedJob;
             job.sum = this.totalAmount.price;
-            job.adding_job_info_string = this.totalAmount.adding_job_info_string;
+            job.main_info = this.totalAmount.adding_job_info_string;
             job.seiling_selected_id = this.totalAmount.seiling_selected_id; // unigue for seiling
             return job;
         },
         addCalced() {
-            this.incrementAddedJobNum();
-
-            const job = this.createJob();
-
-            this.incValueToJobsResultingSum(job.sum);
-            this.addJob(job);
+            this.addJob(this.createJob());
         },
     },
     computed: {

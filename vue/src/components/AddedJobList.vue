@@ -65,9 +65,6 @@ export default {
     watch:{
         addedJobs: {
             handler(newValue, oldValue){
-                //console.log('newValue:', newValue);
-                //console.log('oldValue:', oldValue);
-
                 const tmp = this.addedJobs
                     .filter(t => t.room_id === this.room_id )
                 this.addedJobsClone = Object.assign(tmp, {});

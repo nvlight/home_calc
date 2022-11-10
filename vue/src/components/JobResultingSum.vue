@@ -1,6 +1,13 @@
 <template>
-    <div class="resultingSumm p-3">
-        <h1 class="text-2xl font-semibold">Общая стоимость работ: {{jobsSum}} {{ currency }}</h1>
+    <div class="resultingSumm">
+        <div class="">
+            <div class="fixed border border-red-400 border-dotted rounded-full flex justify-center items-center"
+                 style="top: 7px; right: 7px; height: 55px; width: 111px; margin-top: 0;
+                 background-color: #fff; padding: 10px;
+                ">
+                <div class="fixed text-2xl font-semibold">{{jobsSum}} {{ currency }}</div>
+            </div>
+        </div>
     </div>
 </template>
 

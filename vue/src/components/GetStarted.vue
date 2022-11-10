@@ -86,7 +86,7 @@
                 >Доска подсчета</h1>
             </div>
         </header>
-        <main>
+        <main class="relative">
 
             <div class="flex justify-center mt-2">
                 <add-room-button class="content-center  items-center"></add-room-button>
