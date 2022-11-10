@@ -10,7 +10,7 @@
                 <span>{{index+1}}. </span>
                 <span>{{material.title}}: </span>
             </div>
-            <div class="ml-1 self-center">
+            <div class="ml-1 self-center flex ">
                 <span class="font-semibold">{{material.amount}}</span>
                 <span>&nbsp;{{material.unit_name}}</span>
             </div>
