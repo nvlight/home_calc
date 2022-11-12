@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent action="">
+    <form @submit.prevent>
         <h3 class="">Создание нового материала</h3>
         <mg-input-labeled v-model="material.title">title</mg-input-labeled>
         <mg-input-labeled v-model="material.price">price</mg-input-labeled>

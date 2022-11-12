@@ -15,7 +15,12 @@ class MaterialController extends Controller
      */
     public function index()
     {
-        //
+        $materials = Material::all();
+
+        return response()->json([
+            'data' => $materials,
+            'success' => 1,
+        ]);
     }
 
     /**
@@ -107,7 +112,19 @@ class MaterialController extends Controller
      */
     public function destroy(material $material)
     {
-        //
+        try{
+            $material->delete();
+        }catch (\Exception $e){
+            $this->saveToLog($e);
+            return response()->json([
+                'success' => 1,
+                'error' => 'some error!'
+            ]);
+        }
+
+        return response()->json([
+            'success' => 1,
+        ]);
     }
 
     protected function saveToLog($e){

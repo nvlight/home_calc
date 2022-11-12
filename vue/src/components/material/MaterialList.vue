@@ -1,21 +1,25 @@
 <template>
     <div>
-        <h1>MaterialsList</h1>
-        <div>materials: {{materials}}</div>
+        <h1 class="font-semibold text-2xl">Список материалов</h1>
+<!--        <div>materials: {{materials}}</div>-->
 
         <div v-for="material in materials"
             :key="material.id"
         >
-            <ul>
-                <li>{{material.title}}</li>
-                <li>{{material.price}}</li>
-                <li>{{material.unit}}</li>
-            </ul>
+            <div class="flex">
+                <mg-trash-icon-button @click="delMaterial(material.id)"></mg-trash-icon-button>
+                <span>{{material.id}}</span>
+                <span class="ml-1">{{material.title}}; </span>
+                <span class="font-semibold pl-1">{{material.price}} {{currency}}</span>
+                <span>/{{material.unit}}</span>
+            </div>
+            <hr>
         </div>
     </div>
 </template>
 
 <script>
+import {mapActions, mapState} from "vuex";
 import MaterialItem from "./MaterialItem.vue";
 
 export default {
@@ -28,6 +32,17 @@ export default {
             type: Array,
             required: true,
         },
+    },
+
+    methods:{
+        ...mapActions({
+            delMaterial: 'material/delMaterial',
+        }),
+    },
+    computed:{
+        ...mapState({
+            currency: state => state.currency,
+        }),
     },
 }
 </script>

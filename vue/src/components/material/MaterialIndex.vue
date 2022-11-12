@@ -99,13 +99,13 @@
         </header>
         <main class="relative">
 
-            <div class="main_wrapper m-3">
+            <div class="main_wrapper mt-5 w-8/12 m-auto">
                 <!-- Replace with your content -->
                 <div class="flex">
 
-                    <material-form class="w-3/12 border border p-3" ></material-form>
+                    <material-form class="w-4/12 border border p-3" ></material-form>
 
-                    <material-list class="w-full ml-5 border border-dotted border p-3" :materials="materials"></material-list>
+                    <material-list class="w-8/12 w-full ml-5 border border-dotted border p-3" :materials="materials"></material-list>
                 </div>
 
                 <!-- Replace with your content -->
@@ -126,7 +126,7 @@ import {computed, watch} from "vue";
 import store from "../../store/index.js";
 import router from "../../router/index.js";
 import MaterialList from "./MaterialList.vue";
-import {mapActions} from "vuex";
+import {mapActions, mapState} from "vuex";
 import MaterialForm from "./MaterialForm.vue";
 
 export default {
@@ -138,8 +138,6 @@ export default {
     data() {
         return {
             title: 'Материалы',
-
-            materials: [],
 
             user: {
                 name: 'Tom Cook',
@@ -163,6 +161,9 @@ export default {
     },
 
     methods: {
+        ...mapActions({
+            loadMaterials: 'material/loadMaterials',
+        }),
         logout() {
             this.$store.dispatch('logout')
                 .then(() => {
@@ -171,7 +172,17 @@ export default {
                     })
                 });
         },
-    }
+    },
+    computed: {
+        ...mapState({
+            materials: state => state.material.materials,
+        }),
+    },
+
+
+    mounted() {
+        this.loadMaterials();
+    },
 
 }
 </script>
