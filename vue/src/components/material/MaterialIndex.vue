@@ -100,11 +100,15 @@
         <main class="relative">
 
             <div class="main_wrapper m-3">
-                <div class="flex flex-wrap">
-                    <!-- Replace with your content -->
-                    <material-list :materials="materials"></material-list>
-                    <!-- Replace with your content -->
+                <!-- Replace with your content -->
+                <div class="flex">
+
+                    <material-form class="w-3/12 border border p-3" ></material-form>
+
+                    <material-list class="w-full ml-5 border border-dotted border p-3" :materials="materials"></material-list>
                 </div>
+
+                <!-- Replace with your content -->
             </div>
         </main>
 
@@ -122,11 +126,13 @@ import {computed, watch} from "vue";
 import store from "../../store/index.js";
 import router from "../../router/index.js";
 import MaterialList from "./MaterialList.vue";
+import {mapActions} from "vuex";
+import MaterialForm from "./MaterialForm.vue";
 
 export default {
     components: {
         Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems,
-        BellIcon, MenuIcon, XIcon, MaterialList,
+        BellIcon, MenuIcon, XIcon, MaterialList, MaterialForm,
     },
 
     data() {
@@ -158,7 +164,7 @@ export default {
 
     methods: {
         logout() {
-            store.dispatch('logout')
+            this.$store.dispatch('logout')
                 .then(() => {
                     router.push({
                         name: 'Login',

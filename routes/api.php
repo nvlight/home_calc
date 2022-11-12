@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomJobController;
 use Illuminate\Http\Request;
@@ -26,6 +27,7 @@ Route::middleware('auth:sanctum')->group(function ()
 
     Route::resource('/room', RoomController::class);
     Route::resource('/roomjob', RoomJobController::class);
+    Route::resource('/material', MaterialController::class);
 });
 
 Route::get('/room-store2', [RoomController::class,'store2']);

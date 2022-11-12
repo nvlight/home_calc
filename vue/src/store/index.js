@@ -2,6 +2,7 @@ import {createStore} from "vuex";
 import axiosClient from "../axios.js";
 import {roomModule} from "./roomModule.js";
 import {roomJobModule} from "./roomJobModule.js";
+import {materialModule} from "./materialModule.js";
 
 const store = createStore({
     state:{
@@ -203,6 +204,7 @@ const store = createStore({
     modules:{
         room: roomModule,
         roomJob: roomJobModule,
+        material: materialModule,
     },
 })
 

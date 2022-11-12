@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Material;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MaterialController extends Controller
 {
@@ -35,7 +36,33 @@ class MaterialController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required|string|max:111',
+            'price' => 'required|integer',
+            'unit' => 'required|string|max:55',
+            'description' => 'nullable|string',
+        ]);
+
+        $material = new Material();
+        $material->title = $request['title'];
+        $material->price = $request['price'];
+        $material->unit = $request['unit'];
+        $material->description = $request['description'];
+
+        try{
+            $material->save();
+        }catch (\Exception $e){
+            $this->saveToLog($e);
+            return response()->json([
+                'success' => 1,
+                'error' => 'some error!'
+            ]);
+        }
+
+        return response()->json([
+            'success' => 1,
+            'savedId' => $material->id,
+        ]);
     }
 
     /**
@@ -81,5 +108,13 @@ class MaterialController extends Controller
     public function destroy(material $material)
     {
         //
+    }
+
+    protected function saveToLog($e){
+        logger('error with ' . __METHOD__ . ' '
+            . implode(' | ', [
+                $e->getMessage(), $e->getLine(), $e->getCode(), $e->getFile()
+            ])
+        );
     }
 }
