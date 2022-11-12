@@ -17,7 +17,7 @@
             :key="option.value"
             :value="option.value"
         >
-            {{option.name}} {{option.selected}}
+            {{option.name}}
         </option>
     </select>
 </template>

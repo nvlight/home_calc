@@ -2,7 +2,7 @@
     <h3 class="text-center text-xl font-semibold">{{ title }}</h3>
 
     <div>
-        <mg-button @click="setDefaultSizes">установить размеры комнаты по умолчанию</mg-button>
+        <mg-button @click="setDefaults">установить размеры комнаты по умолчанию</mg-button>
     </div>
 
     <div class="flex justify-between mt-2">
@@ -59,6 +59,7 @@ export default {
     },
     data(){
         return {
+            perimeter: 0,
             title: 'Карнизы',
 
             incPerimeterCount: 0,
@@ -97,21 +98,22 @@ export default {
             this.addJob(this.createJob());
         },
 
-        setDefaultSizes(){
-
+        setDefaults(){
+            this.perimeter = this.getDefaultPerimeter();
         },
+
+        getDefaultPerimeter(){
+            return  +this.room.sizes.s1 +
+                    +this.room.sizes.s2 +
+                    +this.room.sizes.s3 +
+                    +this.room.sizes.s4
+        },
+
     },
     computed:{
         ...mapState({
             currency: state => state.currency,
         }),
-
-        perimeter(){
-            return +this.room.sizes.s1 +
-                +this.room.sizes.s2 +
-                +this.room.sizes.s3 +
-                +this.room.sizes.s4
-        },
 
         changedPerimeter(){
             return +this.perimeter + +this.incPerimeterCount + (- +this.decPerimeterCount);
@@ -148,7 +150,7 @@ export default {
         },
     },
     mounted() {
-        this.setDefaultSizes();
+        this.setDefaults();
 
         if (sessionStorage.getItem('currentPickedJob')){
             this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
