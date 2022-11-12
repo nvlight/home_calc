@@ -25,7 +25,8 @@
                             </div>
                             <div class="hidden md:block md:ml-10 md:pr-4 md:space-x-8">
                                 <a v-for="item in navigation" :key="item.name" :href="item.href" class="font-medium text-gray-500 hover:text-gray-900">{{ item.name }}</a>
-                                <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">{{ loginText }}</a>
+                                <router-link :to="{name: 'Auth'}" :class="'font-medium text-indigo-600 hover:text-indigo-500'"
+                                >{{ loginText }}</router-link>
                             </div>
                         </nav>
                     </div>

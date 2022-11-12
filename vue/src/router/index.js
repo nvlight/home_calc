@@ -6,6 +6,7 @@ import AuthLayout from "../components/AuthLayout.vue";
 import store from "../store/index.js";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
+import MaterialIndex from "../components/material/MaterialIndex.vue";
 
 const routes = [
     {
@@ -42,6 +43,12 @@ const routes = [
             },
         ],
     },
+    {
+        path: '/materials',
+        name: 'Materials',
+        meta: { requiresAuth: true },
+        component: MaterialIndex,
+    },
 ];
 
 const router = createRouter({
@@ -50,9 +57,13 @@ const router = createRouter({
 });
 
 router.beforeEach( (to,from, next) => {
+    // if(store.state.user.token){
+    //     next({name: 'GetStarted'})
+    // } else
     if (to.meta.requiresAuth && !store.state.user.token){
         next({name: 'Login'})
-    }else{
+    }
+    else{
         next();
     }
 })
