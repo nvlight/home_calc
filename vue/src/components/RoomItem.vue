@@ -18,7 +18,7 @@
                         </svg>
                     </button>
 
-                    <mg-trash-icon-button @click="$store.dispatch('room/deleteRoom', number)"></mg-trash-icon-button>
+                    <mg-trash-icon-button @click="deleteRoom(number)"></mg-trash-icon-button>
                 </div>
             </div>
             <h1 class="font-light text-xl">Шаг 1. Введите размеры комнаты</h1>
@@ -282,12 +282,6 @@
     <added-job-list :room_id="room.id"></added-job-list>
     <!-- / added Jobs list -->
 
-    <!-- added Building materials list -->
-    <added-building-materials-list></added-building-materials-list>
-    <!-- / added Building materials list -->
-
-<!--    <BuildingMaterial></BuildingMaterial>-->
-
 </template>
 
 <script>
@@ -296,12 +290,11 @@ import ShowPickedComponent from "./ShowPickedComponent.vue";
 import AddedJobList from "./AddedJobList.vue";
 import AddedBuildingMaterialsList from "./AddedBuildingMaterialsList.vue";
 import RoomJobsSum from "./RoomJobsSum.vue";
-import BuildingMaterial from "./BuildingMaterial.vue";
 
 export default {
     name: "room-item",
     components: {
-        ShowPickedComponent, AddedJobList, AddedBuildingMaterialsList, RoomJobsSum, BuildingMaterial,
+        ShowPickedComponent, AddedJobList, AddedBuildingMaterialsList, RoomJobsSum,
     },
     props: {
         number: Number,
@@ -353,7 +346,7 @@ export default {
     },
     methods: {
         ...mapActions({
-            deleteJob: 'deleteJobHandler',
+            deleteRoom: 'room/deleteRoom',
             setCurrentPickedJob: 'setCurrentPickedJob',
             insertRoom: 'room/createRoomQuery',
             updateRoom: 'room/updateRoom',

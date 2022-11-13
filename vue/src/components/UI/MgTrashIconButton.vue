@@ -1,7 +1,7 @@
 <template>
     <button
         type="button"
-        class="h-6 w-6 ml-2 flex items-center justify-center rounded-full border border-transparent text-sm text-red-500
+        class="h-6 w-6 flex items-center justify-center rounded-full border border-transparent text-sm text-red-500
                focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
         <svg xmlns="http://www.w3.org/2000/svg"
              class="h-5 w-5 -mt-1 inline-block self-end" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

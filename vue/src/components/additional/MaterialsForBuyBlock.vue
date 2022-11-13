@@ -10,9 +10,12 @@
                 <span>{{index+1}}. </span>
                 <span>{{material.title}}: </span>
             </div>
-            <div class="ml-1 self-center flex ">
+            <div class="self-center flex ">
                 <span class="font-semibold">{{material.amount}}</span>
-                <span>&nbsp;{{material.unit_name}}</span>
+                <template v-if="+material.amount !== +material.amount_add_info">
+                    <span class="ml-1 font-semibold">({{ material.amount_add_info }})</span>
+                </template>
+                <span class="font-semibold">&nbsp;{{material.unit_name}}</span>
             </div>
 
         </div>

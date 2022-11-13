@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1 class="font-semibold text-2xl">Список материалов</h1>
+        <h1 class="font-semibold text-2xl">{{ title }}</h1>
 <!--        <div>materials: {{materials}}</div>-->
 
         <div v-for="material in materials"
@@ -32,8 +32,15 @@ export default {
             type: Array,
             required: true,
         },
+        'title':{
+            type: String,
+            required: true,
+        }
     },
-
+    data(){
+        return {
+        }
+    },
     methods:{
         ...mapActions({
             delMaterial: 'material/delMaterial',

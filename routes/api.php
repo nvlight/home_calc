@@ -3,6 +3,7 @@
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\RoomJobController;
+use App\Http\Controllers\RoomMaterialController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\AuthController;
@@ -28,6 +29,7 @@ Route::middleware('auth:sanctum')->group(function ()
     Route::resource('/room', RoomController::class);
     Route::resource('/roomjob', RoomJobController::class);
     Route::resource('/material', MaterialController::class);
+    Route::resource('/roommaterial', RoomMaterialController::class);
 });
 
 Route::get('/room-store2', [RoomController::class,'store2']);

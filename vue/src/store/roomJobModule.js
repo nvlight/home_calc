@@ -38,7 +38,7 @@ export const roomJobModule = {
                 .post("/roomjob", job)
                 .then((res)=>{
                     //console.log(res.data)
-                    job.id = res.data.save_id;
+                    job.id = res.data.savedId;
                     commit('addJob', job);
                     return res;
                 })

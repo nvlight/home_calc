@@ -3,6 +3,7 @@ import axiosClient from "../axios.js";
 import {roomModule} from "./roomModule.js";
 import {roomJobModule} from "./roomJobModule.js";
 import {materialModule} from "./materialModule.js";
+import {roomMaterialModule} from "./roomMaterialModule.js";
 
 const store = createStore({
     state:{
@@ -205,6 +206,7 @@ const store = createStore({
         room: roomModule,
         roomJob: roomJobModule,
         material: materialModule,
+        roomMaterial: roomMaterialModule,
     },
 })
 

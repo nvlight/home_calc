@@ -13,7 +13,7 @@ export const materialModule = {
             response = axiosClient
                 .get("/material")
                 .then((res)=>{
-                    console.log(res.data)
+                    //console.log(res.data)
                     commit('setMaterilas', res.data.data);
                     //res.data.forEach(t => commit('addMaterial', t))
                     return res;
@@ -25,21 +25,21 @@ export const materialModule = {
         },
 
         createMaterial({dispatch}, material){
-            console.log('createMaterial');
             return dispatch('createMaterialQuery', material);
         },
 
-        createMaterialQuery({commit}, material){
+        createMaterialQuery({commit,dispatch}, material){
             let response;
             response = axiosClient
                 .post("/material", material)
                 .then((res)=>{
                     const materialClone = Object.assign({}, material);
                     materialClone.id = res.data.savedId;
-                    commit('addMaterial', materialClone);
+                    dispatch('addMaterial', materialClone);
                     return res;
                 })
                 .catch( (err) => {
+                    console.log('we got error:',err);
                 })
             return response;
         },
@@ -58,6 +58,9 @@ export const materialModule = {
                     }
 
                     return res;
+                })
+                .catch( (err) => {
+                    console.log('we got error:',err);
                 })
             return response;
         },

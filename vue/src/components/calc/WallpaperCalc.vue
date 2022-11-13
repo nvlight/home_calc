@@ -63,32 +63,25 @@
     </div>
     <div class="mt-2">Высота с учетом раппорта: <span class="font-semibold">{{heightRapport}} м.</span></div>
 
-    <materials-for-buy-block :materials="materials" :room="room"></materials-for-buy-block>
+    <materials-for-buy-block :materials="materialsForBuy" :room="room"></materials-for-buy-block>
 
-    <div class="mt-2 flex justify-between">
-        <span>Обоев (рулонов) к покупке:</span>
-        <div>
-            <span class="font-semibold">{{Math.ceil(rolls)}}</span>
-            <template v-if="rolls !== Math.ceil(rolls)">
-                (<span class="font-semibold">{{rolls.toFixed(2)}}</span>)
-            </template>
-        </div>
-    </div>
-    <div class="flex justify-between">
-        <span>{{glue.name}}:</span> <span class="font-semibold">{{glue.count}} коробок</span>
-    </div>
+    <mg-button @click="">Добавить рекомендованные материалы</mg-button>
 
-    <mg-button @click="">Добавить материалы</mg-button>
+    <room-material-form :room_id="room.id"></room-material-form>
 
+    <room-material-list :room_materials="currentRoomAddedMaterials"></room-material-list>
 </template>
 
 <script>
-import {mapState, mapActions,} from 'vuex'
+import {mapState, mapActions, mapGetters,} from 'vuex'
 import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
+import RoomMaterialForm from "../material/RoomMaterialForm.vue";
+import RoomMaterialList from "../roomMaterial/RoomMaterialList.vue";
 
 export default {
     name: "wallpaper-calc",
-    components: { MaterialsForBuyBlock
+    components: {
+        RoomMaterialForm, MaterialsForBuyBlock, RoomMaterialList
     },
     props: {
         'room': {
@@ -115,12 +108,16 @@ export default {
             price: 200,
             rapport: 0,
             oneRollMeters: 10,
+
+            currentRoomAddedMaterials: [],
         }
     },
 
     methods:{
         ...mapActions({
             addJob: 'roomJob/createRoomJob',
+            createRoomMaterial: 'roomMaterial/createRoomMaterial',
+
         }),
 
         setDefaultRoomSizesHandler(){
@@ -151,6 +148,10 @@ export default {
 
         ...mapState({
             currency: state => state.currency,
+            roomMaterials: state => state.roomMaterial.roomMaterials,
+        }),
+        ...mapGetters({
+            //roomMaterials: "roomMaterial/roomMaterials",
         }),
 
         perimeter(){
@@ -181,12 +182,22 @@ export default {
             return this.resultWallsSquare * this.price;
         },
 
-        materials(){
+        materialsForBuy(){
             const arr = [];
-            arr.push({
-                title: 'Обои',
-                description: this.resultWallsSquare + ' кв.м.',
-            },)
+            arr.push(
+                {
+                    title: 'Обои',
+                    amount: Math.ceil(this.rolls),
+                    amount_add_info: this.rolls.toFixed(2),
+                    unit_name: 'рулонов',
+                },
+                {
+                    title: this.glue.name,
+                    amount: Math.ceil(this.glue.count),
+                    amount_add_info: this.glue.count.toFixed(2),
+                    unit_name: 'коробок',
+                },
+            )
             return arr;
         },
         totalAmount() {
@@ -198,7 +209,7 @@ export default {
             };
         },
         heightRapport(){
-            return (+this.height + +this.rapport);
+            return +(+this.height + +this.rapport).toFixed(2);
         },
 
         rolls(){
@@ -220,6 +231,20 @@ export default {
         }
     },
 
+    watch:{
+        roomMaterials:{
+            handler(nv, ov){
+                  this.currentRoomAddedMaterials = [];
+                  this.roomMaterials.forEach( t => {
+                      //console.log(t.room_id, ' - ', this.room.id);
+                      if (t.room_id === +this.room.id){
+                          this.currentRoomAddedMaterials.push(t);
+                      }
+                  })
+            },
+            deep: true,
+        }
+    }
 }
 </script>
 

@@ -105,7 +105,8 @@
 
                     <material-form class="w-4/12 border border p-3" ></material-form>
 
-                    <material-list class="w-8/12 w-full ml-5 border border-dotted border p-3" :materials="materials"></material-list>
+                    <material-list class="w-8/12 w-full ml-5 border border-dotted border p-3"
+                        :materials="materials" :title="'Список материалов'"></material-list>
                 </div>
 
                 <!-- Replace with your content -->
