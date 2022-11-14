@@ -3,7 +3,7 @@
     <div class="min-h-full flex items-center justify-start pt-4 pb-2 px-2 sm:px-2 lg:px-2">
         <div class="max-w-md w-full space-y-2">
 
-            <div class="flex  ">
+            <div class="flex">
                 <div class="w-full flex items-center">
                     <div class="font-semibold text-xl"> {{number}}.</div>
                     <div class="w-full ml-2 mr-2">
@@ -12,7 +12,7 @@
 
                 </div>
                 <div class="flex justify-between items-center">
-                    <button @click="updateRoom({number, title})">
+                    <button @click="updateRoom({number, title})" class="mt-0.5">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-green-700">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
                         </svg>
@@ -273,28 +273,25 @@
         </div>
     </div>
 
-    <!-- Результаты подсчетов -->
-    <div class="resultOfCalculations">
-        <h1 class="font-semibold text-2xl text-center">Результаты подсчетов</h1>
-    </div>
-
     <!-- added Jobs list -->
-    <added-job-list :room_id="room.id"></added-job-list>
+    <room-job-list :room_id="room.id"></room-job-list>
     <!-- / added Jobs list -->
 
+    <room-jobs-materials-sum :room_id="room.id"></room-jobs-materials-sum>
 </template>
 
 <script>
 import {mapState, mapActions, mapGetters} from "vuex";
 import ShowPickedComponent from "./ShowPickedComponent.vue";
-import AddedJobList from "./AddedJobList.vue";
+import RoomJobList from "./RoomJobList.vue";
 import AddedBuildingMaterialsList from "./AddedBuildingMaterialsList.vue";
 import RoomJobsSum from "./RoomJobsSum.vue";
+import RoomJobsMaterialsSum from "./RoomJobsMaterialsSum.vue";
 
 export default {
     name: "room-item",
     components: {
-        ShowPickedComponent, AddedJobList, AddedBuildingMaterialsList, RoomJobsSum,
+        ShowPickedComponent, RoomJobList, AddedBuildingMaterialsList, RoomJobsSum, RoomJobsMaterialsSum,
     },
     props: {
         number: Number,
@@ -403,7 +400,7 @@ export default {
             addedJobs: state => state.addedJobs,
         }),
         ...mapGetters({
-            jobsSum: 'roomJob/jobsSum',
+            //jobsSum: 'roomJob/jobsSum',
         }),
 
         perimeter(){

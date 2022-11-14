@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Material;
 use App\Models\RoomMaterial;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,11 @@ class RoomMaterialController extends Controller
      */
     public function index()
     {
-        $roomMaterials = RoomMaterial::all();
+        //$roomMaterials = RoomMaterial::all();
+
+        $roomMaterials = RoomMaterial::join('materials', 'room_materials.material_id', '=', 'materials.id')
+            ->select('room_materials.*', 'materials.title')
+            ->get();
 
         return response()
             ->json([
@@ -56,11 +61,14 @@ class RoomMaterialController extends Controller
 
         try{
             $saved = $r->save();
+
+            // now get title for
+            $title = Material::where('id', $r->material_id)->get()->first()->title;
         }catch (\Exception $e){
             $this->saveToLog($e);
 
             return response()->json([
-                'success' => 1,
+                'success' => 0,
                 'error' => 'some error!'
             ]);
         }
@@ -69,6 +77,7 @@ class RoomMaterialController extends Controller
             'success' => 1,
             'savedId' => $r->id,
             'saved' => $saved,
+            'title' => $title,
         ]);
     }
 
@@ -112,10 +121,10 @@ class RoomMaterialController extends Controller
      * @param  \App\Models\RoomMaterial  $roomMaterial
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RoomMaterial $roomMaterial)
+    public function destroy(RoomMaterial $roommaterial)
     {
         try{
-            $roomMaterial->delete();
+            $roommaterial->delete();
         }catch (\Exception $e){
             $this->saveToLog($e);
             return response()->json([

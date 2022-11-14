@@ -24,24 +24,22 @@
             </div>
         </div>
 
-        <div v-if="this.$store.state.debug" class="border-dotted border-2 p-3 border-red-400 mt-2">
-            selectedMaterial <strong>{{selectedMaterial}}</strong>
+        <div class="flex justify-between items-center">
+            <div class="mt-2">Цена материала:
+                <span class="font-semibold">{{ materialPrice }} {{ currency }}</span>
+            </div>
+
+            <div class="mt-1">
+                <mg-input-labeled v-model="amount">Количество материала</mg-input-labeled>
+            </div>
         </div>
 
-        <div class="mt-2">Cтоимость материала / единица:
-            <span class="font-semibold">{{ materialPrice }} {{ currency }}</span>
-        </div>
+<!--        <div class="mt-2">-->
+<!--            <div class="font-semibold">Объект материала:</div>-->
+<!--            <div>{{ roomMaterial }}</div>-->
+<!--        </div>-->
 
-        <div class="mt-2" >
-            <mg-input-labeled v-model="amount">Количество материала</mg-input-labeled>
-        </div>
-
-        <div class="mt-2">
-            <div>roomMaterial:</div>
-            <div>{{ roomMaterial }}</div>
-        </div>
-
-        <div class="mt-2">
+        <div class="mt-1">
             Сумма:<span class="ml-2 font-semibold">{{ sum }} {{ currency }}</span>
         </div>
 

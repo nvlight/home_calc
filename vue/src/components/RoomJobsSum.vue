@@ -1,6 +1,7 @@
 <template>
-    <div v-if="roomJobsSum" class="mt-3">
-        <span class="text-2xl">Стоимость работ: {{ roomJobsSum }}&nbsp;{{ currency }}</span>
+    <div v-if="roomJobsSum" class="mt-3 text-xl text-center">
+        <span>Стоимость работ: </span>
+        <span class="font-semibold ">{{ roomJobsSum }}&nbsp;{{ currency }}</span>
     </div>
 </template>
 
@@ -29,17 +30,10 @@ export default {
             currency: state => state.currency,
             addedJobs: state => state.roomJob.addedJobs,
         }),
-        jobsSum(){
-           //return this.$store.getters.getRoomJobsSum(this.room_id);
-           //return this.$store.getters.getRoomStaticValue;
-        }
     },
     watch:{
         addedJobs: {
-            handler(newValue, oldValue){
-                //console.log('newValue:', newValue);
-                //console.log('oldValue:', oldValue);
-
+            handler(nv, ov){
                 this.roomJobsSum = 0;
                 this.addedJobs.forEach( t => {
                     if (t.room_id === this.room_id){

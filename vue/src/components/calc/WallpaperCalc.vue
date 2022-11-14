@@ -69,7 +69,7 @@
 
     <room-material-form :room_id="room.id"></room-material-form>
 
-    <room-material-list :room_materials="currentRoomAddedMaterials"></room-material-list>
+    <room-material-list class="mt-3" :room_id="room.id" :room_materials="currentRoomAddedMaterials"></room-material-list>
 </template>
 
 <script>

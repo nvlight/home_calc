@@ -107,7 +107,7 @@ export const roomModule = {
             response = axiosClient
                 .post("/room", room)
                 .then((res)=>{
-                    console.log(res.data)
+                    //console.log(res.data)
                     room.id = res.data.room_id
                     commit('insertRoom', room)
                     return res;

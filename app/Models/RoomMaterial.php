@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class RoomMaterial extends Model
 {
     use HasFactory;
+
+    public function getMaterial(){
+        return $this->hasOne(Material::class,'id','material_id');
+    }
 }

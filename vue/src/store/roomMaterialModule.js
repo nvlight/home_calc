@@ -34,9 +34,12 @@ export const roomMaterialModule = {
             response = axiosClient
                 .post("/roommaterial", roomMaterial)
                 .then((res)=>{
-                    const roomMaterialClone = Object.assign({}, roomMaterial);
-                    roomMaterialClone.id = res.data.savedId;
-                    dispatch('addRoomMaterial', roomMaterialClone);
+                    if (res.data.success !== 0){
+                        const roomMaterialClone = Object.assign({}, roomMaterial);
+                        roomMaterialClone.id = res.data.savedId;
+                        roomMaterialClone.title = res.data.title;
+                        dispatch('addRoomMaterial', roomMaterialClone);
+                    }
                     return res;
                 })
                 .catch( (err) => {

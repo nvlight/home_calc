@@ -105,7 +105,7 @@
             </div>
 
             <div class="main_wrapper">
-                <div class="flex flex-wrap">
+                <div class="flex flex-wrap justify-around">
                     <!-- Replace with your content -->
                     <room-list>
                     </room-list>
@@ -114,6 +114,7 @@
             </div>
 
             <job-resulting-sum></job-resulting-sum>
+            <rooms-jobs-materials-sum></rooms-jobs-materials-sum>
 
         </main>
 
@@ -133,6 +134,7 @@ import AddRoomButton from "./AddRoomButton.vue";
 import {computed, watch} from "vue";
 import store from "../store/index.js";
 import router from "../router/index.js";
+import RoomsJobsMaterialsSum from "./RoomsJobsMaterialsSum.vue";
 
 const user = {
     name: 'Tom Cook',

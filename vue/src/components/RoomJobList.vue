@@ -1,7 +1,7 @@
 <template>
     <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-2 sm:px-2 lg:px-2">
         <div class="max-w-md w-full space-y-2">
-            <h2 class="font-semibold text-xl text-center">1. Виды работ:</h2>
+            <div class="font-semibold text-xl text-center">Добавленные работы:</div>
 
             <div v-if="!addedJobsClone?.length">
                 <span class="block text-center">Список пуст</span>
@@ -25,6 +25,7 @@
                     </div>
                 </div>
             </div>
+
             <room-jobs-sum :room_id="room_id"></room-jobs-sum>
         </div>
     </div>
@@ -59,7 +60,7 @@ export default {
             addedJobs: state => state.roomJob.addedJobs,
         }),
         ...mapGetters({
-            jobsSum: 'roomJob/jobsSum',
+            //jobsSum: 'roomJob/jobsSum',
         }),
     },
     watch:{

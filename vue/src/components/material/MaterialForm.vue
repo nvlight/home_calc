@@ -19,7 +19,7 @@ export default {
             material:{
                 title: '',
                 price: 0,
-                unit: 'sht',
+                unit: 'шт',
                 description: '',
             },
         }
