@@ -6,36 +6,41 @@
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex"
+import {mapState,mapGetters} from "vuex";
 
 export default {
-    name: "room-jobs-sum",
-    data(){
-        return {
-            roomJobsSum: 0,
-        }
-    },
+    name: 'room-jobs-sum',
+
     props: {
         room_id: {
             type: Number,
             required: true,
         },
     },
-    methods: {
-        ...mapActions({
-        }),
+
+    data(){
+        return{
+            roomJobsSum: 0,
+        }
     },
-    computed: {
+
+    methods:{
+    },
+    computed:{
         ...mapState({
             currency: state => state.currency,
-            addedJobs: state => state.roomJob.addedJobs,
+            roomJobs: state => state.roomJob.addedJobs,
         }),
+        ...mapGetters({
+            //jobsSum: 'roomJob/jobsSum',
+        }),
+
     },
     watch:{
-        addedJobs: {
+        roomJobs: {
             handler(nv, ov){
                 this.roomJobsSum = 0;
-                this.addedJobs.forEach( t => {
+                this.roomJobs.forEach( t => {
                     if (t.room_id === this.room_id){
                         this.roomJobsSum += t.sum;
                     }
@@ -43,7 +48,7 @@ export default {
             },
             deep: true,
         },
-    },
+    }
 }
 </script>
 

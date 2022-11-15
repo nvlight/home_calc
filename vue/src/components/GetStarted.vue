@@ -113,7 +113,6 @@
                 </div>
             </div>
 
-            <job-resulting-sum></job-resulting-sum>
             <rooms-jobs-materials-sum></rooms-jobs-materials-sum>
 
         </main>
@@ -129,7 +128,7 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import RoomList from "./RoomList.vue";
-import JobResultingSum from "./JobResultingSum.vue";
+import RoomJobsSum from "./RoomJobsSum.vue";
 import AddRoomButton from "./AddRoomButton.vue";
 import {computed, watch} from "vue";
 import store from "../store/index.js";

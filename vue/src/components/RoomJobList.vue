@@ -33,7 +33,7 @@
 
 <script>
 import {mapState, mapGetters, mapActions} from 'vuex'
-import roomJobsSum from "./RoomJobsSum.vue";
+import RoomJobsSum from "./RoomJobsSum.vue";
 
 export default {
     name: 'added-job-list',
@@ -42,7 +42,7 @@ export default {
             type: Number,
         }
     },
-    components: { roomJobsSum, },
+    components: { RoomJobsSum, },
     data(){
         return {
             addedJobsClone: [],
