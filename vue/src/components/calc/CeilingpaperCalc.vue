@@ -64,7 +64,7 @@
     </div>
     <div class="mt-2">Высота с учетом раппорта: <span class="font-semibold">{{heightRapport}} м.</span></div>
 
-    <materials-for-buy-block :materials="materials" :room="room"></materials-for-buy-block>
+    <materials-for-buy-block :materials="materialsForBuy" :room="room"></materials-for-buy-block>
 
     <div class="mt-2 flex justify-between">
         <span>Обоев (рулонов) к покупке:</span>
@@ -79,18 +79,23 @@
         <span>{{glue.name}}:</span> <span class="font-semibold">{{glue.count}} коробок</span>
     </div>
 
-    <mg-button @click="">Добавить материалы</mg-button>
+    <mg-button @click="">Добавить рекомендованные материалы</mg-button>
 
+    <room-material-form :room_id="room.id"></room-material-form>
+
+    <room-material-list class="mt-3" :room_id="room.id" :room_materials="currentRoomAddedMaterials"></room-material-list>
 </template>
 
 <script>
 import {mapState, mapActions,} from 'vuex'
 import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
+import RoomMaterialForm from "../material/RoomMaterialForm.vue";
+import RoomMaterialList from "../roomMaterial/RoomMaterialList.vue";
 
 export default {
     name: "ceilingpaper-calc",
     components: {
-        MaterialsForBuyBlock
+        MaterialsForBuyBlock, RoomMaterialForm, RoomMaterialList,
     },
     props: {
         'room': {
@@ -116,6 +121,8 @@ export default {
             price: 250,
             rapport: 0,
             oneRollMeters: 30,
+
+            currentRoomAddedMaterials: [],
         }
     },
 
@@ -150,6 +157,7 @@ export default {
         // https://oboi-store.ru/
 
         ...mapState({
+            roomMaterials: state => state.roomMaterial.roomMaterials,
             currency: state => state.currency,
         }),
         perimeter(){
@@ -180,6 +188,26 @@ export default {
             )
             return arr;
         },
+
+        materialsForBuy(){
+            const arr = [];
+            arr.push(
+                {
+                    title: 'Обои',
+                    amount: Math.ceil(this.rolls),
+                    amount_add_info: this.rolls.toFixed(2),
+                    unit_name: 'рулонов',
+                },
+                {
+                    title: this.glue.name,
+                    amount: Math.ceil(this.glue.count),
+                    amount_add_info: this.glue.count.toFixed(2),
+                    unit_name: 'коробок',
+                },
+            )
+            return arr;
+        },
+
         totalAmount() {
             return {
                 price: this.sum,
@@ -214,6 +242,20 @@ export default {
         }
     },
 
+    watch:{
+        roomMaterials:{
+            handler(nv, ov){
+                this.currentRoomAddedMaterials = [];
+                this.roomMaterials.forEach( t => {
+                    //console.log(t.room_id, ' - ', this.room.id);
+                    if (t.room_id === +this.room.id){
+                        this.currentRoomAddedMaterials.push(t);
+                    }
+                })
+            },
+            deep: true,
+        }
+    }
 }
 </script>
 
