@@ -83,7 +83,7 @@
 
     <room-material-form :room_id="room.id"></room-material-form>
 
-    <room-material-list class="mt-3" :room_id="room.id" :room_materials="currentRoomAddedMaterials"></room-material-list>
+    <room-material-list class="mt-3" :room_id="room.id"></room-material-list>
 </template>
 
 <script>
@@ -121,8 +121,6 @@ export default {
             price: 250,
             rapport: 0,
             oneRollMeters: 30,
-
-            currentRoomAddedMaterials: [],
         }
     },
 
@@ -242,20 +240,6 @@ export default {
         }
     },
 
-    watch:{
-        roomMaterials:{
-            handler(nv, ov){
-                this.currentRoomAddedMaterials = [];
-                this.roomMaterials.forEach( t => {
-                    //console.log(t.room_id, ' - ', this.room.id);
-                    if (t.room_id === +this.room.id){
-                        this.currentRoomAddedMaterials.push(t);
-                    }
-                })
-            },
-            deep: true,
-        }
-    }
 }
 </script>
 

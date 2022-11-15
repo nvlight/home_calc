@@ -2,8 +2,13 @@
     <div>
         <div class="font-semibold text-xl text-center">Добавленные материалы:</div>
 
-        <template v-if="room_materials.length">
+<!--        <div>storeRoomMaterials: {{roomMaterials}}</div>-->
+<!--        <div>roomMaterialsClone: {{roomMaterialsClone}}</div>-->
 
+        <template v-if="!room_materials.length">
+            <div class="mt-2 text-center">Список материалов пуст</div>
+        </template>
+        <template v-else>
             <div v-for="(room_material, index) in room_materials"
                  :key="room_material.id"
             >
@@ -36,9 +41,6 @@
                 </div>
             </div>
         </template>
-        <template v-else>
-            <div class="mt-2">Список материалов пуст!</div>
-        </template>
 
         <room-materials-sum :room_id="room_id"></room-materials-sum>
     </div>
@@ -52,13 +54,15 @@ export default {
     name: 'room-material-list',
     components: {RoomMaterialsSum},
     props: {
-        room_materials: {
-            type: Array,
-            required: true,
-        },
         room_id: {
             type: Number,
             required: true,
+        }
+    },
+    data(){
+        return {
+            room_materials: [],
+            //roomMaterialsClone: [],
         }
     },
     methods:{
@@ -69,8 +73,35 @@ export default {
     computed:{
         ...mapState({
             currency: state => state.currency,
+            roomMaterials: state => state.roomMaterial.roomMaterials,
         }),
     },
+
+    mounted() {
+        //console.log('mounted again!');
+        this.room_materials = this.roomMaterials;
+    },
+
+    watch:{
+        roomMaterials:{
+            handler(nv, ov){
+                //console.log('roomMaterials changed');
+                this.room_materials = [];
+                this.roomMaterials.forEach( t => {
+                    if (t.room_id === +this.room_id){
+                        this.room_materials.push(t);
+                    }
+                })
+            },
+            // handler(nv, ov){
+            //     console.log('roomMaterials changed');
+            //     const tmp = this.roomMaterials
+            //         .filter(t => t.room_id === this.room_id )
+            //     this.roomMaterialsClone = Object.assign(tmp, {});
+            // },
+            // deep: true,
+        }
+    }
 }
 </script>
 

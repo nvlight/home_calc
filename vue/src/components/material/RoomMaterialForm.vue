@@ -71,7 +71,6 @@ export default {
         }),
 
         create(){
-            console.log('create');
             this.createRoomMaterial(this.roomMaterial);
         }
     },
