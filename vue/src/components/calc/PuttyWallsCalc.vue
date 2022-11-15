@@ -68,15 +68,18 @@
         :room="room"
     ></materials-for-buy-block>
 
+    <mg-button @click="">Добавить рекомендованные материалы</mg-button>
+    <room-material-form :room_id="room.id"></room-material-form>
 </template>
 
 <script>
 import {mapState, mapActions} from "vuex";
 import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
+import RoomMaterialForm from "../material/RoomMaterialForm.vue";
 
 export default {
     name: 'putty-walls-calc',
-    components: {MaterialsForBuyBlock},
+    components: {MaterialsForBuyBlock, RoomMaterialForm},
     props: {
         'room': {
             type: Object,

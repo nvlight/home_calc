@@ -119,17 +119,20 @@
             :materials="materials"
             :room="room"
         ></materials-for-buy-block>
+
+        <room-material-form :room_id="room.id"></room-material-form>
     </div>
 </template>
 
 <script>
 import {mapState, mapGetters, mapActions, mapMutations} from "vuex";
 import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
+import RoomMaterialForm from "../material/RoomMaterialForm.vue";
 
 export default {
     name: 'CeilingCalc',
     props: ['room'],
-    components: { MaterialsForBuyBlock,},
+    components: { MaterialsForBuyBlock, RoomMaterialForm},
     data() {
         return {
             title: 'Натяжной потолок',

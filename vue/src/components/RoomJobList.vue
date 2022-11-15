@@ -1,5 +1,5 @@
 <template>
-    <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-2 sm:px-2 lg:px-2">
+    <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-2 ">
         <div class="max-w-md w-full space-y-2">
             <div class="font-semibold text-xl text-center">Добавленные работы:</div>
 
@@ -60,7 +60,6 @@ export default {
             addedJobs: state => state.roomJob.addedJobs,
         }),
         ...mapGetters({
-            //jobsSum: 'roomJob/jobsSum',
         }),
     },
     watch:{

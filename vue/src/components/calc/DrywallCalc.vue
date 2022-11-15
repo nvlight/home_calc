@@ -39,13 +39,13 @@
         </div>
     </div>
 
-    <div v-if="this.$store.state.debug" class="mt-3 border-dotted border-2 p-3 border-red-400">
-        <div>{{ windows }}</div>
-        <div>{{ doors }}</div>
-        <div>windowsSquare: {{ windowsSquare }}</div>
-        <div>doorsSquare:   {{ doorsSquare }}</div>
-        <div>fullSquareWalls: {{ fullSquareWalls }}</div>
-    </div>
+<!--    <div v-if="this.$store.state.debug" class="mt-3 border-dotted border-2 p-3 border-red-400">-->
+<!--        <div>{{ windows }}</div>-->
+<!--        <div>{{ doors }}</div>-->
+<!--        <div>windowsSquare: {{ windowsSquare }}</div>-->
+<!--        <div>doorsSquare:   {{ doorsSquare }}</div>-->
+<!--        <div>fullSquareWalls: {{ fullSquareWalls }}</div>-->
+<!--    </div>-->
 
     <div class="mt-2">Площадь с учетом дверей и окон:</div>
     <div><span class="font-semibold">{{ ceiledFullSquareWalls }} кв.м. ({{ fullSquareWalls }}) кв.м.</span></div>
@@ -76,17 +76,22 @@
         :materials="materials"
         :room="room"
     ></materials-for-buy-block>
-    <mg-button @click="">Добавить материалы</mg-button>
+
+    <mg-button @click="">Добавить рекомендованные материалы</mg-button>
+
+    <room-material-form :room_id="room.id"></room-material-form>
 </template>
 
 <script>
 import {mapState, mapActions} from "vuex";
 import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
+import RoomMaterialList from "../roomMaterial/RoomMaterialList.vue";
+import RoomMaterialForm from "../material/RoomMaterialForm.vue";
 
 export default {
     name: 'drywall-calc',
     components: {
-        MaterialsForBuyBlock,
+        MaterialsForBuyBlock, RoomMaterialList, RoomMaterialForm,
     },
     props: {
         'room': {

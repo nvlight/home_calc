@@ -55,17 +55,20 @@
         :materials="materials"
         :room="room"
     ></materials-for-buy-block>
-    <mg-button @click="addMaterials">Добавить материалы</mg-button>
 
+    <mg-button @click="">Добавить рекомендованные материалы</mg-button>
+
+    <room-material-form :room_id="room.id"></room-material-form>
 </template>
 
 <script>
 import {mapGetters, mapState, mapActions} from "vuex";
 import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
+import RoomMaterialForm from "../material/RoomMaterialForm.vue";
 
 export default {
     name: "tile-floor-calc",
-    components: {MaterialsForBuyBlock, },
+    components: {MaterialsForBuyBlock, RoomMaterialForm},
 
     props:{
         room: {
@@ -124,10 +127,6 @@ export default {
                 return;
             }
             this.addCalced(this.totalAmount);
-        },
-
-        addMaterials(){
-
         },
 
         setDefaults(){

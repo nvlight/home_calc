@@ -68,8 +68,6 @@
     <mg-button @click="">Добавить рекомендованные материалы</mg-button>
 
     <room-material-form :room_id="room.id"></room-material-form>
-
-    <room-material-list class="mt-3" :room_id="room.id"></room-material-list>
 </template>
 
 <script>

@@ -62,7 +62,7 @@ export default {
     data() {
         return {
             selectedMaterial: "1",
-            amount: 0,
+            amount: 1,
         }
     },
     methods:{

@@ -44,13 +44,19 @@
 
     <mg-button @click="addCalced">Добавить сумму</mg-button>
 
+
+    <mg-button @click="">Добавить рекомендованные материалы</mg-button>
+    <room-material-form :room_id="room.id"></room-material-form>
+
 </template>
 
 <script>
 import {mapState, mapActions} from "vuex";
+import RoomMaterialForm from "../material/RoomMaterialForm.vue";
 
 export default {
     name: 'putty-ceiling-calc',
+    components: { RoomMaterialForm },
     props: {
         'room': {
             type: Object,

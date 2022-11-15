@@ -273,9 +273,13 @@
         </div>
     </div>
 
-    <!-- added Jobs list -->
+    <!-- room job list -->
     <room-job-list :room_id="room.id"></room-job-list>
-    <!-- / added Jobs list -->
+    <!-- /room job list -->
+
+    <!-- room material list -->
+    <room-material-list :room_id="room.id"></room-material-list>
+    <!-- /room material list -->
 
     <room-jobs-materials-sum :room_id="room.id"></room-jobs-materials-sum>
 </template>
@@ -287,11 +291,13 @@ import RoomJobList from "./RoomJobList.vue";
 import AddedBuildingMaterialsList from "./AddedBuildingMaterialsList.vue";
 import RoomJobsSum from "./RoomJobsSum.vue";
 import RoomJobsMaterialsSum from "./RoomJobsMaterialsSum.vue";
+import RoomMaterialList from "./roomMaterial/RoomMaterialList.vue";
 
 export default {
     name: "room-item",
     components: {
         ShowPickedComponent, RoomJobList, AddedBuildingMaterialsList, RoomJobsSum, RoomJobsMaterialsSum,
+        RoomMaterialList,
     },
     props: {
         number: Number,
