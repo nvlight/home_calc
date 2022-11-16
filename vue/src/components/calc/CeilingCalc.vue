@@ -130,29 +130,11 @@
             </div>
         </div>
 
-<!--        <materials-for-buy-block-->
-<!--            :materials="materials"-->
-<!--            :room="room"-->
-<!--        ></materials-for-buy-block>-->
+        <materials-for-buy-block
+            :materials="materials"
+            :room="room"
+        ></materials-for-buy-block>
 
-        <div class="font-medium mt-2">Материалы к покупке:</div>
-        <div v-for="(material, index) in getFasteners"
-            :key="index"
-            class="flex justify-between"
-        >
-            <div>
-                <span>{{index+1}}. </span>
-                <span>{{material.title}}: </span>
-            </div>
-            <div class="self-center flex ">
-                <span class="font-semibold">{{material.value}}</span>
-                <span class="font-semibold">&nbsp;шт.</span>
-            </div>
-
-        </div>
-
-<!--        <div>perimeter: {{perimeter}}</div>-->
-<!--            <div class="font-semibold">getFasteners: </div>{{getFasteners}}</div>-->
         <mg-button @click="">Добавить рекомендованные материалы</mg-button>
 
         <room-material-form :room_id="room.id"></room-material-form>
