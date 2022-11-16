@@ -100,8 +100,12 @@
         </header>
         <main class="relative">
 
-            <div class="flex justify-center mt-2">
-                <add-room-button class="content-center  items-center"></add-room-button>
+            <div class="mt-2 flex justify-center">
+                <mg-button class="flex items-center" @click="$store.dispatch('room/createRoom')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>Добавить комнату
+                </mg-button>
             </div>
 
             <div class="main_wrapper">
@@ -129,7 +133,6 @@ import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuIt
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import RoomList from "./RoomList.vue";
 import RoomJobsSum from "./RoomJobsSum.vue";
-import AddRoomButton from "./AddRoomButton.vue";
 import {computed, watch} from "vue";
 import store from "../store/index.js";
 import router from "../router/index.js";
