@@ -170,14 +170,14 @@ export default {
             {
                 id: 18304521,
                 title: 'Профиль направляющий (ПН-2) Standers 0.6 мм 50х40х3000 мм',
-                amount: this.profileGuideUnits,
+                amount: this.profileGuideUnitsCeiled,
                 amount_add_info: this.profileGuideUnits,
                 unit_name: 'единиц',
             },
             {
                 id: 18304547,
                 title: 'Профиль потолочный (ПП) Standers 0.6 мм 60х27х3000 мм',
-                amount: this.profileCeilingUnits,
+                amount: this.profileCeilingUnitsCeiled,
                 amount_add_info: this.profileCeilingUnits,
                 unit_name: 'единиц',
             },
@@ -239,40 +239,45 @@ export default {
             return -(+this.decSquareCount);
         },
 
-        profileGuide(){ // профиль направляющий
-            return (+this.width + +this.length) * 2;
+        profileGuideUnits(){ // профиль направляющий, узнаем количество метров
+            return (this.perimeter / 3);
         },
-        profileGuideUnits(){
-            return Math.ceil(this.profileGuide / 3);
+        profileGuideUnitsCeiled(){
+            return Math.ceil(this.profileGuideUnits);
         },
-        profileCeiling(){ // профиль потолочный
+
+        profileCeiling(){ // профиль потолочный, узнаем количество метров
             const additionalProfile = 1;
             const p1 = (Math.ceil(+this.length / +this.profileStep) - additionalProfile) * +this.width;
             const sum = Math.ceil(p1);
             return sum;
         },
         profileCeilingUnits(){
-            return Math.ceil(this.profileCeiling / 3);
+            return +(this.profileCeiling / 3).toFixed(2);
         },
-        directSuspension(){ // профиль прямой
+        profileCeilingUnitsCeiled(){
+            return Math.ceil(this.profileCeilingUnits);
+        },
+
+        // знаю количество подвесов, исходя из шага подвеса
+        directSuspension(){ // подвес прямой
             const sum = Math.ceil(this.profileCeiling / this.suspensionStep);
             return sum;
         },
         getFasteners(){
             // профиль напрявлающий, дюбели и саморезы по 4 см.
-            let pn = Math.ceil(this.profileGuide * 0.3);
+            let pn = Math.ceil(this.perimeter / 0.3) + 1;
             this.fasteners.dubel4sm = pn;
             this.fasteners.samor45sm_wood = pn;
 
             // профиль потолочный, дюбели и саморезы по 4 см, семечки 0.5 см
-            this.fasteners.semechki = this.profileCeilingUnits * 4;
+            this.fasteners.semechki = this.profileCeilingUnitsCeiled * 4;
             this.fasteners.semechki += Math.ceil(this.directSuspension * 4);
-            this.fasteners.dubel4sm += Math.ceil(this.directSuspension * 2);
+            this.fasteners.dubel4sm += Math.ceil(this.directSuspension * 3);
             this.fasteners.samor45sm_wood += Math.ceil(this.directSuspension * 4);
 
             // гипсокартон, саморезы по металлу 3.5 см
-            const drywallPerimeter = 2.5 * 2 + 1.2 * 2;
-            this.fasteners.samor35sm_metall = Math.ceil(this.profileCeiling / 0.2 + drywallPerimeter / 0.2);
+            this.fasteners.samor35sm_metall = Math.ceil(this.profileCeiling / 0.18 + this.perimeter / 0.18);
 
             return this.fasteners;
         },
