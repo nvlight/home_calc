@@ -1,6 +1,6 @@
 <template>
-    <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-2 ">
-        <div class="max-w-md w-full space-y-2">
+    <div class="pt-4 pb-4 px-2">
+        <div class="max-w-md">
             <div class="font-semibold text-xl text-center">Добавленные работы:</div>
 
             <div v-if="!addedJobsClone?.length">
@@ -46,34 +46,37 @@ export default {
     data(){
         return {
             addedJobsClone: [],
-            roomJobs: [],
         }
     },
     methods:{
         ...mapActions({
             deleteJob: 'roomJob/deleteJobHandler',
         }),
+        filterRoomJobs(){
+            const tmp = this.roomJobs
+                .filter(t => t.room_id === this.room_id )
+            this.addedJobsClone = Object.assign(tmp, {});
+        }
     },
     computed:{
         ...mapState({
             currency: state => state.currency,
-            addedJobs: state => state.roomJob.addedJobs,
+            roomJobs: state => state.roomJob.addedJobs,
         }),
         ...mapGetters({
+            //jobsSum: 'roomJob/jobsSum',
         }),
     },
     watch:{
-        addedJobs: {
-            handler(newValue, oldValue){
-                const tmp = this.addedJobs
-                    .filter(t => t.room_id === this.room_id )
-                this.addedJobsClone = Object.assign(tmp, {});
+        roomJobs: {
+            handler(nv, ov){
+                this.filterRoomJobs();
             },
             deep: true,
         },
     },
     mounted() {
-
+        this.filterRoomJobs();
     },
 }
 </script>

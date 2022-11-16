@@ -1,13 +1,12 @@
 <template>
     <div v-for="(room) in rooms" class="max-w-2xl px-2 py-3">
         <div class="border-4 border-dashed border-gray-200 rounded-lg" >
-            <div class="px-2 py-2">
-                <room-item :number="room.id" :room="room" :key="room.id"
-                    @addWindow="addWindowHandler"
-                    @deleteWindow="deleteWindowHandler"
-                    @addDoor="addDoorHandler"
-                    @deleteDoor="deleteDoorHandler"></room-item>
-            </div>
+            <room-item :number="room.id" :room="room" :key="room.id"
+                @addWindow="addWindowHandler"
+                @deleteWindow="deleteWindowHandler"
+                @addDoor="addDoorHandler"
+                @deleteDoor="deleteDoorHandler">
+            </room-item>
         </div>
     </div>
 </template>

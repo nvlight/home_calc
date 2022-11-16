@@ -1,5 +1,5 @@
 <template>
-    <div class="mt-3 text-xl text-center">
+    <div class="mt-3 mb-3 text-xl text-center">
         <span>Сумма материалов и работ: </span>
         <span class="font-semibold ">{{ sum }}&nbsp;{{ currency }}</span>
     </div>

@@ -115,12 +115,48 @@
 
         <mg-grid-icon-button @click="addCalcedCeil">Добавить всю сумму</mg-grid-icon-button>
 
-        <materials-for-buy-block
-            :materials="materials"
-            :room="room"
-        ></materials-for-buy-block>
+        <label class="block mt-2">
+            <input type="checkbox"
+                   :value="this.showFastenersStep"
+                   @change="this.showFastenersStep = !this.showFastenersStep"
+            >
+            <span class="pl-1">Показать шаги крепежей</span>
+        </label>
+        <div class="mt-2" v-if="showFastenersStep">
+<!--            <div>fasteners: {{ fasteners }}</div>-->
+            <div class="font-semibold">Установка шага для крепежей</div>
+            <div v-for="(fastener,i) in fasteners">
+                <mg-input-labeled v-model="fasteners[i].step">{{ fastener.title }}</mg-input-labeled>
+            </div>
+        </div>
+
+<!--        <materials-for-buy-block-->
+<!--            :materials="materials"-->
+<!--            :room="room"-->
+<!--        ></materials-for-buy-block>-->
+
+        <div class="font-medium mt-2">Материалы к покупке:</div>
+        <div v-for="(material, index) in getFasteners"
+            :key="index"
+            class="flex justify-between"
+        >
+            <div>
+                <span>{{index+1}}. </span>
+                <span>{{material.title}}: </span>
+            </div>
+            <div class="self-center flex ">
+                <span class="font-semibold">{{material.value}}</span>
+                <span class="font-semibold">&nbsp;шт.</span>
+            </div>
+
+        </div>
+
+<!--        <div>perimeter: {{perimeter}}</div>-->
+<!--            <div class="font-semibold">getFasteners: </div>{{getFasteners}}</div>-->
+        <mg-button @click="">Добавить рекомендованные материалы</mg-button>
 
         <room-material-form :room_id="room.id"></room-material-form>
+
     </div>
 </template>
 
@@ -246,10 +282,34 @@ export default {
                     price: 3500,
                 },
             ],
+
             fastenersCals: null,
             pickedFasteners: [],
             fastenersCustomUnitSet: [],
             fastenersModel: {},
+
+            fasteners: [
+                {
+                    id: 8,
+                    title: 'Дюбель-гвозди грибовидные Ecoplast, 6x40 мм, полипропилен, 100 шт.',
+                    value: 0,
+                    step: 0.19,
+                },
+                {
+                    id: 7,
+                    title: 'Саморезы для дерева Standers фосфатированные 3.5x45 на вес (около 455 шт./кг); 288 ₽/шт.',
+                    value: 0,
+                    step: 0.21,
+                },
+                {
+                    id: 53,
+                    title: 'Саморезы для металла STANDERS фосфатированные 3.5x35, на вес (около 510 шт./кг); 280 ₽ /шт.',
+                    value: 0,
+                    step: 0.11,
+                },
+            ],
+
+            showFastenersStep: false,
         }
     },
     methods: {
@@ -270,7 +330,6 @@ export default {
             this.sizes = Object.assign({}, this.room.sizes);
             this.baget.count = this.getDefaultPerimeter();
         },
-
 
         addCalcedCeil() {
             if (!this.choosedCeiling.selected_id.length) {
@@ -293,6 +352,7 @@ export default {
         addCalced() {
             this.addJob(this.createJob());
         },
+
     },
     computed: {
         ...mapState({
@@ -376,9 +436,34 @@ export default {
             }
         },
 
+        getFasteners(){
+            //console.log('fasteners change');
+            const db4sm      = this.fasteners.filter(t=>t.id===8);
+            const samorm35sm = this.fasteners.filter(t=>t.id===7);
+            const samord35sm = this.fasteners.filter(t=>t.id===53);
+
+            // дюбели и саморезы по 4-3.5 см.
+            // let pn1 = (this.perimeter / 0.19); // db4sm
+            // let pn2 = (this.perimeter / 0.21); // samorm35sm
+            // let pn3 = (this.perimeter / 0.11); // samord35sm// дюбели и саморезы по 4-3.5 см.
+            let pn1 = (this.perimeter / db4sm[0].step); // db4sm
+            let pn2 = (this.perimeter / samorm35sm[0].step); // samorm35sm
+            let pn3 = (this.perimeter / samord35sm[0].step); // samord35sm
+            //console.log(pn1, pn2, pn3);
+
+            db4sm[0].value      = +Math.ceil( pn1.toFixed(2) );
+            samorm35sm[0].value = +Math.ceil( pn2.toFixed(2) );
+            samord35sm[0].value = +Math.ceil( pn3.toFixed(2) );
+
+            return this.fasteners;
+        },
+
         materials() {
             const arr = [];
 
+            this.getFasteners.forEach(t => {
+                arr.push( {title: t.title, amount: t.value, amount_add_info: t.value, unit_name: 'шт.',} )
+            });
             // todo: материалы к натпоту человек сам не сможет купить, поэтому в список материалов его не добавляю!
             // arr.push({title: 'Багеты', amount: this.baget.count, unit_name: 'м.',});
             // if (this.chandeliers.count) {
