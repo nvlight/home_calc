@@ -288,7 +288,6 @@
 import {mapState, mapActions, mapGetters} from "vuex";
 import ShowPickedComponent from "./ShowPickedComponent.vue";
 import RoomJobList from "./RoomJobList.vue";
-import AddedBuildingMaterialsList from "./AddedBuildingMaterialsList.vue";
 import RoomJobsSum from "./RoomJobsSum.vue";
 import RoomJobsMaterialsSum from "./RoomJobsMaterialsSum.vue";
 import RoomMaterialList from "./roomMaterial/RoomMaterialList.vue";
@@ -296,7 +295,7 @@ import RoomMaterialList from "./roomMaterial/RoomMaterialList.vue";
 export default {
     name: "room-item",
     components: {
-        ShowPickedComponent, RoomJobList, AddedBuildingMaterialsList, RoomJobsSum, RoomJobsMaterialsSum,
+        ShowPickedComponent, RoomJobList, RoomJobsSum, RoomJobsMaterialsSum,
         RoomMaterialList,
     },
     props: {
