@@ -104,7 +104,7 @@ export default {
             decSquareCount: 0,
 
             price: 200,
-            rapport: 0,
+            rapport: 0.64,
             oneRollMeters: 10,
         }
     },
@@ -179,7 +179,7 @@ export default {
             const arr = [];
             arr.push(
                 {
-                    title: 'Обои',
+                    title: 'Обои флизелиновые Артекс Эмили серые 1.0 м 10408-06',
                     amount: Math.ceil(this.rolls),
                     amount_add_info: this.rolls.toFixed(2),
                     unit_name: 'рулонов',

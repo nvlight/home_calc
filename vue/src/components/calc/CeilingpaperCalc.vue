@@ -51,33 +51,16 @@
 
     <mg-button @click="addCalced">Добавить сумму</mg-button>
 
-    <div class="mt-2">
-        <div>Длина рулона: 10.05 м.</div>
-        <div>Ширина рулона: 1.06 м.</div>
-    </div>
     <div class="flex justify-between mt-2">
         <mg-input-labeled v-model="rapport" :placeholder="'0.64 м. / 0.32 м. / 0 м. '">Раппорт</mg-input-labeled>
         <mg-input-labeled v-model="oneRollMeters" :placeholder="'10 м. '">Кол-во метров в 1-м рулоне</mg-input-labeled>
     </div>
     <div class="mt-2">Периметр:
-        <span class="font-semibold">{{perimeter}} м.</span> (<span class="font-semibold">{{perimeterCeil}} м.</span>)
+        <span class="font-semibold">{{perimeterCeil}} м.</span> (<span class="font-semibold">{{perimeter}} м.</span>)
     </div>
     <div class="mt-2">Высота с учетом раппорта: <span class="font-semibold">{{heightRapport}} м.</span></div>
 
-    <materials-for-buy-block :materials="materialsForBuy" :room="room"></materials-for-buy-block>
-
-    <div class="mt-2 flex justify-between">
-        <span>Обоев (рулонов) к покупке:</span>
-        <div>
-            <span class="font-semibold">{{ ceilingRolls }}</span>
-            <template v-if="rolls !== ceilingRolls">
-                (<span class="font-semibold">{{ rolls }}</span>)
-            </template>
-        </div>
-    </div>
-    <div class="flex justify-between">
-        <span>{{glue.name}}:</span> <span class="font-semibold">{{glue.count}} коробок</span>
-    </div>
+    <materials-for-buy-block :materials="materials" :room="room"></materials-for-buy-block>
 
     <mg-button @click="">Добавить рекомендованные материалы</mg-button>
     <room-material-form :room_id="room.id"></room-material-form>
@@ -116,8 +99,8 @@ export default {
             decSquareCount: 0,
 
             price: 250,
-            rapport: 0,
-            oneRollMeters: 30,
+            rapport: 0.32,
+            oneRollMeters: 25,
         }
     },
 
@@ -179,16 +162,9 @@ export default {
         materials(){
             const arr = [];
             arr.push(
-                //{title: 'Обои', description: this.squareCeiling + ' кв.м.'},
-            )
-            return arr;
-        },
-
-        materialsForBuy(){
-            const arr = [];
-            arr.push(
                 {
-                    title: 'Обои',
+                    // https://www.vseinstrumenti.ru/stroitelnye-materialy/otdelochnye-materialy/interer-i-otdelka/oboi/vinilovye/vernissage/16306-70/#tabResponses
+                    title: 'Виниловые обои на флизелиновой основе Vernissage 1.06х25 м',
                     amount: Math.ceil(this.rolls),
                     amount_add_info: this.rolls.toFixed(2),
                     unit_name: 'рулонов',
