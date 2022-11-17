@@ -16,6 +16,7 @@
 
                 <select v-model="selectedMaterial"
                     multiple
+                    @change="changeMaterPrice"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
                         focus:ring-blue-500 focus:border-blue-500
                         block w-full p-2.5
@@ -34,8 +35,17 @@
         </div>
 
         <div class="flex justify-between items-center">
-            <div class="mt-2">Цена материала:
-                <span class="font-semibold">{{ materialPrice }} {{ currency }}</span>
+            <div class="mt-2">
+
+<!--                <div class="font-semibold">{{ materialPrice }} {{ currency }}</div>-->
+                <div class="flex items-center">
+                    <mg-input-labeled v-model="materPrice">Цена материала:</mg-input-labeled>
+                    <div class="font-semibold ml-1">
+                        {{ currency }}
+                    </div>
+                </div>
+                <div class="text-gray-600 cursor-pointer text-sm hover:text-red-500"
+                     @click="resetMaterPrice">установить цену по умолчанию</div>
             </div>
 
             <div class="mt-1">
@@ -74,6 +84,8 @@ export default {
             amount: 1,
 
             searchMaterialQuery: '',
+
+            materPrice: 0,
         }
     },
     methods:{
@@ -83,7 +95,15 @@ export default {
 
         create(){
             this.createRoomMaterial(this.roomMaterial);
-        }
+        },
+
+        changeMaterPrice(){
+            this.materPrice = this.materialPrice;
+        },
+
+        resetMaterPrice(){
+            this.materPrice = this.materialPrice;
+        },
     },
     computed: {
         ...mapState({
@@ -109,6 +129,7 @@ export default {
         },
 
         sum(){
+            return this.materPrice * this.amount;
             return this.materialPrice * this.amount;
         },
 
@@ -123,6 +144,10 @@ export default {
             return result;
         },
     },
+
+    mounted() {
+        this.changeMaterPrice();
+    }
 }
 
 </script>

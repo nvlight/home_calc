@@ -43,6 +43,10 @@
 
     <mg-button @click="addCalced">Добавить сумму</mg-button>
 
+    <materials-for-buy-block
+        :materials="materials"
+        :room="room"
+    ></materials-for-buy-block>
     <mg-button @click="">Добавить рекомендованные материалы</mg-button>
 
     <room-material-form :room_id="room.id"></room-material-form>
@@ -52,10 +56,11 @@
 <script>
 import {mapState, mapActions} from "vuex";
 import RoomMaterialForm from "../material/RoomMaterialForm.vue";
+import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
 
 export default {
     name: 'cornice-calc',
-    components: { RoomMaterialForm },
+    components: { RoomMaterialForm, MaterialsForBuyBlock},
     props: {
         'room':{
             type: [Object],
@@ -121,7 +126,20 @@ export default {
         }),
 
         changedPerimeter(){
-            return +this.perimeter + +this.incPerimeterCount + (- +this.decPerimeterCount);
+            let p = +this.perimeter + +this.incPerimeterCount + (- +this.decPerimeterCount)
+            p = Math.ceil(p);
+            // обычно по 2 метра плинтуса потолчные идут, нужно до четного вверху прибавить
+            if (p % 2 != 0){
+                p++;
+            }
+
+            return p;
+        },
+        corniceCount(){
+            return (this.changedPerimeter / 2);
+        },
+        corniceCountCeiled(){
+            return Math.ceil(this.corniceCount);
         },
 
         sumPriceInstallation(){
@@ -142,6 +160,21 @@ export default {
             }
 
             return s;
+        },
+
+        materials(){
+            // https://gipsokarton-blog.ru/raboty/rasstoyanie-mezhdu-podvesami.html
+            const arr = [];
+            arr.push(
+                {
+                    id: 12593034,
+                    title: 'Плинтус потолочный пенополистирол Inspire LX-105 белый 68х80х2000 мм',
+                    amount: this.corniceCountCeiled,
+                    amount_add_info: this.corniceCount,
+                    unit_name: 'шт',
+                },
+            )
+            return arr;
         },
 
         totalAmount() {

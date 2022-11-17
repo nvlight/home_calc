@@ -1,6 +1,6 @@
 <template>
     <div class="pt-4 pb-4 px-2">
-        <div class="max-w-md">
+        <div class="max-w-md max-h-72 overflow-y-scroll">
             <div class="font-semibold text-xl text-center">Добавленные материалы:</div>
             <!--        <div>storeRoomMaterials.length: {{roomMaterials.length}}</div>-->
 
@@ -10,6 +10,7 @@
             <template v-else>
                 <div v-for="(room_material, index) in room_materials"
                      :key="room_material.id"
+                     class=""
                 >
                     <div class="flex mt-2 justify-between">
                         <div class="w-full">
@@ -34,9 +35,9 @@
                     </div>
                 </div>
             </template>
-
-            <room-materials-sum :room_id="room_id"></room-materials-sum>
         </div>
+
+        <room-materials-sum :room_id="room_id"></room-materials-sum>
     </div>
 </template>
 
