@@ -4,18 +4,18 @@
             <div class="font-semibold text-xl text-center">Добавленные материалы:</div>
             <!--        <div>storeRoomMaterials.length: {{roomMaterials.length}}</div>-->
 
-            <template v-if="!room_materials.length">
+            <template v-if="!filteredRoomMaterials.length">
                 <div class="mt-2 text-center">Список материалов пуст</div>
             </template>
             <template v-else>
-                <div v-for="(room_material, index) in room_materials"
+                <div v-for="(room_material, index) in filteredRoomMaterials"
                      :key="room_material.id"
                      class=""
                 >
                     <div class="flex mt-2 justify-between">
                         <div class="w-full">
                             <div>
-                                <span>{{ index + 1 }}. {{ room_material.title }}</span>
+                                <span>{{ room_material.id }}. {{ room_material.title }}</span>
                             </div>
                             <div class="flex justify-between">
                                 <div>
@@ -63,30 +63,40 @@ export default {
         ...mapActions({
             delRoomMaterial: 'roomMaterial/delRoomMaterial',
         }),
-
-        filterRoomMaterials() {
-            //console.log('function: filterRoomMaterials');
-            this.room_materials = this.roomMaterials
-                .filter(t => t.room_id === +this.room_id)
-        }
     },
     computed: {
         ...mapState({
             currency: state => state.currency,
             roomMaterials: state => state.roomMaterial.roomMaterials,
         }),
+
+        filteredRoomMaterials() {
+            //console.log('function: sortedAndFilteredRoomMaterials');
+            return this.roomMaterials.filter(t =>
+                t.room_id === +this.room_id
+            );
+        },
+
+        // эта штука не работает только с полями из строк, т.к. у них есть функция localoCompare
+        sortedRoomMaterials() {
+            //console.log('function: sortedRoomMaterials');
+            return [...this.roomMaterials].sort(
+                (t1, t2) => t1['title']?.localeCompare( t2['title'] )
+            );
+        },
     },
 
     mounted() {
         //console.log('mounted again!');
-        this.filterRoomMaterials();
+        //console.log(this.sortedRoomMaterials);
+        //this.filterRoomMaterials();
     },
 
     watch: {
         roomMaterials: {
             handler(nv, ov) {
                 //console.log('watch: roomMaterials changed');
-                this.filterRoomMaterials();
+                //this.filterRoomMaterials();
             },
             deep: true,
         }

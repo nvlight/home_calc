@@ -77,7 +77,8 @@ export const roomMaterialModule = {
             state.roomMaterials = roomMaterials;
         },
         addRoomMaterial: (state, roomMaterial) => {
-            state.roomMaterials.push(roomMaterial);
+            state.roomMaterials.unshift(roomMaterial);
+            //state.roomMaterials.push(roomMaterial);
         },
         delRoomMaterial: (state, id) => {
             state.roomMaterials = state.roomMaterials.filter(

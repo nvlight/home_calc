@@ -19,6 +19,7 @@ class RoomMaterialController extends Controller
 
         $roomMaterials = RoomMaterial::join('materials', 'room_materials.material_id', '=', 'materials.id')
             ->select('room_materials.*', 'materials.title')
+            ->orderBy('id', 'desc')
             ->get();
 
         return response()
