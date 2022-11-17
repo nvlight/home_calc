@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <div v-if="this.$store.state.debug" class="mt-3 border-dotted border-2 p-3 border-red-400">
+    <div v-if="this.$store.state.debug && 1==0" class="mt-3 border-dotted border-2 p-3 border-red-400">
         <div>{{ windows }}</div>
         <div>{{ doors }}</div>
         <div>windowsSquare: {{ windowsSquare }}</div>
@@ -62,6 +62,15 @@
     </div>
 
     <mg-button @click="addCalced">Добавить сумму</mg-button>
+
+    <div class="flex justify-between">
+        <div class="mt-3">
+            <mg-input-labeled v-model="layerThickness">Толщина слоя шпатлевки (мм)</mg-input-labeled>
+        </div>
+        <div class="mt-3">
+            <mg-input-labeled v-model="oneBagKg">В одном мешке кг.</mg-input-labeled>
+        </div>
+    </div>
 
     <materials-for-buy-block
         :materials="materials"
@@ -105,6 +114,9 @@ export default {
             price: 200,
             doors: [],
             windows: [],
+
+            layerThickness: 2,
+            oneBagKg: 20,
         }
     },
     methods:{
@@ -172,11 +184,32 @@ export default {
             return this.ceiledFullSquareWalls * this.price;
         },
 
-        materials(){
+        needKg(){
+            //- расход: 1 кг/м2 при толщине слоя 1 мм;
+            //- количество воды на 10 кг шпаклевки: 6,5-7 л;
+            return this.ceiledFullSquareWalls * this.layerThickness;
+        },
+        needBag(){
+            return +(this.needKg / this.oneBagKg).toFixed(2);
+            //const oneBagKg = this.oneBagKg;
+        },
+        needBagCeiled(){
+            return Math.ceil(this.needBag);
+        },
+
+        materials() {
             const arr = [];
-            arr.push({title: 'Шпатлевка "SATENTEK" 25 кг.', amount: 0, unit_name: 'мешков.',});
+            arr.push(
+                {
+                    title: 'Шпаклевка гипсовая LAFARGE Satentek 20 кг',
+                    amount: this.needBagCeiled,
+                    amount_add_info: this.needBag,
+                    unit_name: 'мешок',
+                },
+            )
             return arr;
         },
+
         totalAmount() {
             return {
                 price: this.sum,

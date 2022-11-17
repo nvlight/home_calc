@@ -5,7 +5,7 @@
             <!--        <div>storeRoomMaterials.length: {{roomMaterials.length}}</div>-->
 
             <template v-if="!filteredRoomMaterials.length">
-                <div class="mt-2 text-center">Список материалов пуст</div>
+                <div class="mt-2 text-center">Список пуст</div>
             </template>
             <template v-else>
                 <div v-for="(room_material, index) in filteredRoomMaterials"

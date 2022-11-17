@@ -46,15 +46,12 @@
 
     <div class="flex justify-between">
         <div class="mt-3">
-            <mg-input-labeled v-model="layerThickness">Толщина слоя шпатлевки</mg-input-labeled>
+            <mg-input-labeled v-model="layerThickness">Толщина слоя шпатлевки (мм)</mg-input-labeled>
         </div>
         <div class="mt-3">
             <mg-input-labeled v-model="oneBagKg">В одном мешке кг.</mg-input-labeled>
         </div>
     </div>
-<!--    <div class="mt-3">-->
-<!--        <span>Нужно кг.:</span> {{ needKg }}-->
-<!--    </div>-->
 
     <materials-for-buy-block
         :materials="materials"
