@@ -44,6 +44,22 @@
 
     <mg-button @click="addCalced">Добавить сумму</mg-button>
 
+    <div class="flex justify-between">
+        <div class="mt-3">
+            <mg-input-labeled v-model="layerThickness">Толщина слоя шпатлевки</mg-input-labeled>
+        </div>
+        <div class="mt-3">
+            <mg-input-labeled v-model="oneBagKg">В одном мешке кг.</mg-input-labeled>
+        </div>
+    </div>
+<!--    <div class="mt-3">-->
+<!--        <span>Нужно кг.:</span> {{ needKg }}-->
+<!--    </div>-->
+
+    <materials-for-buy-block
+        :materials="materials"
+        :room="room"
+    ></materials-for-buy-block>
 
     <mg-button @click="">Добавить рекомендованные материалы</mg-button>
     <room-material-form :room_id="room.id"></room-material-form>
@@ -53,10 +69,11 @@
 <script>
 import {mapState, mapActions} from "vuex";
 import RoomMaterialForm from "../material/RoomMaterialForm.vue";
+import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
 
 export default {
     name: 'putty-ceiling-calc',
-    components: { RoomMaterialForm },
+    components: { RoomMaterialForm, MaterialsForBuyBlock, },
     props: {
         'room': {
             type: Object,
@@ -79,6 +96,9 @@ export default {
             decSquareCount: 0,
 
             price: 250,
+
+            layerThickness: 2,
+            oneBagKg: 20,
         }
     },
     methods: {
@@ -121,12 +141,29 @@ export default {
             return this.length * this.width;
         },
         fullSquare(){
-            return (this.square
+            return +(this.square
                 + +this.incSquareCount
                 - +this.decSquareCount).toFixed(2);
         },
+        fullSquareСeiled(){
+            return Math.ceil(this.fullSquare);
+        },
         sum(){
-            return +this.price * +this.fullSquare;
+            // бизнесс-требование,
+            return +this.price * this.fullSquareСeiled;
+        },
+
+        needKg(){
+            //- расход: 1 кг/м2 при толщине слоя 1 мм;
+            //- количество воды на 10 кг шпаклевки: 6,5-7 л;
+            return this.fullSquareСeiled * this.layerThickness;
+        },
+        needBag(){
+            return +(this.needKg / this.oneBagKg).toFixed(2);
+            //const oneBagKg = this.oneBagKg;
+        },
+        needBagCeiled(){
+            return Math.ceil(this.needBag);
         },
 
         totalAmount() {
@@ -136,6 +173,19 @@ export default {
                     `Квадратура: ${this.square} м.кв.,
                     цена за 1 кв.м.: ${this.price} ${this.currency}`,
             };
+        },
+
+        materials() {
+            const arr = [];
+            arr.push(
+                {
+                    title: 'Шпаклевка гипсовая LAFARGE Satentek 20 кг',
+                    amount: this.needBagCeiled,
+                    amount_add_info: this.needBag,
+                    unit_name: 'мешок',
+                },
+            )
+            return arr;
         },
     },
     mounted() {
