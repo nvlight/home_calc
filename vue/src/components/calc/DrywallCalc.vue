@@ -305,12 +305,41 @@ export default {
         squareToDec(){
             return -(+this.windowsSquare.SDec) + (-+this.doorsSquare.SDec);
         },
+
+        doorsProfiles(){
+            let dpn=0; // профиль направляющий
+            let dpp=0; // профиль потолочный
+            this.doors.forEach(t => {
+                dpp += +this.height * 2; // один потолочный на линию с высоту и один для его закрепления
+                if (t.width != 0){
+                    dpn += +t.width * 2; // учет проема
+                    dpp += +t.height * 2 + +t.length; // обход самой двери потолочным напрявляющим
+                }
+            });
+            return {dpn, dpp}
+        },
+        windowsProfiles(){
+            let wpn=0; // профиль направляющий
+            let wpp=0; // профиль потолочный
+            this.doors.forEach(t => {
+                wpp += +this.height + +t.length * 2;
+            });
+            return {wpn, wpp}
+        },
+
         profileGuide(){ // профиль направляющий
             const p1 = (+this.sizes.s1 + +this.height) * 2;
             const p2 = (+this.sizes.s2 + +this.height) * 2;
             const p3 = (+this.sizes.s3 + +this.height) * 2;
             const p4 = (+this.sizes.s4 + +this.height) * 2;
-            const sum = Math.ceil(p1 + p2 + p3 + p4);
+
+            // нужно добавить направляющий профиль для дверей и окон
+            let { dpn } = this.doorsProfiles;
+            let { wpn } = this.windowsProfiles;
+            //dpn = 0;
+            //wpn = 0;
+
+            const sum = Math.ceil(p1 + p2 + p3 + p4 + dpn + wpn);
             return sum;
         },
         profileGuideUnits(){
@@ -325,7 +354,14 @@ export default {
             const p2 = (Math.ceil(+this.sizes.s2 / +this.profileStep) - additionalProfile) * +this.height;
             const p3 = (Math.ceil(+this.sizes.s3 / +this.profileStep) - additionalProfile) * +this.height;
             const p4 = (Math.ceil(+this.sizes.s4 / +this.profileStep) - additionalProfile) * +this.height;
-            const sum = Math.ceil(p1 + p2 + p3 + p4);
+
+            // нужно добавить поточный профиль для дверей и окон
+            let { dpp } = this.doorsProfiles;
+            let { wpp } = this.windowsProfiles;
+            //dpp = 0;
+            //wpp = 0;
+
+            const sum = Math.ceil(p1 + p2 + p3 + p4 + dpp + wpp);
             return sum;
         },
         profileCeilingUnits(){
@@ -348,6 +384,7 @@ export default {
             // профиль потолочный, дюбели и саморезы по 4 см, семечки 0.5 см
             this.fasteners.semechki = this.profileCeilingUnits * 4;
             this.fasteners.semechki += Math.ceil(this.directSuspension * 4);
+            this.fasteners.semechki = Math.ceil(+this.fasteners.semechki.toFixed(2));
             this.fasteners.dubel4sm += Math.ceil(this.directSuspension * 3);
             this.fasteners.samor45sm_wood += Math.ceil(this.directSuspension * 4);
 
@@ -356,6 +393,9 @@ export default {
 
             // нужно учесть еще дополнительные профили - направляющие и потолочные для окон и дверей
             // это целая история :smirk
+            // в общем, для каждой двери нужно добавить 1 потолочный профиль размером с высоту комнаты
+            // и еще 1 такой же для соединения его с рядом стоящими профилями и добавить подвесы
+            // ... также нужно посчитать профили для дверного проема
 
             return this.fasteners;
         },
