@@ -1,6 +1,10 @@
 <template>
     <h3 class="text-center text-2xl font-semibold">{{ title }}</h3>
 
+    <div>
+        <mg-button @click="setDefaultsDoorsCount">установить количество дверей по умолчанию</mg-button>
+    </div>
+
     <div class="mt-2 flex justify-between">
         <mg-input-labeled v-model="doorsCount">Количество дверей</mg-input-labeled>
         <mg-input-labeled v-model="price">Цена</mg-input-labeled>
@@ -55,14 +59,16 @@ export default {
             addJob: 'roomJob/createRoomJob',
         }),
 
-        addMaterials(){
-
+        setDefaults(){
+            this.setDefaultsDoorsCount();
+        },
+        setDefaultsDoorsCount(){
+            this.doorsCount = this.room.doors.length;
         },
 
         createJob() {
             const job = {}
             job.title = `${this.title} (id=${this.currentPickedJob})`;
-            job.id = this.addedJobNum;
             job.room_id = this.room.id;
             job.job_id = this.currentPickedJob;
             job.sum = this.totalAmount.price;
@@ -91,12 +97,19 @@ export default {
         },
         materials() {
             const arr = [];
-            arr.push({title: 'Пороги', amount: this.doorsCount, unit_name: 'ед.',});
+            arr.push(
+                {
+                    title: 'Пороги',
+                    amount: this.doorsCount,
+                    amount_add_info: this.doorsCount,
+                    unit_name: 'ед.',
+                }
+            );
             return arr;
         }
     },
     mounted() {
-        this.doorsCount = this.room.doors.length;
+        this.setDefaults();
 
         if (sessionStorage.getItem('currentPickedJob')) {
             this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
