@@ -42,7 +42,7 @@
                 </div>
             </div>
 
-            <div class="windows_doors_showHide_labels">
+            <div class="windows_doors_baseboards_showHide_labels">
                 <div class="flex justify-between">
                     <label>
                         <input type="checkbox"
@@ -57,6 +57,13 @@
                                @change="this.room.is_doors_showing = !this.room.is_doors_showing"
                         >
                         <span class="pl-1">Показать двери</span>
+                    </label>
+                    <label>
+                        <input type="checkbox"
+                               :value="this.room.is_baseboards_showing"
+                               @change="this.room.is_baseboards_showing = !this.room.is_baseboards_showing"
+                        >
+                        <span class="pl-1">Показать плинтуса</span>
                     </label>
                 </div>
 
@@ -236,6 +243,15 @@
                 <div v-else="">
                     <span class="font-light">Нет дверей</span>
                 </div>
+            </div>
+
+            <div class="baseboards_wrapper flex"
+                v-if="this.room.is_baseboards_showing"
+            >
+                <mg-input-labeled class="ml-1" v-model="room.internalCorners">внутр. углы</mg-input-labeled>
+                <mg-input-labeled class="ml-1" v-model="room.outerCorners">внешн. углы</mg-input-labeled>
+                <mg-input-labeled class="ml-1" v-model="room.connectors">соединители</mg-input-labeled>
+                <mg-input-labeled class="ml-1" v-model="room.stubs">заглушки</mg-input-labeled>
             </div>
 
             <div class="rooms_calc">

@@ -58,11 +58,13 @@ export const roomModule = {
 
             doors: [],
             is_doors_showing: false,
+            is_baseboards_showing: false,
 
             internalCorners: 0,
             outerCorners: 0,
             connectors: 0, // соединение
             stubs: 0, // заглушка
+
         },
         updateRoomId: 0,
     },

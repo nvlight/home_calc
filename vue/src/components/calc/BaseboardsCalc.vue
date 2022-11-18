@@ -4,7 +4,7 @@
     <mg-button @click="setDefaultPerimeter">Установить периметр по умолчанию</mg-button>
 
     <div class="mt-2 flex justify-between">
-        <mg-input-labeled v-model="perimeter">Периметр</mg-input-labeled>
+        <mg-input-labeled v-model="perimeterCeiled">Периметр ({{perimeter}})</mg-input-labeled>
         <mg-input-labeled v-model="price">Цена</mg-input-labeled>
     </div>
     <div class="mt-2">
@@ -26,6 +26,10 @@
     </div>
 
     <mg-button @click="addCalced">Добавить сумму</mg-button>
+
+    <div>
+        <mg-input-labeled class="block mt-1" v-model="baseboardLength">Длина плинтуса (м.)</mg-input-labeled>
+    </div>
 
     <materials-for-buy-block
         :materials="materials"
@@ -60,12 +64,15 @@ export default {
             currentPickedJob: 0,
 
             perimeter: 0,
+            perimeterCeiled: 0,
             price: 70,
 
-            internalCorners: 0,
+            internalCorners: 4,
             outerCorners: 0,
-            connectors: 0,
+            connectors: 7,
             stubs: 0,
+
+            baseboardLength: 2.5,
         }
     },
     methods:{
@@ -81,6 +88,7 @@ export default {
         },
         setDefaultPerimeter(){
             this.perimeter = this.getDefaultPerimeter();
+            this.perimeterCeiled = Math.ceil(this.perimeter);
         },
 
         setDefaultsBaseboardAccessories(){
@@ -109,8 +117,6 @@ export default {
             this.addJob(this.createJob());
         },
 
-        addMaterials(){
-        },
     },
     computed:{
         ...mapState({
@@ -118,28 +124,29 @@ export default {
         }),
 
         sum(){
-            return this.perimeter * this.price;
+            return this.perimeterCeiled * this.price;
         },
         totalAmount() {
             return {
                 price: this.sum,
                 adding_job_info_string:
-                    `Периметр: ${this.perimeter} метров,
+                    `Периметр: ${this.perimeterCeiled} метров,
                     цена за 1 метр: ${this.price} ${this.currency}`,
             };
         },
         materials(){
             const arr = [];
             arr.push({
-                title: 'Плинтуса',
-                amount: this.perimeter,
-                unit_name: 'м.',
+                title: 'Плинтус напольный «Дуб Небраска» 5.2 см 2.5 м',
+                amount: this.baseboardsForBuyCeiled,
+                amount_add_info: this.baseboardsForBuy,
+                unit_name: 'шт.',
             },)
             const ar = [
-                {var_name: 'internalCorners', title: 'Внутренние углы', unit_name: 'шт.',},
-                {var_name: 'outerCorners', title: 'Внешние углы', unit_name: 'шт.',},
-                {var_name: 'connectors', title: 'Соединители', unit_name: 'шт.',},
-                {var_name: 'stubs', title: 'Заглушки', unit_name: 'пар, левая и правая',},
+                {var_name: 'internalCorners', title: 'Внутренние углы', unit_name: 'шт.', },
+                {var_name: 'outerCorners', title: 'Внешние углы', unit_name: 'шт.', },
+                {var_name: 'connectors', title: 'Соединители', unit_name: 'шт.', },
+                {var_name: 'stubs', title: 'Заглушки', unit_name: 'пар(а), левая и правая', },
             ];
 
             for(let i=0; i<ar.length; i++){
@@ -148,11 +155,19 @@ export default {
                         title: ar[i].title,
                         amount: this[ar[i].var_name],
                         unit_name: ar[i].unit_name,
+                        amount_add_info: this[ar[i].var_name],
                     });
                 }
             }
             return arr;
-        }
+        },
+
+        baseboardsForBuy(){
+            return +( this.perimeterCeiled / this.baseboardLength ).toFixed(2);
+        },
+        baseboardsForBuyCeiled(){
+            return Math.ceil(this.baseboardsForBuy);
+        },
     },
     mounted() {
         this.setDefaults();
