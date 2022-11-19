@@ -1,6 +1,6 @@
 <template>
     <div class="pt-4 pb-4 px-2">
-        <div class="max-w-md">
+        <div class="max-w-md max-h-72 overflow-y-scroll">
             <div class="font-semibold text-xl text-center">Добавленные работы:</div>
 
             <div v-if="!addedJobsClone?.length">
@@ -26,8 +26,8 @@
                 </div>
             </div>
 
-            <room-jobs-sum :room_id="room_id"></room-jobs-sum>
         </div>
+        <room-jobs-sum :room_id="room_id"></room-jobs-sum>
     </div>
 </template>
 

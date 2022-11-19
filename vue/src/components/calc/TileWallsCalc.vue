@@ -25,16 +25,16 @@
             :value="pot.id">{{pot.name}} - ({{ pot.price }} {{ currency }})
         </option>
     </select>
-    <div v-if="$store.state.debug" class="mt-3 border-dotted border-2 p-3 border-red-400">
-        <div>selected_id: {{selected_id}}</div>
-        <div>selectedPrice: {{selectedPrice}}</div>
-    </div>
+<!--    <div v-if="$store.state.debug" class="mt-3 border-dotted border-2 p-3 border-red-400">-->
+<!--        <div>selected_id: {{selected_id}}</div>-->
+<!--        <div>selectedPrice: {{selectedPrice}}</div>-->
+<!--    </div>-->
 
     <div class="mt-3 flex items-center">
         <div class="w-7/12">
             <div class="mt-3">
-                <div>Периметр: <span class="font-semibold">{{perimeter}} м.</span></div>
-                <div>Площадь стен: <span class="font-semibold">{{squareWalls}} кв.м.</span></div>
+                <div>Периметр: <span class="font-semibold">{{perimeterCeiled}} ({{perimeter}}) м.</span></div>
+                <div>Площадь стен: <span class="font-semibold">{{squareCeiled}} ({{square}}) кв.м.</span></div>
             </div>
         </div>
         <div class="w-5/12">
@@ -45,16 +45,29 @@
         </div>
     </div>
 
-
-
     <mg-input-labeled v-model="price">Цена за 1 кв.м.</mg-input-labeled>
     <div class="mt-2">Цена укладки: <span class="font-semibold">{{sum}} {{currency}}</span></div>
     <mg-button @click="addSum">Добавить сумму</mg-button>
 
-    <div class="mt-3" >
-        <mg-input-labeled v-model="thicknessLayer" :placeholder="'кв.м.'">Толщина клея (мм)</mg-input-labeled>
+    <div class="mt-3 flex justify-between">
+        <mg-input-labeled class="block mx-1" v-model="thicknessLayer" :placeholder="'кв.м.'">Толщина клея (мм)</mg-input-labeled>
+        <div>
+            <mg-input-labeled class="block mx-1" v-model="oneTileSVPCount" :placeholder="'кв.м.'">Расход СВП (шт)</mg-input-labeled>
+            <div class="text-sm text-gray-600">на 1 плитку</div>
+        </div>
+
+        <div>
+            <mg-input-labeled class="block mx-1" v-model="oneBugKg">Кг. клея</mg-input-labeled>
+            <div class="text-sm text-gray-600">в 1 мешке</div>
+        </div>
+
     </div>
-    <div class="">Расход на 1 м.кв. = <span class="font-semibold">{{glueKg}}</span> кг</div>
+
+    <div>
+        <div class="">Расход клея на 1 м.кв.: <span class="font-semibold">{{glueKg}}</span> кг</div>
+        <div class="">Расход клея: <span class="font-semibold">{{this.glueConsumption}}</span> кг</div>
+        <div class="">Расход плиток: <span class="font-semibold">{{this.tileCount}}</span> штук</div>
+    </div>
 
     <materials-for-buy-block
         :materials="materials"
@@ -104,12 +117,14 @@ export default {
                     name: 'Плитка 40х40 см',
                     slug: 'tile40x40',
                     price: 800,
+                    square: 0.16,
                 },
                 {
                     id : 2,
                     name: 'Плитка 60х60 см',
                     slug: 'tile60x60',
                     price: 900,
+                    square: 0.36,
                 },
             ],
 
@@ -120,6 +135,9 @@ export default {
 
             // толщина слоя клея, пусть будет 3 мм, чтобы считать легче
             thicknessLayer: 3, // Расход клея при толщине слоя в 1 мм составляет 3.5 кг/м².
+
+            oneTileSVPCount: 4,
+            oneBugKg: 25,
         }
     },
     methods: {
@@ -169,31 +187,37 @@ export default {
                     +(this.sizes.s3) +
                     +(this.sizes.s4);
         },
-        perimeterCeil(){
+        perimeterCeiled(){
             return Math.ceil(this.perimeter);
         },
 
-        squareWalls(){
-            // бизнес-требование, площадь стен нужно округлять вверх!
-            return Math.ceil(+this.perimeter * +this.height)
-                + +this.incSquareCount
-                - +this.decSquareCount
+        square(){
+            let sq = this.perimeterCeiled * this.height;
+            sq += +(+this.incSquareCount - +this.decSquareCount).toFixed(2)
+
+            return sq;
         },
-        fullSquareWalls(){
-            return (+ this.squareWalls
-                + this.squareToInc + this.squareToDec
-            ).toFixed(2)
+
+        squareCeiled(){
+            return Math.ceil(this.square)
         },
-        ceiledFullSquareWalls(){
-            return Math.ceil( this.fullSquareWalls );
-        },
+
 
         selectedPrice(){
             return this.prices.filter( t => t.id === this.selected_id )[0].price;
         },
 
+        tileCount(){
+            const oneTileSquare = this.prices.filter( t => t.id === this.selected_id )[0].square;
+            return Math.ceil( this.square / oneTileSquare );
+        },
+
+        svpCount(){
+            return Math.ceil( this.tileCount * this.oneTileSVPCount );
+        },
+
         sum(){
-            const s = ( this.price * this.squareWalls).toFixed(2);
+            const s = ( this.price * this.squareCeiled).toFixed(2);
             return +s;
         },
 
@@ -201,31 +225,51 @@ export default {
             return {
                 price: this.sum,
                 adding_job_info_string:
-                    `Площадь пола: ${this.squareWalls} м.кв.,
+                    `Площадь пола: ${this.squareCeiled} м.кв.,
                     цена за 1 м.кв.: ${this.price} ${this.currency}`,
             };
         },
 
         materials() {
             const arr = [];
-            arr.push({title: 'Плитка',   amount: this.squareWalls, unit_name: 'м.кв.',});
-            // https://leroymerlin.ru/product/kley-dlya-plitki-bolars-bazovyy-12832285/
-            // Расход клея при толщине слоя в 1 мм составляет 3.5 кг/м².
-            // 3mm - 12кг/м2, значит 1 мешок на 2 м2.
-            arr.push({title: 'Клей для плитки Боларс Базовый, 25 кг',
-                amount: this.glueBugCeiled + ` (${this.glueBug}-${this.glueConsumption} кг)`,
-                unit_name: 'м.',});
+            arr.push(
+                {
+                    title: 'Керамогранит Softmarble 60x60 см 1.44 м² цвет белый',
+                    amount: this.squareCeiled,
+                    amount_add_info: this.square,
+                    unit_name: 'м.кв.',
+                },
+                {
+                    title: 'Клей для плитки Боларс Базовый, 25 кг',
+                    amount: this.glueBugCeiled,
+                    amount_add_info: this.glueBug,
+                    unit_name: 'мешок.',
+                },
+
+                // https://leroymerlin.ru/product/kley-dlya-plitki-bolars-bazovyy-12832285/
+                // Расход клея при толщине слоя в 1 мм составляет 3.5 кг/м².
+                // 3mm - 12кг/м2, значит 1 мешок на 2 м2.
+                {
+                    title: 'Система выравнивания плитки Dexter зажим 1.5 мм 100 шт.',
+                    amount: this.svpCount,
+                    amount_add_info: this.svpCount,
+                    unit_name: 'шт.',
+                },
+                {
+                    title: 'Система выравнивания плитки Dexter клин 100 шт',
+                    amount: this.svpCount,
+                    amount_add_info: this.svpCount,
+                    unit_name: 'шт.',
+                },
+            );
             return arr;
         },
 
-        oneBugKg(){
-            return 25;
-        },
         glueKg(){
             return this.thicknessLayer * 4; // per 1 m.kv
         },
         glueConsumption(){
-            return Math.ceil(this.squareWalls * this.glueKg);
+            return Math.ceil(this.squareCeiled * this.glueKg);
         },
         glueBug(){
             return (this.glueConsumption / this.oneBugKg);
