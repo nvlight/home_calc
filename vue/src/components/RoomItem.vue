@@ -270,7 +270,7 @@
             <h1 class="font-light text-xl text-center">Шаг 2. Выбор и добавление работ</h1>
 
             <label for="job_type" class="block text-sm font-medium text-gray-700">Наименование работы</label>
-            <select v-model="currentPickedJob" @change="setCurrentPickedJob(currentPickedJob)" v-if="workTypes?.length" id="job_type" name="job_type" autocomplete="job name"
+            <select v-model="currentPickedJob" @change="setRoomSelectedJobId(currPickedJobObject)" v-if="workTypes?.length" id="job_type" name="job_type" autocomplete="job name"
                     class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
                     sm:text-sm mb-3"
             >
@@ -365,9 +365,9 @@ export default {
     methods: {
         ...mapActions({
             deleteRoom: 'room/deleteRoom',
-            setCurrentPickedJob: 'setCurrentPickedJob',
             insertRoom: 'room/createRoomQuery',
             updateRoom: 'room/updateRoom',
+            setRoomSelectedJobId: 'room/setRoomSelectedJobId',
         }),
 
         addWindow(){
@@ -419,10 +419,25 @@ export default {
     computed:{
         ...mapState({
             addedJobs: state => state.addedJobs,
+            selectedJob: state => state.room.selectedJob,
         }),
         ...mapGetters({
             //jobsSum: 'roomJob/jobsSum',
         }),
+
+        pickedJob(){
+            const sr = this.selectedJob.filter(t => t.roomId === this.room.id );
+            //console.log(sr);
+            let ch = sr.length ? sr[0]?.jobId : '';
+            return ch;
+        },
+
+        currPickedJobObject(){
+            return {
+                roomId: this.room.id,
+                jobId: this.currentPickedJob,
+            }
+        },
 
         perimeter(){
             return (+this.room.sizes.s1 +
@@ -447,8 +462,12 @@ export default {
     mounted(){
         this.title = this.room.title;
 
-        if (sessionStorage.getItem('currentPickedJob')){
-            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
+        if (sessionStorage.getItem('selectedJobsArray')){
+            let pr = JSON.parse(sessionStorage.getItem('selectedJobsArray'));
+            const ser = pr.filter(t => t.roomId === this.room.id);
+            this.currentPickedJob = ser.length ? ser[0].jobId : 0;
+            // todo: возможно не стоит доверь данным из session, поставить проверку на set
+            this.$store.commit('room/setRoomSelectedJobsArray', pr);
         }
     },
 }

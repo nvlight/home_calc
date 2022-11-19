@@ -3,44 +3,9 @@ import axiosClient from "../axios.js";
 export const roomModule = {
     state: {
         loading: true,
+        rooms: [],
 
-        rooms: [
-            // {
-            //     id: 1,
-            //     sizes : {
-            //         s1: 4,
-            //         s2: 5,
-            //         s3: 4,
-            //         s4: 5,
-            //     },
-            //     height: 2.4,
-            //
-            //     windows: [
-            //         {
-            //             id: 1,
-            //             width: 0.4, // оконный проем
-            //             height: 0.9,
-            //             length: 0.8,
-            //         },
-            //     ],
-            //     is_windows_showing: false,
-            //
-            //     doors: [
-            //         {
-            //             id: 1,
-            //             width: 0.3,
-            //             height: 2.2,
-            //             length: 0.8,
-            //         },
-            //     ],
-            //     is_doors_showing: false,
-            //
-            //     internalCorners: 4,
-            //     outerCorners: 2,
-            //     connectors: 7, // соединение
-            //     stubs: 2, // заглушка
-            // },
-        ],
+        selectedJob: [],
 
         emptyRoom: {
             id: 0,
@@ -69,13 +34,11 @@ export const roomModule = {
         updateRoomId: 0,
     },
     getters: {
-        getRoomById(){
+        getRoomById(state){
             //console.log('getRoomById', roomModule.state.setSaveRoomId);
-            const find =
-                roomModule.state.rooms.filter(
-                    t => t.id === roomModule.state.updateRoomId
+            const find = state.rooms.filter(
+                    t => t.id === state.updateRoomId
                 );
-
             return find[0];
         },
     },
@@ -151,6 +114,9 @@ export const roomModule = {
             return response;
         },
 
+        setRoomSelectedJobId({commit}, rs){
+            commit('setRoomSelectedJobId', rs);
+        },
     },
     mutations: {
         setLoading: (state, value) => {
@@ -171,6 +137,19 @@ export const roomModule = {
             state.updateRoomId = id;
         },
 
+        setRoomSelectedJobsArray: (state, array) => {
+            state.selectedJob = array;
+        },
+
+        setRoomSelectedJobId: (state, rs) => {
+            const fn = state.selectedJob.filter(t => t.roomId === rs.roomId);
+            if (!fn.length){
+                state.selectedJob.push(rs);
+            }else{
+                fn[0].jobId = rs.jobId;
+            }
+            sessionStorage.setItem('selectedJobsArray', JSON.stringify(state.selectedJob));
+        },
     },
     namespaced: true,
 }
