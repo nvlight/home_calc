@@ -270,9 +270,10 @@
             <h1 class="font-light text-xl text-center">Шаг 2. Выбор и добавление работ</h1>
 
             <label for="job_type" class="block text-sm font-medium text-gray-700">Наименование работы</label>
-            <select v-model="currentPickedJob" @change="setRoomSelectedJobId(currPickedJobObject)" v-if="workTypes?.length" id="job_type" name="job_type" autocomplete="job name"
-                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
-                    sm:text-sm mb-3"
+            <select v-model="currentPickedJob" @change="setRoomSelectedJobId(currPickedJobObject)"
+                v-if="workTypes?.length" id="job_type" name="job_type" autocomplete="job name"
+                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
+                sm:text-sm mb-3"
             >
                 <option :value="0" selected>Выберите вид работы</option>
                 <option v-for="(wt,index) in workTypes"
@@ -319,8 +320,6 @@ export default {
         room: Object,
     },
     emits: [
-        'addCalcedCeiling',
-        'addCalcedDoorstep',
         'addWindow',
         'deleteWindow',
         'addDoor',

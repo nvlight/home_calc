@@ -51,6 +51,7 @@ export const roomMaterialModule = {
         addRoomMaterial({commit}, roomMaterial){
             return commit('addRoomMaterial', roomMaterial);
         },
+
         delRoomMaterial({dispatch}, id){
             let response;
             response = axiosClient

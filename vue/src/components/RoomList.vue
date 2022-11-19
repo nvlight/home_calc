@@ -30,6 +30,7 @@ export default {
             loadRoomJobs: 'roomJob/getRoomJobs',
             loadMaterials: 'material/loadMaterials',
             loadRoomMaterials: 'roomMaterial/loadRoomMaterials',
+            clearRooms: 'room/clearRooms',
         }),
 
         // интересно, но окна добавляются для всех комнат
@@ -91,6 +92,7 @@ export default {
         },
     },
     mounted() {
+        this.clearRooms();
         this.loadRooms();
     }
 }

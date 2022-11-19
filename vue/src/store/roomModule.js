@@ -4,7 +4,6 @@ export const roomModule = {
     state: {
         loading: true,
         rooms: [],
-
         selectedJob: [],
 
         emptyRoom: {
@@ -43,6 +42,9 @@ export const roomModule = {
         },
     },
     actions: {
+        clearRooms({commit}){
+            commit('clearRooms');
+        },
         getRooms({commit}){
             return axiosClient
                 .get("/room")
@@ -119,6 +121,10 @@ export const roomModule = {
         },
     },
     mutations: {
+        clearRooms: (state, value) => {
+            state.rooms = [];
+        },
+
         setLoading: (state, value) => {
             state.loading = value;
         },

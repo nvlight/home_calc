@@ -145,12 +145,12 @@ const user = {
         'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }
 const navigation = [
-    { name: 'Dashboard', href: 'get-started', current: true },
-    { name: 'Team', href: '#', current: false },
-    { name: 'Projects', href: '#', current: false },
-    { name: 'Calendar', href: '#', current: false },
-    { name: 'Reports', href: '#', current: false },
-    { name: 'Materials', href: 'Materials', current: false },
+    { name: 'Комнаты', href: 'get-started', current: true },
+    { name: 'Команда', href: '#', current: false },
+    { name: 'Проекты', href: '#', current: false },
+    { name: 'Календарь', href: '#', current: false },
+    { name: 'Отчеты', href: '#', current: false },
+    { name: 'Материалы', href: 'Materials', current: false },
 ]
 const userNavigation = [
     { name: 'Your Profile', href: '#' },
