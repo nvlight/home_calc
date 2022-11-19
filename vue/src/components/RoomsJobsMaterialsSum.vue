@@ -31,6 +31,18 @@ export default {
     methods: {
         ...mapActions({
         }),
+        calcMaterialsSum(){
+            this.roomMaterialsSum = 0;
+            this.roomMaterials.forEach( t => {
+                this.roomMaterialsSum += t.sum;
+            });
+        },
+        calcJobsSum(){
+            this.roomJobsSum = 0;
+            this.roomJobs.forEach( t => {
+                this.roomJobsSum += t.sum;
+            });
+        },
     },
     computed: {
         ...mapState({
@@ -43,23 +55,21 @@ export default {
             return this.roomJobsSum + this.roomMaterialsSum;
         }
     },
+    mounted() {
+        this.calcJobsSum();
+        this.calcMaterialsSum();
+    },
     watch:{
         roomMaterials: {
             handler(nv, ov){
-                this.roomMaterialsSum = 0;
-                this.roomMaterials.forEach( t => {
-                    this.roomMaterialsSum += t.sum;
-                });
+                this.calcMaterialsSum();
             },
             deep: true,
         },
 
         roomJobs: {
             handler(nv, ov){
-                this.roomJobsSum = 0;
-                this.roomJobs.forEach( t => {
-                    this.roomJobsSum += t.sum;
-                });
+                this.calcJobsSum();
             },
             deep: true,
         },

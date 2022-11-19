@@ -10,21 +10,26 @@ import {mapState,mapGetters} from "vuex";
 
 export default {
     name: 'room-jobs-sum',
-
     props: {
         room_id: {
             type: Number,
             required: true,
         },
     },
-
     data(){
         return{
             roomJobsSum: 0,
         }
     },
-
     methods:{
+        calcJobsSum(){
+            this.roomJobsSum = 0;
+            this.roomJobs.forEach( t => {
+                if (t.room_id === this.room_id){
+                    this.roomJobsSum += t.sum;
+                }
+            });
+        },
     },
     computed:{
         ...mapState({
@@ -36,15 +41,13 @@ export default {
         }),
 
     },
+    mounted() {
+        this.calcJobsSum();
+    },
     watch:{
         roomJobs: {
             handler(nv, ov){
-                this.roomJobsSum = 0;
-                this.roomJobs.forEach( t => {
-                    if (t.room_id === this.room_id){
-                        this.roomJobsSum += t.sum;
-                    }
-                });
+                this.calcJobsSum();
             },
             deep: true,
         },

@@ -10,20 +10,28 @@ import {mapActions, mapState} from "vuex"
 
 export default {
     name: "room-materials-sum",
-    data(){
-        return {
-            roomMaterialsSum: 0,
-        }
-    },
     props: {
         room_id: {
             type: Number,
             required: true,
         },
     },
+    data(){
+        return {
+            roomMaterialsSum: 0,
+        }
+    },
     methods: {
         ...mapActions({
         }),
+        calcMaterialsSum(){
+            this.roomMaterialsSum = 0;
+            this.roomMaterials.forEach( t => {
+                if (t.room_id === this.room_id){
+                    this.roomMaterialsSum += t.sum;
+                }
+            });
+        },
     },
     computed: {
         ...mapState({
@@ -31,18 +39,13 @@ export default {
             roomMaterials: state => state.roomMaterial.roomMaterials,
         }),
     },
+    mounted() {
+        this.calcMaterialsSum();
+    },
     watch:{
         roomMaterials: {
             handler(newValue, oldValue){
-                //console.log('newValue:', newValue);
-                //console.log('oldValue:', oldValue);
-
-                this.roomMaterialsSum = 0;
-                this.roomMaterials.forEach( t => {
-                    if (t.room_id === this.room_id){
-                        this.roomMaterialsSum += t.sum;
-                    }
-                });
+                this.calcMaterialsSum();
             },
             deep: true,
         },
