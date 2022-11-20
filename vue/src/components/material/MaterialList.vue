@@ -6,7 +6,12 @@
         <div v-for="material in materials"
             :key="material.id"
         >
-            <material-item :material="material" :show_title="false"></material-item>
+            <material-item
+                :material="material"
+                :show_title="false"
+                @editBtnClicked="$emit('editBtnClicked')"
+            >
+            </material-item>
         </div>
     </div>
 </template>
@@ -20,6 +25,7 @@ export default {
     components: {
         MaterialItem,
     },
+    emits: ['editBtnClicked'],
     props: {
         'materials': {
             type: Array,

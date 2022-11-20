@@ -103,10 +103,20 @@
                 <!-- Replace with your content -->
                 <div class="flex">
 
-                    <material-form class="w-4/12 border border p-3" ></material-form>
+                    <div class="w-4/12 ">
+                        <material-edit-form v-show="editFormShow" class="border border p-3"
+                            @editFormClosedBtnPressed="editFormShow = false"
+                        ></material-edit-form>
+                        <material-create-form v-show="!editFormShow" class="border border p-3" ></material-create-form>
+                    </div>
 
                     <material-list class="w-8/12 w-full ml-5 border border-dotted border p-3"
-                        :materials="materials" :title="'Список материалов'"></material-list>
+                        :materials="materials"
+                        :title="'Список материалов'"
+                        @editBtnClicked="editFormShow = true"
+                    >
+
+                    </material-list>
                 </div>
 
                 <!-- Replace with your content -->
@@ -127,13 +137,14 @@ import {computed, watch} from "vue";
 import store from "../../store/index.js";
 import router from "../../router/index.js";
 import MaterialList from "./MaterialList.vue";
-import {mapActions, mapState} from "vuex";
-import MaterialForm from "./MaterialForm.vue";
+import {mapActions, mapGetters, mapState} from "vuex";
+import MaterialCreateForm from "./MaterialCreateForm.vue";
+import MaterialEditForm from "./MaterialEditForm.vue";
 
 export default {
     components: {
         Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems,
-        BellIcon, MenuIcon, XIcon, MaterialList, MaterialForm,
+        BellIcon, MenuIcon, XIcon, MaterialList, MaterialCreateForm, MaterialEditForm,
     },
 
     data() {
@@ -158,6 +169,8 @@ export default {
                 {name: 'Your Profile', href: '#'},
                 {name: 'Settings', href: '#'},
             ],
+
+            editFormShow: false,
         }
     },
 
@@ -177,6 +190,8 @@ export default {
     computed: {
         ...mapState({
             materials: state => state.material.materials,
+        }),
+        ...mapGetters({
         }),
     },
 

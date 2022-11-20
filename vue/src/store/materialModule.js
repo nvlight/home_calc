@@ -3,9 +3,15 @@ import axiosClient from "../axios.js";
 export const materialModule = {
     state: {
         materials: [],
+        currentEditMaterialId: 0,
     },
     getters: {
-
+        getCurrentEditMaterial(state){
+            const find = state.materials.filter(
+                t => t.id === state.currentEditMaterialId
+            );
+            return find[0];
+        },
     },
     actions: {
         loadMaterials({commit}){
@@ -14,8 +20,10 @@ export const materialModule = {
                 .get("/material")
                 .then((res)=>{
                     //console.log(res.data)
-                    commit('setMaterilas', res.data.data);
-                    //res.data.forEach(t => commit('addMaterial', t))
+                    if (res.data.success) {
+                        commit('setMaterilas', res.data.data);
+                        //res.data.forEach(t => commit('addMaterial', t))
+                    }
                     return res;
                 })
                 .catch( (err) => {
@@ -33,9 +41,30 @@ export const materialModule = {
             response = axiosClient
                 .post("/material", material)
                 .then((res)=>{
-                    const materialClone = Object.assign({}, material);
-                    materialClone.id = res.data.savedId;
-                    dispatch('addMaterial', materialClone);
+                    if (res.data.success) {
+                        const materialClone = Object.assign({}, material);
+                        materialClone.id = res.data.savedId;
+                        dispatch('addMaterial', materialClone);
+                    }
+                    return res;
+                })
+                .catch( (err) => {
+                    console.log('we got error:',err);
+                })
+            return response;
+        },
+
+        editMaterial({dispatch}, material){
+            return dispatch('editMaterialQuery', material);
+        },
+        editMaterialQuery({commit}, material){
+            let response;
+            response = axiosClient
+                .patch(`/material/${material.id}`, material)
+                .then((res)=>{
+                    if (res.data.success) {
+                        commit('editMaterial', material);
+                    }
                     return res;
                 })
                 .catch( (err) => {
@@ -68,6 +97,9 @@ export const materialModule = {
             return commit('delMaterial', id);
         },
 
+        setCurrentEditMaterial({commit}, id){
+            return commit('setCurrentMaterialId', id);
+        },
     },
     mutations: {
         setMaterilas: (state, materials) => {
@@ -82,6 +114,27 @@ export const materialModule = {
                 t => t.id != id
             );
         },
+        editMaterial: (state, material) => {
+            let find = state.materials.filter(
+                t => t.id === material.id
+            );
+            //console.log(find[0]);
+            //console.log(material);
+            if (find.length){
+                // todo: эта строка ниже не работает, пришлось обойти (!) свойста объекта и делать присваивание вручную!
+                // не только не работает, да еще и парализует работу ниже идуещего цикла!
+                //find[0] = material;
+
+                for (let key in find[0]){
+                    //console.log(find[0][key]);
+                    //console.log(material[key]);
+                    find[0][key] = material[key];
+                }
+            }
+        },
+        setCurrentMaterialId: (state, id) => {
+            state.currentEditMaterialId = id;
+        }
     },
     namespaced: true,
 }

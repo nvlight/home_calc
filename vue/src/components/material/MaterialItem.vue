@@ -1,7 +1,11 @@
 <template>
     <div class="material-item border-b border-l-cyan-600">
         <div class="flex mt-2">
-            <mg-trash-icon-button @click="$store.dispatch('material/delMaterial', material.id)"></mg-trash-icon-button>
+            <div class="flex">
+                <mg-show-icon-button @click="showHideDescription"></mg-show-icon-button>
+                <mg-edit-icon-button @click="editMaterialHandler(material.id)"></mg-edit-icon-button>
+                <mg-trash-icon-button @click="deleteMaterialHandler(material.id)"></mg-trash-icon-button>
+            </div>
             <span class="font-light">[{{material.id}}]</span>
             <span class="ml-1 cursor-pointer title" @click="showHideDescription">{{material.title}}; </span>
             <div>
@@ -16,6 +20,8 @@
 <script>
 export default {
     name: 'material-item',
+    components: {},
+    emits: ['editBtnClicked'],
     props: {
         material: {
             type: Object,
@@ -34,7 +40,15 @@ export default {
     methods:{
         showHideDescription(){
             this.show = !this.show;
-        }
+        },
+        editMaterialHandler(id){
+            this.$store.dispatch('material/setCurrentEditMaterial', id);
+            this.$emit('editBtnClicked');
+        },
+        deleteMaterialHandler(id){
+            if (!confirm('Действительно удалить материал?')) {return}
+            this.$store.dispatch('material/delMaterial', id);
+        },
     },
     computed:{
 

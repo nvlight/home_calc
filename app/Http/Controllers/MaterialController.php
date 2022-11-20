@@ -15,9 +15,15 @@ class MaterialController extends Controller
      */
     public function index()
     {
-        $materials = Material::
-            orderBy('id', 'desc')
-            ->get();
+        try{
+            $materials = Material::orderBy('id', 'desc')->get();
+        }catch (\Exception $e){
+            $this->saveToLog($e);
+            return response()->json([
+                'success' => 0,
+                'error' => 'some error!'
+            ]);
+        }
 
         return response()->json([
             'data' => $materials,
@@ -61,7 +67,7 @@ class MaterialController extends Controller
         }catch (\Exception $e){
             $this->saveToLog($e);
             return response()->json([
-                'success' => 1,
+                'success' => 0,
                 'error' => 'some error!'
             ]);
         }
@@ -103,7 +109,32 @@ class MaterialController extends Controller
      */
     public function update(Request $request, material $material)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required|string|max:111',
+            'price' => 'required|integer',
+            'unit' => 'required|string|max:55',
+            'description' => 'nullable|string',
+        ]);
+
+        $material->title = $request['title'];
+        $material->price = $request['price'];
+        $material->unit = $request['unit'];
+        $material->description = $request['description'];
+
+        try{
+            $material->save();
+        }catch (\Exception $e){
+            $this->saveToLog($e);
+            return response()->json([
+                'success' => 0,
+                'error' => 'some error!'
+            ]);
+        }
+
+        return response()->json([
+            'success' => 1,
+            'updatedId' => $material->id,
+        ]);
     }
 
     /**
