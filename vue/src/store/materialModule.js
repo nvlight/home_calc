@@ -75,7 +75,7 @@ export const materialModule = {
         },
         addMaterial: (state, material) => {
             //console.log('material', material)
-            state.materials.push(material);
+            state.materials.unshift(material);
         },
         delMaterial: (state, id) => {
             state.materials = state.materials.filter(

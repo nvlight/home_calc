@@ -15,7 +15,9 @@ class MaterialController extends Controller
      */
     public function index()
     {
-        $materials = Material::all();
+        $materials = Material::
+            orderBy('id', 'desc')
+            ->get();
 
         return response()->json([
             'data' => $materials,

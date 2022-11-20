@@ -6,14 +6,7 @@
         <div v-for="material in materials"
             :key="material.id"
         >
-            <div class="flex">
-                <mg-trash-icon-button @click="delMaterial(material.id)"></mg-trash-icon-button>
-                <span>{{material.id}}</span>
-                <span class="ml-1">{{material.title}}; </span>
-                <span class="font-semibold pl-1">{{material.price}} {{currency}}</span>
-                <span>/{{material.unit}}</span>
-            </div>
-            <hr>
+            <material-item :material="material" :show_title="false"></material-item>
         </div>
     </div>
 </template>
@@ -42,14 +35,8 @@ export default {
         }
     },
     methods:{
-        ...mapActions({
-            delMaterial: 'material/delMaterial',
-        }),
     },
     computed:{
-        ...mapState({
-            currency: state => state.currency,
-        }),
     },
 }
 </script>

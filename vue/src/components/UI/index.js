@@ -3,6 +3,7 @@ import MgGridIconButton from "./MgGridIconButton.vue";
 import MgTrashIconButton from "./MgTrashIconButton.vue";
 import MgInputLabeled from "./MgInputLabeled.vue";
 import MgCheckbox from "./MgCheckbox.vue";
+import MgTextarea from "./MgTextarea.vue";
 
 export default [
     MgButton,
@@ -10,4 +11,5 @@ export default [
     MgTrashIconButton,
     MgInputLabeled,
     MgCheckbox,
+    MgTextarea,
 ];
