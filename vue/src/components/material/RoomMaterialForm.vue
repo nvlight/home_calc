@@ -108,11 +108,9 @@ export default {
     computed: {
         ...mapState({
             materials: state => state.material.materials,
-            //roomMaterials: state => state.roomMaterial.roomMaterials,
             currency: state => state.currency,
         }),
         ...mapGetters({
-            roomMaterials: "roomMaterial/roomMaterials",
         }),
 
         filteredMaterials(){

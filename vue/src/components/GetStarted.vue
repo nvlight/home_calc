@@ -118,7 +118,6 @@
             </div>
 
             <rooms-jobs-materials-sum></rooms-jobs-materials-sum>
-
         </main>
 
         <footer>

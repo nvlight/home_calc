@@ -1,9 +1,11 @@
 import axiosClient from "../axios.js";
 
 export const materialModule = {
-    state: {
-        materials: [],
-        currentEditMaterialId: 0,
+    state() {
+        return {
+            materials: [],
+            currentEditMaterialId: 0,
+        }
     },
     getters: {
         getCurrentEditMaterial(state){

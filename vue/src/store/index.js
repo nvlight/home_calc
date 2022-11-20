@@ -6,13 +6,15 @@ import {materialModule} from "./materialModule.js";
 import {roomMaterialModule} from "./roomMaterialModule.js";
 
 const store = createStore({
-    state:{
-        debug: true,
-        user:{
-            data: {},
-            token: sessionStorage.getItem('TOKEN'),
-        },
-        currency: "₽",
+    state(){
+        return {
+            debug: true,
+            user:{
+                data: {},
+                token: sessionStorage.getItem('TOKEN'),
+            },
+            currency: "₽",
+        }
     },
     getters:{
         testValCurrency(state){

@@ -1,15 +1,15 @@
 import axiosClient from "../axios.js";
 
 export const roomJobModule = {
-    state: {
-        addedJobs: [],
-
+    state(){
+        return {
+            addedJobs: [],
+        }
     },
     getters: {
-        jobsSum(state){
-            const sum = state.addedJobs
-                .reduce( (previousValue, currentValue) => previousValue + currentValue.sum, 0 );
-            return sum;
+        sum(state){
+            return state.addedJobs
+                    .reduce( (previousValue, currentValue) => previousValue + currentValue.sum, 0 );
         },
     },
     actions: {

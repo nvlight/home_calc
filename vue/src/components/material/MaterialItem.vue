@@ -1,7 +1,7 @@
 <template>
     <div class="material-item border-b border-l-cyan-600">
         <div class="flex mt-2">
-            <div class="flex">
+            <div class="flex items-center">
                 <mg-show-icon-button @click="showHideDescription"></mg-show-icon-button>
                 <mg-edit-icon-button @click="editMaterialHandler(material.id)"></mg-edit-icon-button>
                 <mg-trash-icon-button @click="deleteMaterialHandler(material.id)"></mg-trash-icon-button>

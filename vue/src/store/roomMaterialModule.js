@@ -1,13 +1,16 @@
 import axiosClient from "../axios.js";
 
 export const roomMaterialModule = {
-    state: {
-        roomMaterials: [],
+    state() {
+        return {
+            roomMaterials: [],
+        }
     },
     getters: {
-        roomMaterials(state){
-            return state.roomMaterials;
-        }
+        sum(state){
+            return state.roomMaterials
+                .reduce( (previousValue, currentValue) => previousValue + currentValue.sum, 0 );
+        },
     },
     actions: {
         loadRoomMaterials({commit}){
