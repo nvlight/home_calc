@@ -30,16 +30,18 @@ export const roomModule = {
             stubs: 0, // заглушка
 
         },
-        updateRoomId: 0,
     },
     getters: {
-        getRoomById(state){
-            //console.log('getRoomById', roomModule.state.setSaveRoomId);
+        getRoomById: (state) => (id) => {
             const find = state.rooms.filter(
-                    t => t.id === state.updateRoomId
+                    t => t.id === id
                 );
             return find[0];
         },
+
+        getSelectedJob: (state) => (room_id) => {
+            return state.selectedJob.filter( t => t.roomId === room_id);
+        }
     },
     actions: {
         clearRooms({commit}){
@@ -75,19 +77,18 @@ export const roomModule = {
                 .post("/room", room)
                 .then((res)=>{
                     //console.log(res.data)
-                    room.id = res.data.room_id
-                    commit('insertRoom', room)
+                    if (res.data.success){
+                        room.id = res.data.room_id
+                        commit('insertRoom', room)
+                    }
                     return res;
                 })
             return response;
         },
 
-        updateRoom({commit, dispatch, getters}, dt){
+        updateRoom({dispatch, getters}, dt){
             const id = dt.number;
-            //console.log('room title: ', title);
-            //console.log('room id: ', id);
-            commit('setUpdateRoomId', id);
-            const room = getters.getRoomById;
+            const room = getters.getRoomById(id);
             room.title = dt.title;
             dispatch('updateRoomQuery', room);
         },
@@ -121,7 +122,7 @@ export const roomModule = {
         },
     },
     mutations: {
-        clearRooms: (state, value) => {
+        clearRooms: (state) => {
             state.rooms = [];
         },
 
@@ -137,10 +138,6 @@ export const roomModule = {
             state.rooms = state.rooms.filter(
                 t => t.id != roomId
             );
-        },
-
-        setUpdateRoomId: (state, id) => {
-            state.updateRoomId = id;
         },
 
         setRoomSelectedJobsArray: (state, array) => {

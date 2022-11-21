@@ -1,7 +1,7 @@
 <template>
     <div class="mt-3 text-xl text-center">
         <span>Стоимость материалов: </span>
-        <span class="font-semibold ">{{ sumByRoomId(room_id) }}&nbsp;{{ currency }} </span>
+        <span class="font-semibold ">{{ $store.getters['roomMaterial/sumByRoomId'](room_id) }} {{$store.state.currency}}</span>
     </div>
 </template>
 
@@ -26,10 +26,9 @@ export default {
     },
     computed: {
         ...mapState({
-            currency: state => state.currency,
         }),
         ...mapGetters({
-            sumByRoomId: 'roomMaterial/sumByRoomId'
+            //sumByRoomId: 'roomMaterial/sumByRoomId'
         }),
     },
     mounted() {

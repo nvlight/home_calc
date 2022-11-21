@@ -77,7 +77,7 @@ export const roomJobModule = {
     },
     mutations: {
         addJob: (state, job) => {
-            state.roomJobs.push(job);
+            state.roomJobs.unshift(job);
         },
         deleteJob: (state, roomjobId) => {
             state.roomJobs = state.roomJobs.filter(

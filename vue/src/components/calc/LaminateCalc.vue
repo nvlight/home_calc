@@ -21,11 +21,11 @@
             :value="pot.id">{{pot.name}} - ({{ pot.price }} {{ currency }})
         </option>
     </select>
-    <div v-if="$store.state.debug" class="mt-3 border-dotted border-2 p-3 border-red-400">
-        <div>selected_id: {{selected_id}}</div>
-        <div>selectedPrice: {{selectedPrice}}</div>
-    </div>
 
+<!--    <div v-if="$store.state.debug" class="mt-3 border-dotted border-2 p-3 border-red-400">-->
+<!--        <div>selected_id: {{selected_id}}</div>-->
+<!--        <div>selectedPrice: {{selectedPrice}}</div>-->
+<!--    </div>-->
 
     <div class="mt-3 flex items-center">
         <div class="w-7/12">
@@ -125,10 +125,6 @@ export default {
             this.addCalced(this.totalAmount);
         },
 
-        addMaterials(){
-
-        },
-
         setDefaults(){
             this.setDefaultRoomSizes();
         },
@@ -139,9 +135,10 @@ export default {
 
         createJob(){
             const job = {}
-            job.title = `${this.title} (id=${this.currentPickedJob})`;
+            const currentJobId = this.$store.getters['room/getSelectedJob'](this.room.id)[0]?.jobId;
+            job.title = `${this.title} (id=${currentJobId})`;
             job.room_id = this.room.id;
-            job.job_id = this.currentPickedJob;
+            job.job_id = currentJobId;
             job.sum = this.totalAmount.price;
             job.main_info = this.totalAmount.adding_job_info_string;
             return job;

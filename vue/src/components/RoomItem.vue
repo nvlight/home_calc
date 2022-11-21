@@ -269,6 +269,10 @@
         <div class="max-w-md w-full space-y-2">
             <h1 class="font-light text-xl text-center">Шаг 2. Выбор и добавление работ</h1>
 
+<!--            <div class="border-red-400 border border-dotted p-2">seletedJob:-->
+<!--                {{ $store.getters['room/getSelectedJob'](room.id)[0]?.jobId }}-->
+<!--            </div>-->
+
             <label for="job_type" class="block text-sm font-medium text-gray-700">Наименование работы</label>
             <select v-model="currentPickedJob" @change="setRoomSelectedJobId(currPickedJobObject)"
                 v-if="workTypes?.length" id="job_type" name="job_type" autocomplete="job name"

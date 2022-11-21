@@ -50,23 +50,23 @@ class RoomController extends Controller
             try{
                 $r = ($request->all());
                 $r['id'] = $nextId;
+                $room->data = json_encode($r);
+                $saved = $room->save();
             }catch (\Exception $e){
                 $this->saveToLog($e);
                 $rs = ['success' => 0, 'message' => 'error'];
                 die(json_encode($rs));
             }
 
-            $room->data = json_encode($r);
-            $saved = $room->save();
-
             return response()->json([
                 'success' => 1,
                 'saved' => $saved,
                 'room_id' => $nextId,
+                //'savedRoomIdAgain!' => $room->id,
             ]);
         }
         return response()->json([
-            'success' => 1,
+            'success' => 0,
             'error' => 'some error!'
         ]);
     }

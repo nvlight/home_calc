@@ -323,9 +323,10 @@ export default {
 
         createJob() {
             const job = {}
-            job.title = `${this.title} (id=${this.currentPickedJob})`;
+            const currentJobId = this.$store.getters['room/getSelectedJob'](this.room.id)[0]?.jobId;
+            job.title = `${this.title} (id=${currentJobId})`;
             job.room_id = this.room.id;
-            job.job_id = this.currentPickedJob;
+            job.job_id = currentJobId;
             job.sum = this.totalAmount.price;
             job.main_info = this.totalAmount.adding_job_info_string;
             job.seiling_selected_id = this.totalAmount.seiling_selected_id; // unigue for seiling

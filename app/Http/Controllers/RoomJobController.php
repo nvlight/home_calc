@@ -14,7 +14,9 @@ class RoomJobController extends Controller
      */
     public function index()
     {
-        $roomJobs = RoomJob::all();
+        $roomJobs = RoomJob::
+            orderBy('id', 'desc')
+            ->get();
 
         return response()->json($roomJobs);
     }
