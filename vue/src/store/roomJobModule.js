@@ -9,11 +9,11 @@ export const roomJobModule = {
     getters: {
         sum(state){
             return state.roomJobs
-                    .reduce( (previousValue, currentValue) => previousValue + currentValue.sum, 0 );
+                .reduce( (previousValue, currentValue) => previousValue + currentValue.sum, 0 );
         },
-        getRoomJobsSum: (state) => (room_id) => {
+        sumByRoomId: (state) => (room_id) => {
             return state.roomJobs.filter( t => t.room_id === room_id)
-                    .reduce( (previousValue, currentValue) => previousValue + currentValue.sum, 0 )
+                .reduce( (previousValue, currentValue) => previousValue + currentValue.sum, 0 )
         }
     },
     actions: {

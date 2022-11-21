@@ -1,11 +1,7 @@
 <template>
-    <div v-if="roomJobsSum" class="mt-3 text-xl text-center">
-        <span>Стоимость работ: </span>
-        <span class="font-semibold ">{{ roomJobsSum }}&nbsp;{{ currency }} 33 </span>
-    </div>
     <div class="mt-3 text-xl text-center">
         <span>Стоимость работ: </span>
-        <span class="font-semibold ">{{ jobsSum(room_id) }}&nbsp;{{ currency }} 44</span>
+        <span class="font-semibold ">{{ sumByRoomId(room_id) }}&nbsp;{{ currency }} </span>
     </div>
 </template>
 
@@ -22,39 +18,23 @@ export default {
     },
     data(){
         return{
-            roomJobsSum: 0,
         }
     },
     methods:{
-        calcJobsSum(){
-            this.roomJobsSum = 0;
-            this.roomJobs.forEach( t => {
-                if (t.room_id === this.room_id){
-                    this.roomJobsSum += t.sum;
-                }
-            });
-        },
     },
     computed:{
         ...mapState({
             currency: state => state.currency,
-            roomJobs: state => state.roomJob.roomJobs,
         }),
         ...mapGetters({
-            jobsSum: 'roomJob/getRoomJobsSum',
+            sumByRoomId: 'roomJob/sumByRoomId',
         }),
 
     },
     mounted() {
-        this.calcJobsSum();
     },
     watch:{
-        roomJobs: {
-            handler(nv, ov){
-                this.calcJobsSum();
-            },
-            deep: true,
-        },
+
     }
 }
 </script>
