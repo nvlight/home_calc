@@ -1,12 +1,16 @@
 <template>
     <div v-if="roomMaterialsSum" class="mt-3 text-xl text-center">
         <span>Стоимость материалов: </span>
-        <span class="font-semibold ">{{ roomMaterialsSum }}&nbsp;{{ currency }}</span>
+        <span class="font-semibold ">{{ roomMaterialsSum }}&nbsp;{{ currency }} 11</span>
+    </div>
+    <div class="mt-3 text-xl text-center">
+        <span>Стоимость материалов: </span>
+        <span class="font-semibold ">{{ sumByRoomId(room_id) }}&nbsp;{{ currency }} 22</span>
     </div>
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex"
+import {mapActions, mapGetters, mapState} from "vuex"
 
 export default {
     name: "room-materials-sum",
@@ -37,6 +41,9 @@ export default {
         ...mapState({
             currency: state => state.currency,
             roomMaterials: state => state.roomMaterial.roomMaterials,
+        }),
+        ...mapGetters({
+            sumByRoomId: 'roomMaterial/sumByRoomId'
         }),
     },
     mounted() {

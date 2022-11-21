@@ -61,7 +61,7 @@ export default {
     computed:{
         ...mapState({
             currency: state => state.currency,
-            roomJobs: state => state.roomJob.addedJobs,
+            roomJobs: state => state.roomJob.roomJobs,
         }),
         ...mapGetters({
             //jobsSum: 'roomJob/jobsSum',

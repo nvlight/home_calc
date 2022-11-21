@@ -3,14 +3,18 @@ import axiosClient from "../axios.js";
 export const roomJobModule = {
     state(){
         return {
-            addedJobs: [],
+            roomJobs: [],
         }
     },
     getters: {
         sum(state){
-            return state.addedJobs
+            return state.roomJobs
                     .reduce( (previousValue, currentValue) => previousValue + currentValue.sum, 0 );
         },
+        getRoomJobsSum: (state) => (room_id) => {
+            return state.roomJobs.filter( t => t.room_id === room_id)
+                    .reduce( (previousValue, currentValue) => previousValue + currentValue.sum, 0 )
+        }
     },
     actions: {
         getRoomJobs({commit}){
@@ -73,10 +77,10 @@ export const roomJobModule = {
     },
     mutations: {
         addJob: (state, job) => {
-            state.addedJobs.push(job);
+            state.roomJobs.push(job);
         },
         deleteJob: (state, roomjobId) => {
-            state.addedJobs = state.addedJobs.filter(
+            state.roomJobs = state.roomJobs.filter(
                 t => t.id != roomjobId
             );
         },

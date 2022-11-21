@@ -11,6 +11,10 @@ export const roomMaterialModule = {
             return state.roomMaterials
                 .reduce( (previousValue, currentValue) => previousValue + currentValue.sum, 0 );
         },
+        sumByRoomId: (state) => (room_id) => {
+            return state.roomMaterials.filter( t => t.room_id === room_id)
+                .reduce( (previousValue, currentValue) => previousValue + currentValue.sum, 0 )
+        }
     },
     actions: {
         loadRoomMaterials({commit}){

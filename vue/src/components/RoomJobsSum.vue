@@ -1,7 +1,11 @@
 <template>
     <div v-if="roomJobsSum" class="mt-3 text-xl text-center">
         <span>Стоимость работ: </span>
-        <span class="font-semibold ">{{ roomJobsSum }}&nbsp;{{ currency }}</span>
+        <span class="font-semibold ">{{ roomJobsSum }}&nbsp;{{ currency }} 33 </span>
+    </div>
+    <div class="mt-3 text-xl text-center">
+        <span>Стоимость работ: </span>
+        <span class="font-semibold ">{{ jobsSum(room_id) }}&nbsp;{{ currency }} 44</span>
     </div>
 </template>
 
@@ -34,10 +38,10 @@ export default {
     computed:{
         ...mapState({
             currency: state => state.currency,
-            roomJobs: state => state.roomJob.addedJobs,
+            roomJobs: state => state.roomJob.roomJobs,
         }),
         ...mapGetters({
-            //jobsSum: 'roomJob/jobsSum',
+            jobsSum: 'roomJob/getRoomJobsSum',
         }),
 
     },
