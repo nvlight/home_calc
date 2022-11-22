@@ -51,16 +51,13 @@ export const roomModule = {
             return axiosClient
                 .get("/room")
                 .then((res)=>{
-                    //console.log(res.data)
-
-                    res.data.rooms.forEach(t => {
-                        //console.log(JSON.parse(t.data));
-                        let roomParse = JSON.parse(t.data);
-                        //roomParse.id = roomParse.room_id;
-                        commit('insertRoom', roomParse);
-                    });
-                    commit('setLoading', false);
-
+                    if (res.data.success){
+                        res.data.rooms.forEach(t => {
+                            let roomParse = JSON.parse(t.data);
+                            commit('insertRoom', roomParse);
+                        });
+                        commit('setLoading', false);
+                    }
                     return res;
                 })
         },
@@ -76,7 +73,6 @@ export const roomModule = {
             response = axiosClient
                 .post("/room", room)
                 .then((res)=>{
-                    //console.log(res.data)
                     if (res.data.success){
                         room.id = res.data.room_id
                         commit('insertRoom', room)
@@ -94,13 +90,14 @@ export const roomModule = {
         },
 
         updateRoomQuery({commit, dispatch, getters}, room){
-            //console.log(dt);
             let response;
             response = axiosClient
                 .patch(`/room/${room.id}`, room)
                 .then((res)=>{
-                    //console.log(res.data)
-                    return res;
+                    return res.data.success;
+                })
+                .catch( (err) => {
+                    console.log('we got error:',err);
                 })
             return response;
         },
@@ -110,9 +107,11 @@ export const roomModule = {
             response = axiosClient
                 .delete('/room/'+`${roomId}`)
                 .then((res)=>{
-                    //console.log(res.data)
                     commit('deleteRoom', roomId);
                     return res;
+                })
+                .catch( (err) => {
+                    console.log('we got error:',err);
                 })
             return response;
         },
@@ -122,6 +121,10 @@ export const roomModule = {
         },
     },
     mutations: {
+        setRooms: (state, rooms) => {
+            state.rooms = rooms;
+        },
+
         clearRooms: (state) => {
             state.rooms = [];
         },
