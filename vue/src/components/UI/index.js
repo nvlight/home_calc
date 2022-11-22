@@ -7,6 +7,7 @@ import MgTextarea from "./MgTextarea.vue";
 import MgEditIconButton from "./MgEditIconButton.vue";
 import MgShowIconButton from "./MgShowIconButton.vue";
 import MgCloseIconButton from "./MgCloseIconButton.vue";
+import MgDialog from "./MgDialog.vue";
 
 export default [
     MgButton,
@@ -18,4 +19,5 @@ export default [
     MgEditIconButton,
     MgShowIconButton,
     MgCloseIconButton,
+    MgDialog,
 ];

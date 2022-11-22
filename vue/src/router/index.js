@@ -6,7 +6,6 @@ import AuthLayout from "../components/AuthLayout.vue";
 import store from "../store/index.js";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
-import MaterialIndex from "../components/material/MaterialIndex.vue";
 
 const routes = [
     {
@@ -42,12 +41,6 @@ const routes = [
                 component: Register,
             },
         ],
-    },
-    {
-        path: '/materials',
-        name: 'Materials',
-        meta: { requiresAuth: true },
-        component: MaterialIndex,
     },
 ];
 

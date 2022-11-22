@@ -22,6 +22,10 @@
                                     :class="[item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'px-3 py-2 rounded-md text-sm font-medium']" :aria-current="item.current ? 'page' : undefined"
                                 >{{ item.name }}</router-link>
 
+                                <div :class="['text-gray-300 hover:bg-gray-700 hover:text-white', 'px-3 py-2 rounded-md text-sm font-medium cursor-pointer']"
+                                     @click="showMaterialsDialog"
+                                >Материалы</div>
+
                             </div>
                         </div>
                     </div>
@@ -115,6 +119,28 @@
                     </room-list>
                     <!-- Replace with your content -->
                 </div>
+
+                <mg-dialog v-model:show="showMaterialsDialogVisible">
+
+                    <div class="flex">
+
+                        <div class="w-4/12 ">
+                            <material-edit-form v-show="editFormShow" class="border border p-3"
+                                @editFormClosedBtnPressed="editFormShow = false"
+                            ></material-edit-form>
+                            <material-create-form v-show="!editFormShow" class="border border p-3" ></material-create-form>
+                        </div>
+
+                        <material-list class="w-8/12 w-full ml-5 border border-dotted border p-3"
+                           :materials="materials"
+                           :title="'Список материалов'"
+                           @editBtnClicked="editFormShow = true"
+                        >
+
+                        </material-list>
+                    </div>
+
+                </mg-dialog>
             </div>
 
             <rooms-jobs-materials-sum></rooms-jobs-materials-sum>
@@ -127,41 +153,74 @@
     </div>
 </template>
 
-<script setup>
+<script>
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import RoomList from "./room/RoomList.vue";
-import {computed, watch} from "vue";
 import store from "../store/index.js";
 import router from "../router/index.js";
 import RoomsJobsMaterialsSum from "./room/RoomsJobsMaterialsSum.vue";
+import {mapActions, mapState} from "vuex";
+import MaterialList from "./material/MaterialList.vue";
+import MaterialCreateForm from "./material/MaterialCreateForm.vue";
+import MaterialEditForm from "./material/MaterialEditForm.vue";
 
-const user = {
-    name: 'Tom Cook',
-    email: 'tom@example.com',
-    imageUrl:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-}
-const navigation = [
-    { name: 'Комнаты', href: 'get-started', current: true },
-    { name: 'Команда', href: '#', current: false },
-    { name: 'Проекты', href: '#', current: false },
-    { name: 'Календарь', href: '#', current: false },
-    { name: 'Отчеты', href: '#', current: false },
-    { name: 'Материалы', href: 'Materials', current: false },
-]
-const userNavigation = [
-    { name: 'Your Profile', href: '#' },
-    { name: 'Settings', href: '#' },
-];
-
-function logout(){
-    store.dispatch('logout')
-        .then( () => {
-            router.push({
-                name: 'Login',
-            })
-        });
+export default {
+    name: 'get-started',
+    components: {
+        Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems,
+        BellIcon, MenuIcon, XIcon,
+        RoomList, RoomsJobsMaterialsSum,
+        MaterialList,MaterialCreateForm, MaterialEditForm,
+    },
+    data(){
+        return {
+            user: {
+                name: 'Tom Cook',
+                email: 'tom@example.com',
+                imageUrl:
+                    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+            },
+            navigation : [
+                { name: 'Комнаты', href: 'get-started', current: true },
+                { name: 'Команда', href: '#', current: false },
+                { name: 'Проекты', href: '#', current: false },
+                { name: 'Календарь', href: '#', current: false },
+                { name: 'Отчеты', href: '#', current: false },
+                // { name: 'Материалы', href: 'Materials', current: false },
+            ],
+            userNavigation : [
+                { name: 'Your Profile', href: '#' },
+                { name: 'Settings', href: '#' },
+            ],
+            showMaterialsDialogVisible: false,
+            editFormShow: false,
+        }
+    },
+    methods:{
+        ...mapActions({
+            loadMaterials: 'material/loadMaterials',
+        }),
+         logout(){
+            store.dispatch('logout')
+                .then( () => {
+                    router.push({
+                        name: 'Login',
+                    })
+                });
+        },
+        showMaterialsDialog(){
+             this.showMaterialsDialogVisible = true;
+        }
+    },
+    computed:{
+        ...mapState({
+            materials: state => state.material.materials,
+        }),
+    },
+    mounted() {
+        this.loadMaterials();
+    },
 }
 
 </script>
