@@ -130,12 +130,11 @@
 <script setup>
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
-import RoomList from "./RoomList.vue";
-import RoomJobsSum from "./RoomJobsSum.vue";
+import RoomList from "./room/RoomList.vue";
 import {computed, watch} from "vue";
 import store from "../store/index.js";
 import router from "../router/index.js";
-import RoomsJobsMaterialsSum from "./RoomsJobsMaterialsSum.vue";
+import RoomsJobsMaterialsSum from "./room/RoomsJobsMaterialsSum.vue";
 
 const user = {
     name: 'Tom Cook',

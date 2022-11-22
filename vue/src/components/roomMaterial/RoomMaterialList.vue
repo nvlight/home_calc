@@ -43,7 +43,7 @@
 
 <script>
 import {mapActions, mapState} from "vuex";
-import RoomMaterialsSum from "../RoomMaterialsSum.vue";
+import RoomMaterialsSum from "./RoomMaterialsSum.vue";
 
 export default {
     name: 'room-material-list',

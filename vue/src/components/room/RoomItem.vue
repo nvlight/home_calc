@@ -308,11 +308,11 @@
 <script>
 import {computed} from "vue";
 import {mapState, mapActions, mapGetters} from "vuex";
-import ShowPickedComponent from "./ShowPickedComponent.vue";
-import RoomJobList from "./RoomJobList.vue";
-import RoomJobsSum from "./RoomJobsSum.vue";
+import ShowPickedComponent from "../additional/ShowPickedComponent.vue";
+import RoomJobList from "../roomJob/RoomJobList.vue";
+import RoomJobsSum from "../roomJob/RoomJobsSum.vue";
 import RoomJobsMaterialsSum from "./RoomJobsMaterialsSum.vue";
-import RoomMaterialList from "./roomMaterial/RoomMaterialList.vue";
+import RoomMaterialList from "../roomMaterial/RoomMaterialList.vue";
 
 export default {
     name: "room-item",

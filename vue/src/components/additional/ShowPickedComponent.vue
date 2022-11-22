@@ -42,19 +42,19 @@
 </template>
 
 <script>
-import CeilingCalc from "./calc/CeilingCalc.vue";
-import LaminateCalc from "./calc/LaminateCalc.vue";
-import DoorstepCalc from "./calc/DoorstepCalc.vue";
-import BaseboardsCalc from "./calc/BaseboardsCalc.vue";
-import WallpaperCalc from "./calc/WallpaperCalc.vue";
-import CeilingpaperCalc from "./calc/CeilingpaperCalc.vue";
-import PuttyCeilingCalc from "./calc/PuttyCeilingCalc.vue";
-import PuttyWallsCalc from "./calc/PuttyWallsCalc.vue";
-import CorniceCalc from "./calc/CorniceCalc.vue";
-import DrywallCalc from "./calc/DrywallCalc.vue";
-import DrywallCeilingCalc from "./calc/DrywallCeilingCalc.vue";
-import TileFloorCalc from "./calc/TileFloorCalc.vue";
-import TileWallsCalc from "./calc/TileWallsCalc.vue";
+import CeilingCalc from "../calc/CeilingCalc.vue";
+import LaminateCalc from "../calc/LaminateCalc.vue";
+import DoorstepCalc from "../calc/DoorstepCalc.vue";
+import BaseboardsCalc from "../calc/BaseboardsCalc.vue";
+import WallpaperCalc from "../calc/WallpaperCalc.vue";
+import CeilingpaperCalc from "../calc/CeilingpaperCalc.vue";
+import PuttyCeilingCalc from "../calc/PuttyCeilingCalc.vue";
+import PuttyWallsCalc from "../calc/PuttyWallsCalc.vue";
+import CorniceCalc from "../calc/CorniceCalc.vue";
+import DrywallCalc from "../calc/DrywallCalc.vue";
+import DrywallCeilingCalc from "../calc/DrywallCeilingCalc.vue";
+import TileFloorCalc from "../calc/TileFloorCalc.vue";
+import TileWallsCalc from "../calc/TileWallsCalc.vue";
 
 export default {
     name: "show-picked-component",
