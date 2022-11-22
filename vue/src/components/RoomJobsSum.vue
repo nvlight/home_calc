@@ -1,7 +1,7 @@
 <template>
-    <div class="mt-3 text-xl text-center">
+    <div v-if="sum" class="mt-3 text-xl text-center">
         <span>Стоимость работ: </span>
-        <span class="font-semibold ">{{ $store.getters['roomJob/sumByRoomId'](room_id) }} {{ $store.state.currency }}</span>
+        <span class="font-semibold ">{{ sum }} {{ currency }}</span>
     </div>
 </template>
 
@@ -11,11 +11,8 @@ import {mapState,mapGetters} from "vuex";
 export default {
     name: 'room-jobs-sum',
     props: {
-        room_id: {
-            type: Number,
-            required: true,
-        },
     },
+    inject: ['room_id'],
     data(){
         return{
         }
@@ -24,16 +21,17 @@ export default {
     },
     computed:{
         ...mapState({
+            currency: state => state.currency,
         }),
         ...mapGetters({
-            //sumByRoomId: 'roomJob/sumByRoomId',
         }),
-
+        sum(){
+            return this.$store.getters['roomJob/sumByRoomId'](this.room_id)
+        }
     },
     mounted() {
     },
     watch:{
-
     }
 }
 </script>

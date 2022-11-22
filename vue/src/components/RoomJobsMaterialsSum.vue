@@ -1,21 +1,16 @@
 <template>
-    <div class="mt-3 mb-3 text-xl text-center">
-<!--        <span>Сумма материалов и работ: ({{room_id}}) </span>-->
+    <div v-if="sum" class="mt-3 mb-3 text-xl text-center">
         <span>Сумма материалов и работ: </span>
         <span class="font-semibold ">{{ sum }}&nbsp;{{ currency }}</span>
     </div>
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex";
+import {mapActions, mapGetters, mapState} from "vuex";
 
 export default {
     name: 'room-jobs-materials-sum',
     props: {
-        // room_id: {
-        //     type: Number,
-        //     required: true,
-        // },
     },
     inject: ['room_id'],
     data(){
@@ -28,52 +23,24 @@ export default {
     methods: {
         ...mapActions({
         }),
-        calcMaterialsSum(){
-            this.roomMaterialsSum = 0;
-            this.roomMaterials.forEach( t => {
-                if (t.room_id === this.room_id){
-                    this.roomMaterialsSum += t.sum;
-                }
-            });
-        },
-        calcJobsSum(){
-            this.roomJobsSum = 0;
-            this.roomJobs.forEach( t => {
-                if (t.room_id === this.room_id){
-                    this.roomJobsSum += t.sum;
-                }
-            });
-        },
+
     },
     computed: {
         ...mapState({
             currency: state => state.currency,
-            roomJobs: state => state.roomJob.roomJobs,
-            roomMaterials: state => state.roomMaterial.roomMaterials,
+        }),
+        ...mapGetters({
+            jobsSum: 'roomJob/sumByRoomId',
+            materialsSum: 'roomMaterial/sumByRoomId',
         }),
 
         sum(){
-            return this.roomJobsSum + this.roomMaterialsSum;
+            return this.jobsSum(this.room_id) + this.materialsSum(this.room_id);
         }
     },
     mounted() {
-        this.calcJobsSum();
-        this.calcMaterialsSum();
     },
     watch:{
-        roomMaterials: {
-            handler(nv, ov){
-                this.calcMaterialsSum();
-            },
-            deep: true,
-        },
-
-        roomJobs: {
-            handler(nv, ov){
-                this.calcJobsSum();
-            },
-            deep: true,
-        },
     },
 }
 </script>

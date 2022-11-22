@@ -302,7 +302,6 @@
     <room-material-list :room_id="room.id"></room-material-list>
     <!-- /room material list -->
 
-    <!-- :room_id="room.id" -->
     <room-jobs-materials-sum ></room-jobs-materials-sum>
 </template>
 

@@ -27,7 +27,8 @@
             </div>
 
         </div>
-        <room-jobs-sum :room_id="room_id"></room-jobs-sum>
+
+        <room-jobs-sum></room-jobs-sum>
     </div>
 </template>
 

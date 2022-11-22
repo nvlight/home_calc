@@ -37,7 +37,7 @@
             </template>
         </div>
 
-        <room-materials-sum :room_id="room_id"></room-materials-sum>
+        <room-materials-sum></room-materials-sum>
     </div>
 </template>
 
