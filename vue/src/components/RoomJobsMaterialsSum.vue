@@ -1,5 +1,6 @@
 <template>
     <div class="mt-3 mb-3 text-xl text-center">
+<!--        <span>Сумма материалов и работ: ({{room_id}}) </span>-->
         <span>Сумма материалов и работ: </span>
         <span class="font-semibold ">{{ sum }}&nbsp;{{ currency }}</span>
     </div>
@@ -11,12 +12,12 @@ import {mapActions, mapState} from "vuex";
 export default {
     name: 'room-jobs-materials-sum',
     props: {
-        room_id: {
-            type: Number,
-            required: true,
-        },
+        // room_id: {
+        //     type: Number,
+        //     required: true,
+        // },
     },
-
+    inject: ['room_id'],
     data(){
         return {
             roomJobsSum: 0,

@@ -1,7 +1,7 @@
 <template>
     <div v-for="(room) in rooms" class="max-w-2xl px-2 py-3">
         <div class="border-4 border-dashed border-gray-200 rounded-lg" >
-            <room-item :number="room.id" :room="room" :key="room.id"
+            <room-item :room="room" :key="room.id"
                 @addWindow="addWindowHandler"
                 @deleteWindow="deleteWindowHandler"
                 @addDoor="addDoorHandler"
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { computed } from "vue";
 import roomItem from "./RoomItem.vue";
 import {mapState, mapActions} from "vuex";
 
@@ -34,6 +35,7 @@ export default {
         }),
 
         // интересно, но окна добавляются для всех комнат
+        // дело в том, что передается room, это объект, поэтому изменения где либо изменяют и его!
         addWindowHandler(res){
             const room = this.rooms.filter(
                 t => t.id == res.room_id

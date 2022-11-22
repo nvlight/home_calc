@@ -32,6 +32,7 @@ export default {
         classes: {
             type: String,
         },
+        emits: ['update:modelValue'],
     },
     methods: {
         updateInput(event){

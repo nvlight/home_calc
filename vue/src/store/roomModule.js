@@ -87,7 +87,7 @@ export const roomModule = {
         },
 
         updateRoom({dispatch, getters}, dt){
-            const id = dt.number;
+            const id = dt.room_id;
             const room = getters.getRoomById(id);
             room.title = dt.title;
             dispatch('updateRoomQuery', room);

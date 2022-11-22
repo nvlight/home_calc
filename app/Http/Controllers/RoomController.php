@@ -71,11 +71,6 @@ class RoomController extends Controller
         ]);
     }
 
-    public function store2()
-    {
-
-    }
-
     /**
      * Display the specified resource.
      *
