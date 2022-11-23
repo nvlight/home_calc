@@ -12,14 +12,22 @@ class RoomController extends Controller
 {
     public function index()
     {
-        $rooms = Room::
-            where('user_id', Auth::user()->id)
-            ->get();
+        try{
+            $rooms = Room::
+                  where('user_id', Auth::user()->id)
+                ->get();
+        }catch (\Exception $e){
+            $this->saveToLog($e);
+            return response()->json([
+                'success' => 0,
+                'error' => 'some error!'
+            ]);
+        }
 
         return json_encode([
             'rooms' => $rooms,
             'success' => 1,
-            'user' => Auth::user(),
+            //'user' => Auth::user(),
         ]);
     }
 
@@ -40,6 +48,7 @@ class RoomController extends Controller
                 $r = ($request->all());
                 $r['id'] = $nextId;
                 $room->data = json_encode($r);
+                $room->user_id = Auth::user()->id;
                 $saved = $room->save();
             }catch (\Exception $e){
                 $this->saveToLog($e);
@@ -76,11 +85,11 @@ class RoomController extends Controller
         try{
             $r = ($request->all());
             $room->data = json_encode($r);
+            $room->user_id = Auth::user()->id;
             $room->title = $r['title'];
             $saved = $room->save();
         }catch (\Exception $e){
             $this->saveToLog($e);
-
             return response()->json([
                 'success' => 1,
                 'error' => 'some error!'

@@ -8,19 +8,22 @@ use Illuminate\Http\Request;
 
 class RoomMaterialController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //$roomMaterials = RoomMaterial::all();
-
-        $roomMaterials = RoomMaterial::join('materials', 'room_materials.material_id', '=', 'materials.id')
-            ->select('room_materials.*', 'materials.title')
-            ->orderBy('id', 'desc')
-            ->get();
+        try{
+            $roomMaterials = RoomMaterial::
+                  join('rooms', 'room_id', 'rooms.id')
+                ->join('materials', 'room_materials.material_id', 'materials.id')
+                ->select('room_materials.*', 'materials.title')
+                ->orderBy('materials.id', 'desc')
+                ->get();
+        }catch (\Exception $e){
+            $this->saveToLog($e);
+            return response()->json([
+                'success' => 0,
+                'error' => 'some error!'
+            ]);
+        }
 
         return response()
             ->json([
@@ -29,22 +32,11 @@ class RoomMaterialController extends Controller
             ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -82,46 +74,21 @@ class RoomMaterialController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\RoomMaterial  $roomMaterial
-     * @return \Illuminate\Http\Response
-     */
     public function show(RoomMaterial $roomMaterial)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\RoomMaterial  $roomMaterial
-     * @return \Illuminate\Http\Response
-     */
     public function edit(RoomMaterial $roomMaterial)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\RoomMaterial  $roomMaterial
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, RoomMaterial $roomMaterial)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\RoomMaterial  $roomMaterial
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(RoomMaterial $roommaterial)
     {
         try{
