@@ -77,7 +77,6 @@ export default {
 
             priceInstallation: 70,
             pricePainting: 80,
-            currentPickedJob: 0,
 
             toggle:[],
             isInstallation: true,
@@ -190,10 +189,6 @@ export default {
     },
     mounted() {
         this.setDefaults();
-
-        if (sessionStorage.getItem('currentPickedJob')){
-            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
-        }
     },
 
 }

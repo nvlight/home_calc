@@ -111,10 +111,6 @@ export default {
     },
     mounted() {
         this.setDefaults();
-
-        if (sessionStorage.getItem('currentPickedJob')) {
-            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
-        }
     }
 }
 </script>

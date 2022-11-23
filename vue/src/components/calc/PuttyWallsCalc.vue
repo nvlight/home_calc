@@ -98,7 +98,6 @@ export default {
     data(){
         return {
             title: 'Шпатлевка, стены',
-            currentPickedJob: 0,
 
             sizes: {
                 s1: 0,
@@ -259,10 +258,6 @@ export default {
 
         this.doors   = Object.assign([], this.room.doors);
         this.windows = Object.assign([], this.room.windows);
-
-        if (sessionStorage.getItem('currentPickedJob')) {
-            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
-        }
     }
 }
 </script>

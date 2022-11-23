@@ -131,8 +131,6 @@ export default {
             selected_id: 1,
             laminateToBuy: 0,
 
-            currentPickedJob: 0,
-
             // толщина слоя клея, пусть будет 3 мм, чтобы считать легче
             thicknessLayer: 3, // Расход клея при толщине слоя в 1 мм составляет 3.5 кг/м².
 
@@ -290,10 +288,6 @@ export default {
         this.setDefaults();
 
         this.price = this.prices[0].price;
-
-        if (sessionStorage.getItem('currentPickedJob')){
-            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
-        }
     }
 }
 </script>

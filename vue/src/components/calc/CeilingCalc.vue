@@ -155,8 +155,6 @@ export default {
         return {
             title: 'Натяжной потолок',
 
-            currentPickedJob: 0,
-
             sizes: {
                 s1: 0,
                 s2: 0,
@@ -466,10 +464,6 @@ export default {
     },
     mounted() {
         this.setDefaultRoomSizesHandler();
-
-        if (sessionStorage.getItem('currentPickedJob')) {
-            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
-        }
     }
 }
 

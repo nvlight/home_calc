@@ -127,8 +127,6 @@ export default {
                 semechki: 0,
                 samor35sm_metall: 0,
             },
-
-            currentPickedJob: 0,
         }
     },
     methods:{
@@ -416,10 +414,6 @@ export default {
         this.setDefaultRoomSizesHandler();
         this.doors   = Object.assign([], this.room.doors);
         this.windows = Object.assign([], this.room.windows);
-
-        if (sessionStorage.getItem('currentPickedJob')){
-            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
-        }
     }
 }
 </script>

@@ -108,8 +108,6 @@ export default {
 
             selected_id: 1,
             laminateToBuy: 0,
-
-            currentPickedJob: 0,
         }
     },
     methods: {
@@ -220,10 +218,6 @@ export default {
     },
     mounted() {
         this.setDefaults();
-
-        if (sessionStorage.getItem('currentPickedJob')){
-            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
-        }
     }
 }
 </script>

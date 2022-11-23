@@ -272,25 +272,35 @@
 <!--            <div class="border-red-400 border border-dotted p-2">seletedJob:-->
 <!--                {{ $store.getters['room/getSelectedJob'](room.id)[0]?.jobId }}-->
 <!--            </div>-->
+<!--            <div class="border-red-400 border border-dotted p-2">currentPickedJob:-->
+<!--                {{currentPickedJob }}-->
+<!--            </div>-->
 
-            <label for="job_type" class="block text-sm font-medium text-gray-700">Наименование работы</label>
-            <select v-model="currentPickedJob" @change="setRoomSelectedJobId(currPickedJobObject)"
-                v-if="workTypes?.length" id="job_type" name="job_type" autocomplete="job name"
-                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
-                sm:text-sm mb-3"
-            >
-                <option :value="0" selected>Выберите вид работы</option>
-                <option v-for="(wt,index) in workTypes"
-                    :key="index"
-                    :value="wt.id"
-                    class="text-1xl"
-                >{{wt.id}}.  {{wt.title}}<span class="font-semibold"></span></option>
-            </select>
+            <label>
+                <span class="block text-sm font-medium text-gray-700">Наименование работы</span>
+                <select v-model="currentPickedJob" @change="setRoomSelectedJobId(currPickedJobObject)"
+                    v-if="jobSelectList?.length"
+                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
+                    sm:text-sm mb-3"
+                >
+                    <option :value="-1" selected>Выберите вид работы</option>
+                    <option v-for="(job,index) in jobSelectList"
+                        :key="index"
+                        :value="index"
+                        class="text-1xl"
+                    >{{index+1}}. {{job.data().title}}<span class="font-semibold"></span></option>
+                </select>
+            </label>
 
-            <show-picked-component
+<!--            <show-picked-component-->
+<!--                :currentPickedJob="currentPickedJob"-->
+<!--                :room="room">-->
+<!--            </show-picked-component>-->
+            <job-list
                 :currentPickedJob="currentPickedJob"
-                :room="room">
-            </show-picked-component>
+                :room="room"
+            ></job-list>
+
         </div>
     </div>
 
@@ -313,12 +323,14 @@ import RoomJobList from "../roomJob/RoomJobList.vue";
 import RoomJobsSum from "../roomJob/RoomJobsSum.vue";
 import RoomJobsMaterialsSum from "./RoomJobsMaterialsSum.vue";
 import RoomMaterialList from "../roomMaterial/RoomMaterialList.vue";
+import JobSelectList from "../job"
+import JobList from "../job/JobList.vue";
 
 export default {
     name: "room-item",
     components: {
         ShowPickedComponent, RoomJobList, RoomJobsSum, RoomJobsMaterialsSum,
-        RoomMaterialList,
+        RoomMaterialList, JobList,
     },
     props: {
         room: Object,
@@ -343,7 +355,7 @@ export default {
 
             currentPickedJob: 0,
 
-            workTypes: [
+            jobList: [
                 { id: 1, title: "Натяжной потолок",},
                 { id: 8, title: "Гипсокартон (потолок)",},
                 { id: 9, title: "Гипсокартон (стены)",},
@@ -369,6 +381,8 @@ export default {
                 height: 2.1,
                 width: 0.3,
             },
+
+            jobSelectList: [],
         }
     },
     methods: {
@@ -469,6 +483,7 @@ export default {
     created(){
     },
     mounted(){
+        this.jobSelectList = JobSelectList;
         this.title = this.room.title;
 
         if (sessionStorage.getItem('selectedJobsArray')){

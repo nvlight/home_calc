@@ -80,7 +80,6 @@ export default {
     data(){
         return {
             title: 'Шпатлевка, потолок',
-            currentPickedJob: 0,
 
             sizes: {
                 s1: 0,
@@ -188,10 +187,6 @@ export default {
     },
     mounted() {
         this.setDefaultRoomSizesHandler();
-
-        if (sessionStorage.getItem('currentPickedJob')) {
-            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
-        }
     }
 }
 </script>

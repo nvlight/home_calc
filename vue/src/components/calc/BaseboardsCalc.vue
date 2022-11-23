@@ -61,7 +61,6 @@ export default {
     data(){
         return{
             title: 'Плинтуса',
-            currentPickedJob: 0,
 
             perimeter: 0,
             perimeterCeiled: 0,
@@ -172,10 +171,6 @@ export default {
     },
     mounted() {
         this.setDefaults();
-
-        if (sessionStorage.getItem('currentPickedJob')){
-            this.currentPickedJob = +sessionStorage.getItem('currentPickedJob');
-        }
     }
 }
 </script>
