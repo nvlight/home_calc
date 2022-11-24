@@ -21,7 +21,7 @@
     ></materials-for-buy-block>
 
     <mg-button @click="">Добавить рекомендованные материалы</mg-button>
-    <room-material-form :room_id="room.id"></room-material-form>
+    <room-material-form></room-material-form>
 
 </template>
 

@@ -1,6 +1,6 @@
 <template>
     <div class="max-w-md w-full m-auto">
-        <h1 class="mt-3 font-semibold text-2xl text-center">Добавление материалов</h1>
+        <h1 class="mt-3 font-semibold text-xl text-center">Добавление материалов к комнате</h1>
 
         <div>
             <mg-input-labeled v-model="searchMaterialQuery">фильтр материалов</mg-input-labeled>
@@ -74,10 +74,11 @@ export default {
     name: "room-material-form",
     components: {},
     props: {
-        room_id: {
-            type: Number,
-        },
+        // room_id: {
+        //     type: Number,
+        // },
     },
+    inject: ['room_id'],
     data() {
         return {
             selectedMaterial: [],

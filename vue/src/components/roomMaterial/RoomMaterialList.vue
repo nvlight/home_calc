@@ -87,20 +87,9 @@ export default {
     },
 
     mounted() {
-        //console.log('mounted again!');
-        //console.log(this.sortedRoomMaterials);
-        //this.filterRoomMaterials();
     },
-
     watch: {
-        roomMaterials: {
-            handler(nv, ov) {
-                //console.log('watch: roomMaterials changed');
-                //this.filterRoomMaterials();
-            },
-            deep: true,
-        }
-    }
+    },
 }
 </script>
 

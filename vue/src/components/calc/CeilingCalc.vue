@@ -24,7 +24,8 @@
                     sm:text-sm mb-3 h-[265px]"
         >
             <option
-                v-for="(pot,index) in prices"
+                v-for="(pot) in prices"
+                :key="pot.id"
                 :value="pot.id">{{ pot.name }} - ({{ pot.price }} {{ currency }})
             </option>
         </select>
@@ -59,49 +60,55 @@
             <div>Площадь потолка: <span class="font-semibold">{{ squareCeiling }} </span> кв.м.</div>
         </div>
 
-        <hr class="mt-3">
-
-        <div class="flex justify-between mt-5">
+        <div class="flex justify-between mt-3 border-t border-red-100 pt-3">
             <span>Натяжной потолок + установка</span>
             <span>
                 <strong>{{ ceilingPrice }}</strong> {{ currency }}
             </span>
         </div>
         <div class="flex justify-between items-center mt-3">
-            <span class="w-1/3">Багет (м.)</span>
-            <input
-                class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+            <div class="flex justify-between items-center w-2/3">
+                <span class="w-2/3">Багет (м.)</span>
+                <input
+                    class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                            rounded-b-md rounded-t-md
                            focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                type="text" v-model="baget.count" placeholder="0">
+                    type="text" v-model="baget.count" placeholder="0">
+            </div>
             <strong class="w-1/3 text-right">{{ bagetSumm }} {{ currency }}</strong>
         </div>
         <div class="flex justify-between items-center mt-3">
-            <span class="w-1/3">Подлюстренники (шт)</span>
-            <input
-                class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+            <div class="flex justify-between items-center w-2/3">
+                <span class="w-1/3">Подлюстренники (шт)</span>
+                <input
+                    class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                            rounded-b-md rounded-t-md
                            focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                type="text" v-model="chandeliers.count" placeholder="0">
+                    type="text" v-model="chandeliers.count" placeholder="0">
+            </div>
             <strong class="w-1/3 text-right">{{ chandeliersSumm }} {{ currency }}</strong>
         </div>
         <div class="flex justify-between items-center mt-3">
-            <span class="w-1/3">Светильники (шт)</span>
-            <input
-                class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+            <div class="flex justify-between items-center w-2/3">
+                <span class="w-1/3">Светильники (шт)</span>
+                <input
+                    class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                            rounded-b-md rounded-t-md
                            focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                type="text" v-model="luminaire.count" placeholder="0">
+                    type="text" v-model="luminaire.count" placeholder="0">
+            </div>
             <strong class="w-1/3 text-right">{{ luminaireSumm }} {{ currency }}</strong>
         </div>
         <div class="flex justify-between items-center mt-3">
-            <span class="w-1/3">Трубы (шт)</span>
-            <input
-                class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+            <div class="flex justify-between items-center w-2/3">
+                <span class="w-1/3">Трубы (шт)</span>
+                <input
+                    class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                            rounded-b-md rounded-t-md
                            focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                type="text" v-model="pipes.count" placeholder="0">
-            <strong class="w-1/3 text-right">{{ pipesSumm }} {{ currency }}</strong>
+                    type="text" v-model.number="pipes.count" placeholder="0">
+            </div>
+            <strong class="w-1/6 text-right">{{ pipesSumm }} {{ currency }}</strong>
         </div>
 
         <div class="flex justify-between mt-3">
@@ -137,7 +144,7 @@
 
         <mg-button @click="">Добавить рекомендованные материалы</mg-button>
 
-        <room-material-form :room_id="room.id"></room-material-form>
+        <room-material-form></room-material-form>
 
     </div>
 </template>
