@@ -5,12 +5,12 @@
             <mg-close-icon-button @click="$emit('editFormClosedBtnPressed')"></mg-close-icon-button>
         </div>
 
-        <mg-input-labeled class="mt-3 block" v-model="material.title">Название</mg-input-labeled>
+        <mg-input-labeled class="mt-3 block" v-model="currentMaterial.title">Название</mg-input-labeled>
         <div class="flex justify-between mt-2">
-            <mg-input-labeled v-model="material.price">Цена</mg-input-labeled>
-            <mg-input-labeled v-model="material.unit">Ед.измерения</mg-input-labeled>
+            <mg-input-labeled v-model="currentMaterial.price">Цена</mg-input-labeled>
+            <mg-input-labeled v-model="currentMaterial.unit">Ед.измерения</mg-input-labeled>
         </div>
-        <mg-textarea v-model="material.description">Описание</mg-textarea>
+        <mg-textarea v-model="currentMaterial.description">Описание</mg-textarea>
 
         <mg-button @click="editMaterial">обновить</mg-button>
     </form>
@@ -25,14 +25,6 @@ export default {
     emits: ['editFormClosedBtnPressed'],
     data(){
         return {
-            defaultMaterial: {
-                title: 'Название',
-                price: 0,
-                unit: 'шт',
-                description: '',
-            },
-
-            material: {},
         }
     },
 
@@ -40,30 +32,27 @@ export default {
         editMaterial(){
             this.$store.dispatch('material/editMaterial', this.material);
         },
-        resetMaterialForm(){
-            this.material = Object.assign({}, this.defaultMaterial);
-        },
+
     },
     computed: {
         ...mapGetters({
-            currentEditMaterial: "material/getCurrentEditMaterial",
+            getMaterialById: "material/getMaterialById",
+            currentEditMaterialId: "material/getCurrentEditMaterialId",
         }),
+
+        currentMaterial(){
+            const currEditMattId = this.currentEditMaterialId;
+            const currEditMatt   = this.getMaterialById(currEditMattId);
+            return Object.assign({}, currEditMatt);
+        }
     },
     mounted() {
-        this.resetMaterialForm();
     },
     watch:{
-        currentEditMaterial:{
-            handler(nv, ov){
-                this.material = Object.assign({}, this.currentEditMaterial);
-            },
-            deep: true,
-        },
     }
 
 }
 </script>
 
 <style scoped>
-
 </style>

@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import { computed } from "vue";
 import roomItem from "./RoomItem.vue";
 import {mapState, mapActions} from "vuex";
 

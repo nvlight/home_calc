@@ -6,11 +6,11 @@ export const materialModule = {
         currentEditMaterialId: 0,
     }),
     getters: {
-        getCurrentEditMaterial(state){
-            const find = state.materials.filter(
-                t => t.id === state.currentEditMaterialId
-            );
-            return find[0];
+        getCurrentEditMaterialId(state){
+            return state.currentEditMaterialId;
+        },
+        getMaterialById: (state) => (id) => {
+            return state.materials.filter(t => t.id === id)?.[0];
         },
     },
     actions: {
