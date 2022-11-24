@@ -269,16 +269,9 @@
         <div class="max-w-md w-full space-y-2">
             <h1 class="font-light text-xl text-center">Шаг 2. Выбор и добавление работ</h1>
 
-<!--            <div class="border-red-400 border border-dotted p-2">seletedJob:-->
-<!--                {{ $store.getters['room/getSelectedJob'](room.id)[0]?.jobId }}-->
-<!--            </div>-->
-<!--            <div class="border-red-400 border border-dotted p-2">currentPickedJob:-->
-<!--                {{currentPickedJob }}-->
-<!--            </div>-->
-
             <label>
                 <span class="block text-sm font-medium text-gray-700">Наименование работы</span>
-                <select v-model="currentPickedJob" @change="setRoomSelectedJobId(currPickedJobObject)"
+                <select v-model="selectedJob" @change="setRoomSelectedJobId(selectedRoomJobIds)"
                     v-if="jobSelectList?.length"
                     class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500
                     sm:text-sm mb-3"
@@ -292,14 +285,10 @@
                 </select>
             </label>
 
-<!--            <show-picked-component-->
-<!--                :currentPickedJob="currentPickedJob"-->
-<!--                :room="room">-->
-<!--            </show-picked-component>-->
-            <job-list
-                :currentPickedJob="currentPickedJob"
+            <job-select
+                :selectedJob="selectedJob"
                 :room="room"
-            ></job-list>
+            ></job-select>
 
         </div>
     </div>
@@ -316,21 +305,19 @@
 </template>
 
 <script>
-import {computed} from "vue";
-import {mapState, mapActions, mapGetters} from "vuex";
-import ShowPickedComponent from "../additional/ShowPickedComponent.vue";
+import {mapState, mapActions} from "vuex";
 import RoomJobList from "../roomJob/RoomJobList.vue";
 import RoomJobsSum from "../roomJob/RoomJobsSum.vue";
 import RoomJobsMaterialsSum from "./RoomJobsMaterialsSum.vue";
 import RoomMaterialList from "../roomMaterial/RoomMaterialList.vue";
 import JobSelectList from "../job"
-import JobList from "../job/JobList.vue";
+import JobSelect from "../job/JobSelect.vue";
 
 export default {
     name: "room-item",
     components: {
-        ShowPickedComponent, RoomJobList, RoomJobsSum, RoomJobsMaterialsSum,
-        RoomMaterialList, JobList,
+        RoomJobList, RoomJobsSum, RoomJobsMaterialsSum,
+        RoomMaterialList, JobSelect,
     },
     props: {
         room: Object,
@@ -353,23 +340,8 @@ export default {
             projectName: '',
             title: 'Имя комнаты',
 
-            currentPickedJob: 0,
+            selectedJob: 0,
 
-            jobList: [
-                { id: 1, title: "Натяжной потолок",},
-                { id: 8, title: "Гипсокартон (потолок)",},
-                { id: 9, title: "Гипсокартон (стены)",},
-                { id: 2, title: "Карнизы",},
-                { id: 4, title: "Шпатлевка под обои (потолок)",},
-                { id: 5, title: "Шпатлевка под обои (стены)", },
-                { id: 6, title: "Обои поклейка (потолок)", },
-                { id: 7, title: "Обои, поклейка (стены)", },
-                { id: 10,title: "Ламинат",},
-                { id: 12,title: "Плинтуса",},
-                { id: 13,title: "Порог",},
-                { id: 14,title: "Плитка, пол",},
-                { id: 15,title: "Плитка, стены",},
-            ],
             added_materials: [],
             windows_add:{
                 length: 1.2,
@@ -394,7 +366,6 @@ export default {
         }),
 
         addWindow(){
-            //console.log('addWindow');
             if (!this.windows_add.height || !this.windows_add.length || !this.windows_add.width){
                 alert('Параметры окна не должны быть пустыми!');
                 return;
@@ -416,7 +387,6 @@ export default {
             this.$emit('deleteWindow', res);
         },
         addDoor(){
-            //console.log('addWindow');
             if (!this.doors_add.height || !this.doors_add.length || !this.doors_add.width){
                 alert('Параметры дверы не должны быть пустыми!');
                 return;
@@ -442,23 +412,12 @@ export default {
     computed:{
         ...mapState({
             addedJobs: state => state.addedJobs,
-            selectedJob: state => state.room.selectedJob,
-        }),
-        ...mapGetters({
-            //jobsSum: 'roomJob/jobsSum',
         }),
 
-        pickedJob(){
-            const sr = this.selectedJob.filter(t => t.roomId === this.room.id );
-            //console.log(sr);
-            let ch = sr.length ? sr[0]?.jobId : '';
-            return ch;
-        },
-
-        currPickedJobObject(){
+        selectedRoomJobIds(){
             return {
                 roomId: this.room.id,
-                jobId: this.currentPickedJob,
+                jobId: this.selectedJob,
             }
         },
 
@@ -489,7 +448,7 @@ export default {
         if (sessionStorage.getItem('selectedJobsArray')){
             let pr = JSON.parse(sessionStorage.getItem('selectedJobsArray'));
             const ser = pr.filter(t => t.roomId === this.room.id);
-            this.currentPickedJob = ser.length ? ser[0].jobId : 0;
+            this.selectedJob = ser.length ? ser[0].jobId : 0;
             // todo: возможно не стоит доверь данным из session, поставить проверку на set
             this.$store.commit('room/setRoomSelectedJobsArray', pr);
         }
