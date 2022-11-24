@@ -8,9 +8,9 @@
             </div>
             <div v-else>
                 <div v-for="(job,index) in addedJobsClone"
-                     :key="index">
+                     :key="job.id">
                     <div class="flex justify-between mt-2">
-                        <div> {{index+1}}. {{ job.title }} </div>
+                        <div> {{job.id}}. {{ job.title }} </div>
                         <div class="flex self-center">
                             <span class="flex">&nbsp;{{ job.sum }}
                                 <span class="font-semibold">&nbsp;{{ currency }}</span>

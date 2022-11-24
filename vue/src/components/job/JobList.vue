@@ -7,16 +7,6 @@
             selectedComponentTitle: {{ selectedComponentTitle }}
         </div>
 
-<!--        <div class="font-semibold">-->
-<!--            selectedComponent: {{ selectedComponent }}-->
-<!--        </div>-->
-
-<!--        <div>-->
-<!--            job list:-->
-<!--            <div v-for="job in JobComponents">-->
-<!--                {{ job.name }}-->
-<!--            </div>-->
-<!--        </div>-->
         <component
             :is="selectedComponentName"
             :room="room"

@@ -13,6 +13,7 @@ class RoomJobController extends Controller
         try{
             $roomJobs = RoomJob::
                   join('rooms', 'room_jobs.room_id', 'rooms.id')
+                ->select('room_jobs.*')
                 ->where('rooms.user_id', Auth::user()->id)
                 ->orderBy('room_jobs.id', 'desc')
                 ->get();
