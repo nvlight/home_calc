@@ -2,12 +2,12 @@
     <div class="doors_wrapper border-b border-gray-500 pb-1"
          v-if="is_doors_showing">
         <div class="flex">
-            <mg-input-labeled v-model="doors_add.length" class="mr-2">Длина</mg-input-labeled>
-            <mg-input-labeled v-model="doors_add.height" class="mr-2">Высота</mg-input-labeled>
-            <mg-input-labeled v-model="doors_add.width" class="mr-2">Ширина (проем)</mg-input-labeled>
+            <mg-input-labeled v-model="door_tmp.length" class="mr-2">Длина</mg-input-labeled>
+            <mg-input-labeled v-model="door_tmp.height" class="mr-2">Высота</mg-input-labeled>
+            <mg-input-labeled v-model="door_tmp.width" class="mr-2">Ширина (проем)</mg-input-labeled>
         </div>
 
-        <room-door-list :room="room" @del="del"></room-door-list>
+        <room-door-list :room="room" @del="del" class="mt-3"></room-door-list>
 
         <mg-button @click="add" class="mt-3">Добавить дверь</mg-button>
     </div>
@@ -34,7 +34,7 @@ export default {
     inject: ['room_id'],
     data(){
         return {
-            doors_add:{
+            door_tmp:{
                 length: 0.8,
                 height: 2.1,
                 width: 0.3,
@@ -44,31 +44,20 @@ export default {
     },
     methods: {
         add(){
-            if (!this.doors_add.height || !this.doors_add.length || !this.doors_add.width){
+            if (!this.door_tmp.height || !this.door_tmp.length || !this.door_tmp.width){
                 alert('Параметры дверы не должны быть пустыми!');
                 return;
             }
-            this.door_count++;
-            this.doors_add.id = this.door_count;
-            console.log(this.doors_add.id);
+            this.door_tmp.id = ++this.door_count;
 
-            const newDoor =  {
-                doors_add: this.doors_add,
-                room_id: this.room_id,
-            };
-
-            const cloneDoor = Object.assign({}, newDoor);
+            const cloneDoor = Object.assign({}, this.door_tmp);
             this.room.doors.push(cloneDoor);
         },
         del(del_id){
-            const res = {
-                del_id: del_id,
-                room_id: this.room_id,
-            };
             this.room.doors = this.room.doors.filter(
-                t => t.id != res.del_id
+                t => t.id != del_id
             );
-            this.door_count--;
+            //this.door_count--;
         },
     },
 

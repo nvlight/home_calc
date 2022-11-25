@@ -8,6 +8,7 @@ import MgEditIconButton from "./MgEditIconButton.vue";
 import MgShowIconButton from "./MgShowIconButton.vue";
 import MgCloseIconButton from "./MgCloseIconButton.vue";
 import MgDialog from "./MgDialog.vue";
+import MgUpdateIconButton from "./MgUpdateIconButton.vue";
 
 export default [
     MgButton,
@@ -20,4 +21,5 @@ export default [
     MgShowIconButton,
     MgCloseIconButton,
     MgDialog,
+    MgUpdateIconButton,
 ];

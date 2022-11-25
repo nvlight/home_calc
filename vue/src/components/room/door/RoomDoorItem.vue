@@ -1,12 +1,13 @@
 <template>
-    <div>
-        <div class="font-semibold">{{num}}.</div>
-        <ul>
-            <li class="font-semibold">id: {{door.id}}</li>
-            <li>Длина: {{door.length}} м.</li>
-            <li>Высота: {{door.height}} м.</li>
-            <li>Ширина (проем): {{door.width}} м.</li>
-        </ul>
+    <div class="flex items-center justify-between">
+        <div class="flex flex-wrap">
+            <div>
+                <span class="font-semibold">{{door.id}}. </span>
+                Длина: {{door.length}} м., высота: {{door.height}} м.,
+                ширина (проем): {{door.width}} м.
+            </div>
+        </div>
+        <mg-trash-icon-button @click="del(door.id)"></mg-trash-icon-button>
     </div>
 </template>
 
@@ -22,7 +23,14 @@ export default {
             type: [Number, String],
             required: true,
         },
-    }
+    },
+    methods:{
+        del(id){
+            if (confirm('Действительно удалить элемент?')){
+                this.$emit('del', id);
+            }
+        },
+    },
 }
 </script>
 
