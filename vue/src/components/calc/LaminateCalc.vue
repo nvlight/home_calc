@@ -30,14 +30,14 @@
     <div class="mt-3 flex items-center">
         <div class="w-7/12">
             <div class="mt-3">
-                <div>Периметр: <span class="font-semibold">{{perimeterCeiled}} ({{ perimeter }}) м.</span></div>
-                <div>Площадь пола: <span class="font-semibold">{{square}} м.</span></div>
+                <div>Периметр: <span class="font-semibold">{{perimeter.ceiled}} ({{ perimeter.value }}) м.</span></div>
+                <div>Площадь пола: <span class="font-semibold">{{square.ceiled}} ({{square.value}}) м.кв.</span></div>
             </div>
         </div>
         <div class="w-5/12">
             <div class="">
-                <mg-input-labeled v-model="incSquareCount">Прибавить м.</mg-input-labeled>
-                <mg-input-labeled v-model="decSquareCount">Убавить м.</mg-input-labeled>
+                <mg-input-labeled v-model="incSquareCount">Прибавить м.кв.</mg-input-labeled>
+                <mg-input-labeled v-model="decSquareCount">Убавить м.кв.</mg-input-labeled>
             </div>
         </div>
     </div>
@@ -56,9 +56,10 @@
 </template>
 
 <script>
-import {mapGetters, mapState, mapActions} from "vuex";
+import {mapState, mapActions} from "vuex";
 import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
 import RoomMaterialForm from "../material/RoomMaterialForm.vue";
+import MainCalc from "../mixins/MainCalc.js"
 
 export default {
     name: "LaminateCalc",
@@ -71,6 +72,7 @@ export default {
         },
     },
     emits: [],
+    mixins: [MainCalc],
     data(){
         return {
             price: 200,
@@ -152,23 +154,13 @@ export default {
         }),
 
         perimeter(){
-            return +(+(this.sizes.s1) +
-                     +(this.sizes.s2) +
-                     +(this.sizes.s3) +
-                     +(this.sizes.s4)).toFixed(2)
-        },
-        perimeterCeiled(){
-            return Math.ceil(+this.perimeter);
+            return this.perim(this.sizes.s1, this.sizes.s2, this.sizes.s3, this.sizes.s4);
         },
 
         square(){
-            let sq = Math.max(+this.sizes.s1, +this.sizes.s3) * Math.max(+this.sizes.s2, +this.sizes.s4);
-            sq += +this.incSquareCount - +this.decSquareCount;
-            return sq;
-        },
-
-        squareCeiled(){
-            return Math.ceil(this.square);
+            let qq = this.squa(Math.max(+this.sizes.s1, +this.sizes.s3), Math.max(+this.sizes.s2, +this.sizes.s4))
+            qq.ceiled += +this.incSquareCount - +this.decSquareCount;
+            return qq;
         },
 
         selectedPrice(){
@@ -176,7 +168,7 @@ export default {
         },
 
         sum(){
-            const s = ( this.price * this.squareCeiled).toFixed(2);
+            const s = ( this.price * this.square.ceiled).toFixed(2);
             //console.log(typeof s);
             return +s;
         },
@@ -185,7 +177,7 @@ export default {
             return {
                 price: this.sum,
                 adding_job_info_string:
-                    `Площадь пола: ${this.squareCeiled} м.кв.,
+                    `Площадь пола: ${this.square.ceiled} м.кв.,
                     цена за 1 м.кв.: ${this.price} ${this.currency}`,
             };
         },
@@ -195,14 +187,14 @@ export default {
             arr.push(
                 {
                     title: 'Ламинат Artens «Сосна Верона» 33 класс толщина 10 мм с фаской 2.131 м²',
-                    amount: this.squareCeiled,
-                    amount_add_info: this.squareCeiled,
+                    amount: this.square.ceiled,
+                    amount_add_info: this.square.value,
                     unit_name: 'м.кв.',
                 },
                 {
                     title: 'Подложка СОЛИД Листовая, 3мм, серая, 1,05х0,5м/уп.5,25кв.м.',
-                    amount: this.squareCeiled,
-                    amount_add_info: this.squareCeiled,
+                    amount: this.square.ceiled,
+                    amount_add_info: this.square.value,
                     unit_name: 'м.кв.',
                 },
             )
