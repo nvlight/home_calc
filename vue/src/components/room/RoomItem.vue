@@ -69,7 +69,7 @@
 
             </div>
 
-            <div class="windows_wrapper"
+            <div class="windows_wrapper border-b border-gray-500 pb-1"
                  v-if="this.room.is_windows_showing">
                 <div class="flex">
                     <div class="mr-2">
@@ -157,7 +157,7 @@
                 </div>
             </div>
 
-            <div class="doors_wrapper"
+            <div class="doors_wrapper border-b border-gray-500 pb-1"
                  v-if="this.room.is_doors_showing">
                 <div class="flex">
                     <div class="mr-2">
@@ -245,7 +245,7 @@
                 </div>
             </div>
 
-            <div class="baseboards_wrapper flex"
+            <div class="baseboards_wrapper flex border-b border-gray-500 pb-3"
                 v-if="this.room.is_baseboards_showing"
             >
                 <mg-input-labeled class="ml-1" v-model="room.internalCorners">внутр. углы</mg-input-labeled>
@@ -375,8 +375,12 @@ export default {
               windows_add: this.windows_add,
               room_id: this.room.id,
             };
+            res.windows_add.id = this.room.windows.length + 1;
 
-            this.$emit('addWindow', res);
+            const newWindow = res.windows_add;
+
+            const cloneWindow = Object.assign({}, newWindow);
+            this.room.windows.push(cloneWindow);
         },
         deleteWindow(del_id){
             const res = {
@@ -384,8 +388,11 @@ export default {
                 room_id: this.room.id,
             };
 
-            this.$emit('deleteWindow', res);
+            this.room.windows = this.room.windows.filter(
+                t => t.id != res.del_id
+            );
         },
+
         addDoor(){
             if (!this.doors_add.height || !this.doors_add.length || !this.doors_add.width){
                 alert('Параметры дверы не должны быть пустыми!');
@@ -396,8 +403,12 @@ export default {
                 doors_add: this.doors_add,
                 room_id: this.room.id,
             };
+            res.doors_add.id = this.room.doors.length + 1;
 
-            this.$emit('addDoor', res);
+            const newDoor = res.doors_add;
+
+            const cloneDoor = Object.assign({}, newDoor);
+            this.room.doors.push(cloneDoor);
         },
         deleteDoor(del_id){
             const res = {
@@ -405,7 +416,9 @@ export default {
                 room_id: this.room.id,
             };
 
-            this.$emit('deleteDoor', res);
+            this.room.doors = this.room.doors.filter(
+                t => t.id != res.del_id
+            );
         },
 
     },
