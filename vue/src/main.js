@@ -5,7 +5,7 @@ import router from "./router/index.js"
 import store from "./store/index.js"
 import components from "./components/UI"
 import calcComponents from "./components/job"
-//console.log(calcComponents);
+import directives from "./directives/index.js";
 
 const app = createApp(App);
 
@@ -14,6 +14,9 @@ components.forEach(component => {
 });
 calcComponents.forEach(component => {
     app.component(component.name, component)
+});
+directives.forEach(directive => {
+    app.directive(directive.name, directive)
 });
 
 app

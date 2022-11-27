@@ -35,7 +35,7 @@ export default {
 
     },
     mounted() {
-        console.log('Mixin - MainCalc: mounted!');
+        //console.log('Mixin - MainCalc: mounted!');
     },
 
 }

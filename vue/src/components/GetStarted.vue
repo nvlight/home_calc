@@ -4,9 +4,7 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0">
-                            <img class="h-8 w-8" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow" />
-                        </div>
+                        <main-link class="flex-shrink-0"></main-link>
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-4">
 <!--                                <a v-for="item in navigation"-->
@@ -164,6 +162,7 @@ import {mapActions, mapState} from "vuex";
 import MaterialList from "./material/MaterialList.vue";
 import MaterialCreateForm from "./material/MaterialCreateForm.vue";
 import MaterialEditForm from "./material/MaterialEditForm.vue";
+import MainLink from "./navbar/MainLink.vue";
 
 export default {
     name: 'get-started',
@@ -171,7 +170,7 @@ export default {
         Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems,
         BellIcon, MenuIcon, XIcon,
         RoomList, RoomsJobsMaterialsSum,
-        MaterialList,MaterialCreateForm, MaterialEditForm,
+        MaterialList,MaterialCreateForm, MaterialEditForm, MainLink,
     },
     data(){
         return {
