@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use \App\Http\Controllers\TestLaravel9Features;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,12 +15,4 @@ use \App\Http\Controllers\TestLaravel9Features;
 
 Route::get('/', function () {
     return view('welcome');
-});
-
-Route::group([
-    'prefix' => 'test',
-    'name'   => 'test.'
-], function(){
-    Route::get('dd', [TestLaravel9Features::class, 'dd'])
-        ->name('dd');
 });
