@@ -32,7 +32,5 @@ Route::middleware('auth:sanctum')->group(function ()
     Route::resource('/roommaterial', RoomMaterialController::class);
 });
 
-Route::get('/room-store2', [RoomController::class,'store2']);
-
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
