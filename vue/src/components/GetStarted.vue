@@ -7,18 +7,7 @@
                         <main-link class="flex-shrink-0"></main-link>
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-4">
-<!--                                <a v-for="item in navigation"-->
-<!--                                   :key="item.name"-->
-<!--                                   :href="item.href"-->
-<!--                                   :class="[item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'px-3 py-2 rounded-md text-sm font-medium']" :aria-current="item.current ? 'page' : undefined">{{ item.name }}-->
-<!--                                </a>-->
-
-                                <router-link
-                                    v-for="item in navigation"
-                                    :key="item.name"
-                                    :to="item.href"
-                                    :class="[item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'px-3 py-2 rounded-md text-sm font-medium']" :aria-current="item.current ? 'page' : undefined"
-                                >{{ item.name }}</router-link>
+                                <navbar></navbar>
 
                                 <div :class="['text-gray-300 hover:bg-gray-700 hover:text-white', 'px-3 py-2 rounded-md text-sm font-medium cursor-pointer']"
                                      @click="showMaterialsDialog"
@@ -147,7 +136,6 @@
         <footer>
             <div class="m-3 font-semibold">&copy; 2077 And thats all falks</div>
         </footer>
-
     </div>
 </template>
 
@@ -163,6 +151,7 @@ import MaterialList from "./material/MaterialList.vue";
 import MaterialCreateForm from "./material/MaterialCreateForm.vue";
 import MaterialEditForm from "./material/MaterialEditForm.vue";
 import MainLink from "./navbar/MainLink.vue";
+import Navbar from "./navbar/Navbar.vue"
 
 export default {
     name: 'get-started',
@@ -170,7 +159,7 @@ export default {
         Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems,
         BellIcon, MenuIcon, XIcon,
         RoomList, RoomsJobsMaterialsSum,
-        MaterialList,MaterialCreateForm, MaterialEditForm, MainLink,
+        MaterialList,MaterialCreateForm, MaterialEditForm, MainLink, Navbar,
     },
     data(){
         return {
@@ -186,7 +175,6 @@ export default {
                 { name: 'Проекты', href: '#', current: false },
                 { name: 'Календарь', href: '#', current: false },
                 { name: 'Отчеты', href: '#', current: false },
-                // { name: 'Материалы', href: 'Materials', current: false },
             ],
             userNavigation : [
                 { name: 'Your Profile', href: '#' },

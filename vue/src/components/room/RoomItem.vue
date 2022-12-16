@@ -38,42 +38,10 @@
                 </div>
             </div>
 
-            <div class="windows_doors_baseboards_showHide_labels">
-                <div class="flex justify-between">
-                    <label>
-                        <input type="checkbox"
-                               :value="this.room.is_windows_showing"
-                               @change="this.room.is_windows_showing = !this.room.is_windows_showing"
-                        >
-                        <span class="pl-1">Показать окна</span>
-                    </label>
-                    <label>
-                        <input type="checkbox"
-                               :value="this.room.is_doors_showing"
-                               @change="this.room.is_doors_showing = !this.room.is_doors_showing"
-                        >
-                        <span class="pl-1">Показать двери</span>
-                    </label>
-                    <label>
-                        <input type="checkbox"
-                               :value="this.room.is_baseboards_showing"
-                               @change="this.room.is_baseboards_showing = !this.room.is_baseboards_showing"
-                        >
-                        <span class="pl-1">Показать плинтуса</span>
-                    </label>
-                </div>
-
-            </div>
-
-            <room-door :is_doors_showing="room.is_doors_showing" :room="room"></room-door>
-
-            <div class="baseboards_wrapper flex border-b border-gray-500 pb-3"
-                v-if="this.room.is_baseboards_showing"
-            >
-                <mg-input-labeled class="ml-1" v-model="room.internalCorners">внутр. углы</mg-input-labeled>
-                <mg-input-labeled class="ml-1" v-model="room.outerCorners">внешн. углы</mg-input-labeled>
-                <mg-input-labeled class="ml-1" v-model="room.connectors">соединители</mg-input-labeled>
-                <mg-input-labeled class="ml-1" v-model="room.stubs">заглушки</mg-input-labeled>
+            <div class="windows_doors_baseboards">
+                <room-door :room="room"></room-door>
+                <room-window :room="room"></room-window>
+                <room-baseboards :room="room"></room-baseboards>
             </div>
 
             <div class="rooms_calc">
@@ -135,12 +103,14 @@ import RoomMaterialList from "../roomMaterial/RoomMaterialList.vue";
 import JobSelectList from "../job"
 import JobSelect from "../job/JobSelect.vue";
 import RoomDoor from "./door/RoomDoor.vue";
+import RoomWindow from "./window/RoomWindow.vue";
+import RoomBaseboards from "./baseboards/RoomBaseboards.vue";
 
 export default {
     name: "room-item",
     components: {
         RoomJobList, RoomJobsSum, RoomJobsMaterialsSum,
-        RoomMaterialList, JobSelect, RoomDoor,
+        RoomMaterialList, JobSelect, RoomDoor, RoomWindow, RoomBaseboards,
     },
     props: {
         room: Object,

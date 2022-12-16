@@ -1,15 +1,24 @@
 <template>
-    <div class="doors_wrapper border-b border-gray-500 pb-1"
-         v-if="is_doors_showing">
-        <div class="flex">
-            <mg-input-labeled v-model="door_tmp.length" class="mr-2">Длина</mg-input-labeled>
-            <mg-input-labeled v-model="door_tmp.height" class="mr-2">Высота</mg-input-labeled>
-            <mg-input-labeled v-model="door_tmp.width" class="mr-2">Ширина (проем)</mg-input-labeled>
+    <div class="doors_wrapper">
+        <label>
+            <input type="checkbox"
+                   :value="is_showing"
+                   @change="is_showing = !is_showing"
+            >
+            <span class="pl-1">Показать двери</span>
+        </label>
+
+        <div v-if="is_showing">
+            <div class="flex">
+                <mg-input-labeled v-model="door_tmp.length" class="mr-2">Длина</mg-input-labeled>
+                <mg-input-labeled v-model="door_tmp.height" class="mr-2">Высота</mg-input-labeled>
+                <mg-input-labeled v-model="door_tmp.width" class="mr-2">Ширина (проем)</mg-input-labeled>
+            </div>
+
+            <room-door-list :room="room" @del="del" class="mt-3"></room-door-list>
+
+            <mg-button @click="add" class="mt-3">Добавить дверь</mg-button>
         </div>
-
-        <room-door-list :room="room" @del="del" class="mt-3"></room-door-list>
-
-        <mg-button @click="add" class="mt-3">Добавить дверь</mg-button>
     </div>
 </template>
 
@@ -21,10 +30,6 @@ export default {
     components: { RoomDoorList },
 
     props: {
-        is_doors_showing: {
-            type: Boolean,
-            default: false,
-        },
         room: {
             type: Object,
             required: true,
@@ -40,6 +45,8 @@ export default {
                 width: 0.3,
             },
             door_count: 0,
+
+            is_showing: false,
         }
     },
     methods: {

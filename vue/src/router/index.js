@@ -6,6 +6,7 @@ import AuthLayout from "../components/AuthLayout.vue";
 import store from "../store/index.js";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
+import Projects from "../views/Projects.vue";
 
 const routes = [
     {
@@ -41,6 +42,12 @@ const routes = [
                 component: Register,
             },
         ],
+    },
+    {
+        path: '/projects',
+        name: 'Projects',
+        meta: { requiresAuth: true },
+        component: Projects,
     },
 ];
 
