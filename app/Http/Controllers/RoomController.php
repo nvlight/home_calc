@@ -39,6 +39,37 @@ class RoomController extends Controller
     public function store(StoreRoomRequest $request)
     {
         $room = new Room();
+        $r = ($request->all());
+        try{
+            $room->data = json_encode($r);
+            $room->user_id = Auth::user()->id;
+            $room->save();
+
+            $r['id'] = $room->id;
+            $room->data = json_encode($r);
+            $saved = $room->save();
+
+        }catch (\Exception $e){
+            $this->saveToLog($e);
+            $rs = ['success' => 0, 'message' => 'error'];
+            die(json_encode($rs));
+        }
+
+        return response()->json([
+            'success' => 1,
+            'saved' => $saved,
+            'room_id' => $room->id,
+        ]);
+
+        return response()->json([
+            'success' => 0,
+            'error' => 'some error!'
+        ]);
+    }
+
+    public function store2(StoreRoomRequest $request)
+    {
+        $room = new Room();
         $statement = DB::select("show table status like '{$room->getTable()}'");
         if ($statement){
             // узнаю каким будет следущий автоинкремент ИД !
