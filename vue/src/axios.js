@@ -2,8 +2,7 @@ import axios from "axios"
 import store from "./store"
 
 const axiosClient = axios.create({
-    baseURL: 'http://laravel9-home-calc:87/api',
-    //baseURL: 'http://api.home_calc.mgdev.ru/api',
+    baseURL: `${import.meta.env.VITE_API_BASE_URL}/api/`,
 })
 
 axiosClient.interceptors.request.use(
