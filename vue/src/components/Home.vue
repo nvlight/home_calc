@@ -63,7 +63,7 @@
                         </p>
                         <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                             <div class="rounded-md shadow">
-                                <router-link :to="{name: 'GetStarted'}" :class="'w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10'"
+                                <router-link :to="{name: 'Rooms'}" :class="'w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10'"
                                 >Начать</router-link>
                             </div>
                             <div class="mt-3 sm:mt-0 sm:ml-3">
@@ -82,7 +82,7 @@
 
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/vue'
 import { MenuIcon, XIcon } from '@heroicons/vue/outline'
-import MainLink from "./navbar/MainLink.vue";
+import MainLink from "./nav/MainLink.vue";
 
 const navigation = [
     { name: 'Продукт', href: '#' },

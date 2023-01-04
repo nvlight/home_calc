@@ -1,28 +1,40 @@
 import { createRouter, createWebHistory } from "vue-router"
 import Home from "../components/Home.vue"
-import GetStarted from "../components/GetStarted.vue"
+import Rooms from "../views/Rooms.vue"
 import DefaultLayout from "../components/DefaultLayout.vue"
 import AuthLayout from "../components/AuthLayout.vue";
 import store from "../store/index.js";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
-import Projects from "../views/Projects.vue";
+import Materials from "../views/Materials.vue";
 
 const routes = [
     {
         path: '/',
         redirect: '/home',
-        //meta: {requiresAuth: true, },
-        component: DefaultLayout,
-        children: [
-            {path: '/home', name: 'Home', component: Home}
-        ],
     },
     {
-        path: '/get-started',
-        name: 'GetStarted',
+        path: '/home',
+        name: 'Home',
+        component: Home,
+    },
+    {
+        path: '/rooms',
+        redirect: '/rooms',
         meta: { requiresAuth: true },
-        component: GetStarted,
+        component: DefaultLayout,
+        children: [
+            {
+                path: '/rooms',
+                name: 'Rooms',
+                component: Rooms,
+            },
+            {
+                path: '/materials',
+                name: 'Materials',
+                component: Materials,
+            },
+        ],
     },
     {
         path: '/auth',
@@ -43,12 +55,12 @@ const routes = [
             },
         ],
     },
-    {
-        path: '/projects',
-        name: 'Projects',
-        meta: { requiresAuth: true },
-        component: Projects,
-    },
+    // {
+    //     path: '/projects',
+    //     name: 'Projects',
+    //     meta: { requiresAuth: true },
+    //     component: Projects,
+    // },
 ];
 
 const router = createRouter({
@@ -59,7 +71,7 @@ const router = createRouter({
 router.beforeEach( (to,from, next) => {
     //console.log(to);
     if( to.name === 'Login' && store.state.user.token){
-        next({name: 'GetStarted'})
+        next({name: 'Rooms'})
     } else
     if (to.meta.requiresAuth && !store.state.user.token){
         next({name: 'Login'})

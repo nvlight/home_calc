@@ -84,7 +84,7 @@ function login(ev)
     store.dispatch('login', user)
         .then( () => {
             router.push({
-                name: 'GetStarted'
+                name: 'Rooms'
             })
         })
         .catch(err => {

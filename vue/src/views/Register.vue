@@ -55,7 +55,7 @@
 import { LockClosedIcon } from '@heroicons/vue/solid'
 import store from "../store"
 import router from "../router"
-import GetStarted from "../components/GetStarted.vue";
+import GetStarted from "./Rooms.vue";
 
 const user = {
     name: '',
