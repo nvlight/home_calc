@@ -131,6 +131,8 @@ export default {
 
             added_materials: [],
             jobSelectList: [],
+
+            sizes: {},
         }
     },
     methods: {
@@ -182,6 +184,7 @@ export default {
     mounted(){
         this.jobSelectList = JobSelectList;
         this.title = this.room.title;
+        //this.sizes = {...this.room.sizes};
 
         if (sessionStorage.getItem('selectedJobsArray')){
             let pr = JSON.parse(sessionStorage.getItem('selectedJobsArray'));

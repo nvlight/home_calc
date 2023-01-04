@@ -63,7 +63,9 @@ export const roomModule = {
         },
 
         createRoom({dispatch, state}){
-            const room = Object.assign({}, state.emptyRoom);
+            //const room = Object.assign({}, state.emptyRoom);
+            //const room = structuredClone(state.emptyRoom);
+            const room = JSON.parse(JSON.stringify(state.emptyRoom));
 
             return dispatch('createRoomQuery', room);
         },
