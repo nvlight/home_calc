@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RoomJob;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,20 +18,18 @@ class RoomJobController extends Controller
                 ->where('rooms.user_id', Auth::user()->id)
                 ->orderBy('room_jobs.id', 'desc')
                 ->get();
-        }catch (\Exception $e){
+        }catch (QueryException $e){
             $this->saveToLog($e);
             return response()->json([
-                'success' => 1,
+                'success' => false,
                 'error' => 'some error!'
             ]);
         }
 
-        return response()->json($roomJobs);
-    }
-
-    public function create()
-    {
-        //
+        return response([
+            'success' => true,
+            'data' => $roomJobs,
+        ]);
     }
 
     public function store(Request $request)

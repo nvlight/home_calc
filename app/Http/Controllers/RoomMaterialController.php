@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Material;
 use App\Models\RoomMaterial;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RoomMaterialController extends Controller
 {
@@ -15,6 +16,7 @@ class RoomMaterialController extends Controller
                   join('rooms', 'room_id', 'rooms.id')
                 ->join('materials', 'room_materials.material_id', 'materials.id')
                 ->select('room_materials.*', 'materials.title')
+                ->where('rooms.user_id', Auth::user()->id)
                 ->orderBy('materials.id', 'desc')
                 ->get();
         }catch (\Exception $e){

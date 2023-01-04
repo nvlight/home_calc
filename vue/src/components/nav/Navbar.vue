@@ -20,10 +20,6 @@
                             >
                                 {{ item.title }}
                             </router-link>
-
-                            <div :class="['text-gray-300 hover:bg-gray-700 hover:text-white', 'px-3 py-2 rounded-md text-sm font-medium cursor-pointer']"
-                                 @click=""
-                            >Материалы</div>
                         </div>
                     </div>
                 </div>
@@ -130,8 +126,7 @@ export default {
             },
             navigation : [
                 { title: 'Rooms', name: 'Rooms', current: true },
-                //{ title: 'Tags', name: 'Tags', current: false },
-                // { name: 'Команда', href: '#', current: false },
+                { title: 'Materials', name: 'Materials', current: false },
             ],
             userNavigation : [
                 { name: 'Your Profile', href: '#' },
@@ -151,9 +146,6 @@ export default {
                         name: 'Login',
                     })
                 });
-        },
-        showHideTagsModal(){
-            this.tagModalVisible.value = !this.tagModalVisible.value;
         },
     },
     mounted() {

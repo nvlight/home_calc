@@ -33,19 +33,22 @@ export default {
     computed:{
         ...mapState({
             rooms: state => state.room.rooms,
-            roomLoading: state => state.room.loading,
+            //roomLoading: state => state.room.loading,
         }),
     },
     watch:{
-        roomLoading(v1, v2){
-            this.loadRoomJobs();
-            this.loadMaterials();
-            this.loadRoomMaterials();
-        },
+        // roomLoading(v1, v2){
+        //     this.loadRoomJobs();
+        //     this.loadMaterials();
+        //     this.loadRoomMaterials();
+        // },
     },
     mounted() {
-        this.clearRooms();
+        console.log('RoomList - mounted!');
         this.loadRooms();
+        this.loadRoomJobs();
+        this.loadMaterials();
+        this.loadRoomMaterials();
     }
 }
 </script>

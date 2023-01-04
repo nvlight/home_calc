@@ -21,10 +21,11 @@ export const roomJobModule = {
             let response;
             response = axiosClient
                 .get("/roomjob")
-                .then((res)=>{
-                    //console.log(res.data)
-                    res.data.forEach(t => commit('addJob', t))
-                    return res;
+                .then((response)=>{
+                    if (response.data.success){
+                        commit('setJobs', response.data.data)
+                    }
+                    return response;
                 })
                 .catch( (err) => {
                     console.log('we got error:',err);
@@ -76,6 +77,9 @@ export const roomJobModule = {
 
     },
     mutations: {
+        setJobs(state, jobs){
+            state.roomJobs = jobs;
+        },
         addJob: (state, job) => {
             state.roomJobs.unshift(job);
         },

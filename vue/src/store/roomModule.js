@@ -1,35 +1,37 @@
 import axiosClient from "../axios.js";
 
 export const roomModule = {
-    state: {
-        loading: true,
-        rooms: [],
-        selectedJob: [],
+    state() {
+        return {
+            loading: false,
+            rooms: [],
+            selectedJob: [],
 
-        emptyRoom: {
-            id: 0,
-            title: 'Имя комнаты',
-            sizes : {
-                s1: 0,
-                s2: 0,
-                s3: 0,
-                s4: 0,
+            emptyRoom: {
+                id: 0,
+                title: 'Имя комнаты',
+                sizes : {
+                    s1: 0,
+                    s2: 0,
+                    s3: 0,
+                    s4: 0,
+                },
+                height: 0,
+
+                windows: [],
+                is_windows_showing: false,
+
+                doors: [],
+                is_doors_showing: false,
+                is_baseboards_showing: false,
+
+                internalCorners: 0,
+                outerCorners: 0,
+                connectors: 0, // соединение
+                stubs: 0, // заглушка
+
             },
-            height: 0,
-
-            windows: [],
-            is_windows_showing: false,
-
-            doors: [],
-            is_doors_showing: false,
-            is_baseboards_showing: false,
-
-            internalCorners: 0,
-            outerCorners: 0,
-            connectors: 0, // соединение
-            stubs: 0, // заглушка
-
-        },
+        }
     },
     getters: {
         getRoomById: (state) => (id) => {
@@ -48,18 +50,25 @@ export const roomModule = {
             commit('clearRooms');
         },
         getRooms({commit}){
+            commit('clearRooms');
+            commit('setLoading', true);
             return axiosClient
                 .get("/room")
                 .then((res)=>{
                     if (res.data.success){
-                        res.data.rooms.forEach(t => {
-                            let roomParse = JSON.parse(t.data);
-                            commit('insertRoom', roomParse);
-                        });
-                        commit('setLoading', false);
+                        commit('setRooms', res.data.rooms);
+                        //res.data.rooms.forEach(t => {
+                        //   let roomParse = JSON.parse(t.data);
+                        //   commit('insertRoom', roomParse);
+                        //});
                     }
+                    commit('setLoading', false);
                     return res;
                 })
+                .catch(err => {
+                    commit('setLoading', false);
+                    return err;
+                });
         },
 
         createRoom({dispatch, state}){
@@ -123,8 +132,12 @@ export const roomModule = {
         },
     },
     mutations: {
-        setRooms: (state, rooms) => {
-            state.rooms = rooms;
+        setRooms(state, rooms){
+            rooms.forEach(t => {
+                //console.log(t);
+                let roomParse = JSON.parse(t.data);
+                state.rooms.push(roomParse);
+            });
         },
 
         clearRooms: (state) => {
