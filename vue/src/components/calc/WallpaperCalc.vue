@@ -63,10 +63,7 @@
     </div>
     <div class="mt-2">Высота с учетом раппорта: <span class="font-semibold">{{heightRapport}} м.</span></div>
 
-    <materials-for-buy-block :materials="materialsForBuy" :room="room"></materials-for-buy-block>
-
-    <mg-button @click="">Добавить рекомендованные материалы</mg-button>
-
+    <materials-for-buy-block :materials="materials" :room="room"/>
     <room-material-form></room-material-form>
 </template>
 
@@ -89,7 +86,7 @@ export default {
     },
     data() {
         return {
-            title: "Подсчет обоев, стены",
+            title: "Обои, стены",
 
             sizes: {
                 s1: 0,
@@ -175,7 +172,7 @@ export default {
             return this.resultWallsSquare * this.price;
         },
 
-        materialsForBuy(){
+        materials(){
             const arr = [];
             arr.push(
                 {

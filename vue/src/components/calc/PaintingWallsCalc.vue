@@ -82,7 +82,7 @@ import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
 import RoomMaterialForm from "../material/RoomMaterialForm.vue";
 
 export default {
-    name: 'putty-walls-calc',
+    name: 'painting-walls-calc',
     components: {MaterialsForBuyBlock, RoomMaterialForm},
     props: {
         'room': {
@@ -92,7 +92,7 @@ export default {
     },
     data(){
         return {
-            title: 'Шпатлевка, стены',
+            title: 'Покраска, стены',
 
             sizes: {
                 s1: 0,
@@ -105,7 +105,7 @@ export default {
             incSquareCount: 0,
             decSquareCount: 0,
 
-            price: 200,
+            price: 150,
             doors: [],
             windows: [],
 

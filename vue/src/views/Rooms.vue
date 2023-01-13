@@ -9,13 +9,14 @@
 
         <div class="w-full mx-auto py-6 px-4 sm:px-6 lg:px-8">
 
-            <div>roomsLoading: {{ roomsLoading }}</div>
-
-            <div v-if="roomsLoading" class="main_wrapper border-4 border-dashed border-gray-200 rounded-lg">
-                <div class="text-center font-semibold">loading...</div>
-            </div>
+<!--            <div>roomsLoading: {{ roomsLoading }}</div>-->
 
             <div class="main_wrapper border-4 border-dashed border-gray-200 rounded-lg">
+
+                <div v-if="roomsLoading" class="">
+                    <div class="text-center font-semibold">loading...</div>
+                </div>
+
                 <div class="mt-2 flex justify-center">
                     <mg-button class="flex items-center" @click="$store.dispatch('room/createRoom')">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

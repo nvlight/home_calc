@@ -19,6 +19,7 @@
             </div>
 
         </div>
+        <mg-button @click="">Добавить рекомендованные материалы</mg-button>
     </template>
 </template>
 

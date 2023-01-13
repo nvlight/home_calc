@@ -44,15 +44,6 @@
 
     <mg-button @click="addCalced">Добавить сумму</mg-button>
 
-    <div class="flex justify-between">
-        <div class="mt-3">
-            <mg-input-labeled v-model="layerThickness">Толщина слоя шпатлевки (мм)</mg-input-labeled>
-        </div>
-        <div class="mt-3">
-            <mg-input-labeled v-model="oneBagKg">В одном мешке кг.</mg-input-labeled>
-        </div>
-    </div>
-
     <materials-for-buy-block :materials="materials" :room="room"/>
     <room-material-form></room-material-form>
 </template>
@@ -63,7 +54,7 @@ import RoomMaterialForm from "../material/RoomMaterialForm.vue";
 import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
 
 export default {
-    name: 'putty-ceiling-calc',
+    name: 'painting-ceiling-calc',
     components: { RoomMaterialForm, MaterialsForBuyBlock, },
     props: {
         'room': {
@@ -73,7 +64,7 @@ export default {
     },
     data(){
         return {
-            title: 'Шпатлевка, потолок',
+            title: 'Покраска, потолок',
 
             sizes: {
                 s1: 0,
@@ -85,7 +76,7 @@ export default {
             incSquareCount: 0,
             decSquareCount: 0,
 
-            price: 250,
+            price: 150,
 
             layerThickness: 2,
             oneBagKg: 20,
@@ -169,12 +160,6 @@ export default {
         materials() {
             const arr = [];
             arr.push(
-                {
-                    title: 'Шпаклевка гипсовая LAFARGE Satentek 20 кг',
-                    amount: this.needBagCeiled,
-                    amount_add_info: this.needBag,
-                    unit_name: 'мешок',
-                },
             )
             return arr;
         },

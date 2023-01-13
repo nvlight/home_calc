@@ -67,13 +67,7 @@
         <div class="">Расход плиток: <span class="font-semibold">{{this.tileCount}}</span> штук</div>
     </div>
 
-    <materials-for-buy-block
-        :materials="materials"
-        :room="room"
-    ></materials-for-buy-block>
-
-    <mg-button @click="">Добавить рекомендованные материалы</mg-button>
-
+    <materials-for-buy-block :materials="materials" :room="room"/>
     <room-material-form></room-material-form>
 </template>
 

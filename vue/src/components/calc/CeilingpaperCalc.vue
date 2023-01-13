@@ -61,8 +61,6 @@
     <div class="mt-2">Высота с учетом раппорта: <span class="font-semibold">{{heightRapport}} м.</span></div>
 
     <materials-for-buy-block :materials="materials" :room="room"></materials-for-buy-block>
-
-    <mg-button @click="">Добавить рекомендованные материалы</mg-button>
     <room-material-form></room-material-form>
 </template>
 
@@ -85,7 +83,7 @@ export default {
     },
     data() {
         return {
-            title: 'Подсчет обоев, потолок',
+            title: 'Обои, потолок',
 
             sizes: {
                 s1: 0,

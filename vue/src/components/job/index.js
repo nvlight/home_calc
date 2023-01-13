@@ -11,19 +11,23 @@ import PuttyWallsCalc from "../calc/PuttyWallsCalc.vue";
 import TileFloorCalc from "../calc/TileFloorCalc.vue";
 import TileWallsCalc from "../calc/TileWallsCalc.vue";
 import WallpaperCalc from "../calc/WallpaperCalc.vue";
+import PaintingCeilingCalc from "../calc/PaintingCeilingCalc.vue";
+import PaintingWallsCalc from "../calc/PaintingWallsCalc.vue";
 
 export default [
-    BaseboardsCalc,
     CeilingCalc,
-    CeilingpaperCalc,
-    CorniceCalc,
-    DoorstepCalc,
     DrywallCalc,
     DrywallCeilingCalc,
-    LaminateCalc,
     PuttyCeilingCalc,
     PuttyWallsCalc,
+    CeilingpaperCalc,
+    WallpaperCalc,
+    PaintingCeilingCalc,
+    PaintingWallsCalc,
+    CorniceCalc,
+    LaminateCalc,
+    BaseboardsCalc,
+    DoorstepCalc,
     TileFloorCalc,
     TileWallsCalc,
-    WallpaperCalc,
 ];

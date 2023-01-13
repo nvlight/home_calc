@@ -31,14 +31,8 @@
         <mg-input-labeled class="block mt-1" v-model="baseboardLength">Длина плинтуса (м.)</mg-input-labeled>
     </div>
 
-    <materials-for-buy-block
-        :materials="materials"
-        :room="room"
-    ></materials-for-buy-block>
-
-    <mg-button @click="">Добавить рекомендованные материалы</mg-button>
+    <materials-for-buy-block :materials="materials" :room="room"/>
     <room-material-form></room-material-form>
-
 </template>
 
 <script>
