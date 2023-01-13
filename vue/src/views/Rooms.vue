@@ -17,15 +17,9 @@
                     <div class="text-center font-semibold">loading...</div>
                 </div>
 
-                <div class="mt-2 flex justify-center items-center">
-                    <mg-button class="flex items-center" @click="$store.dispatch('room/createRoom')">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                             class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                        </svg>Добавить комнату
-                    </mg-button>
-
-                    <rooms-jobs-materials-sum class="ml-2"/>
+                <div class="mt-2 flex justify-center items-center px-1 w-full flex-wrap">
+                    <mg-plus-button class="mt-1" @click="createRoom">Добавить комнату</mg-plus-button>
+                    <rooms-jobs-materials-sum class="ml-2 mt-1"/>
                 </div>
 
                 <div class="flex flex-wrap justify-center mt-2">
@@ -47,7 +41,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuIt
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import RoomList from "../components/room/RoomList.vue";
 import RoomsJobsMaterialsSum from "../components/room/RoomsJobsMaterialsSum.vue";
-import {mapState} from "vuex";
+import {mapActions, mapState} from "vuex";
 
 export default {
     name: 'rooms',
@@ -61,6 +55,9 @@ export default {
         }
     },
     methods:{
+        ...mapActions({
+            'createRoom': "room/createRoom",
+        }),
     },
     computed:{
         ...mapState({

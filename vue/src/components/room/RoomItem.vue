@@ -1,15 +1,12 @@
 <template>
     <!-- Шаг 1. Введите размеры комнаты -->
-    <div class="min-h-full flex items-center justify-start pt-4 pb-2 px-2 sm:px-2 lg:px-2">
-        <div class="max-w-md w-full space-y-2">
+    <div class="min-h-full p-2 sm:px-2 lg:px-2">
+        <div class="md:max-w-md  w-full">
 
-            <div class="flex">
-                <div class="w-full flex items-center">
-                    <div class="font-semibold text-xl"> {{room.id}}.</div>
-                    <div class="w-full ml-2 mr-2">
-                        <mg-input-labeled classes="md:text-xl" v-model="title"></mg-input-labeled>
-                    </div>
-
+            <div class="flex flex-wrap w-full">
+                <div class="font-semibold text-xl mr-2"> {{room.id}}.</div>
+                <div class="mr-2 flex-grow">
+                    <mg-input-labeled v-model="title"></mg-input-labeled>
                 </div>
                 <div class="flex justify-between items-center">
                     <mg-update-icon-button @click="updateRoom({room_id: room.id, title})" class="mt-0.5"></mg-update-icon-button>
@@ -19,23 +16,12 @@
             </div>
             <h1 class="font-light text-xl">Шаг 1. Введите размеры комнаты</h1>
 
-            <div class="rounded-md shadow-sm flex">
-                <div class="mr-2">
-                    <mg-input-labeled v-model="room.sizes.s1">Сторона 1</mg-input-labeled>
-                </div>
-                <div class="mr-2">
-                    <mg-input-labeled v-model="room.sizes.s2">Сторона 2</mg-input-labeled>
-                </div>
-                <div class="mr-2">
-                    <mg-input-labeled v-model="room.sizes.s3">Сторона 3</mg-input-labeled>
-                </div>
-                <div class="mr-2">
-                    <mg-input-labeled v-model="room.sizes.s4">Сторона 4</mg-input-labeled>
-                </div>
-
-                <div class="mr-2">
-                    <mg-input-labeled v-model="room.height">Высота</mg-input-labeled>
-                </div>
+            <div class="rounded-md flex justify-around flex-wrap ">
+                <mg-input-labeled-2 class="" v-model="room.sizes.s1">Сторона 1</mg-input-labeled-2>
+                <mg-input-labeled-2 class="" v-model="room.sizes.s2">Сторона 2</mg-input-labeled-2>
+                <mg-input-labeled-2 class="" v-model="room.sizes.s3">Сторона 3</mg-input-labeled-2>
+                <mg-input-labeled-2 class="" v-model="room.sizes.s4">Сторона 4</mg-input-labeled-2>
+                <mg-input-labeled-2 class="" v-model="room.height">Высота</mg-input-labeled-2>
             </div>
 
             <div class="windows_doors_baseboards">
@@ -55,7 +41,7 @@
     </div>
 
     <!-- Шаг 2. Выбор и добавление работ -->
-    <div class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-2 lg:px-2">
+    <div v-if="1==2" class="min-h-full flex items-center justify-start pt-4 pb-4 px-4 sm:px-2 lg:px-2">
         <div class="max-w-md w-full space-y-2">
             <h1 class="font-light text-xl text-center">Шаг 2. Выбор и добавление работ</h1>
 
