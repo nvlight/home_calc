@@ -1,10 +1,12 @@
 <template>
-    <div class="resultingSumm">
-        <div class="fixed border border-red-400 border-dotted rounded-full flex justify-center items-center"
-             style="top: 7px; right: 7px; height: 55px; width: 111px; margin-top: 0;
-             background-color: #fff; padding: 10px;
+    <div v-if="sum > 0" class="resultingSumm flex items-center">
+        <h3 class="text-xl">Общая сумма</h3>
+        <div class="rounded-md px-2 py-0.5 w-fit h-fit bg-gray-600 ml-2
+            text-white cursor-pointer hover:bg-gray-700"
+             style="bottom: 10px; right: 10px;
+             block-size: fit-content;
             ">
-            <div class="fixed text-2xl font-semibold">{{ sum }} {{ currency }}</div>
+                <div class="font-semibold">{{ sum }} {{ currency }}</div>
         </div>
     </div>
 </template>
