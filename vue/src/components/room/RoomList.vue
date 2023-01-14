@@ -1,5 +1,5 @@
 <template>
-    <div v-for="(room) in rooms" class="max-w-2xl px-2 py-3">
+    <div v-for="(room) in rooms" class="max-w-md px-2 py-3">
         <div class="border-4 border-dashed border-gray-200 rounded-lg" >
             <room-item :room="room">
             </room-item>
@@ -37,14 +37,8 @@ export default {
         }),
     },
     watch:{
-        // roomLoading(v1, v2){
-        //     this.loadRoomJobs();
-        //     this.loadMaterials();
-        //     this.loadRoomMaterials();
-        // },
     },
     mounted() {
-        console.log('RoomList - mounted!');
         this.loadRooms();
         this.loadRoomJobs();
         this.loadMaterials();

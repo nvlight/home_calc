@@ -1,13 +1,7 @@
 <template>
-    <div class="pt-4 pb-4 px-2">
+    <div v-if="filteredRoomMaterials.length" class="pt-4 pb-4 px-2">
         <div class="max-w-md max-h-72 overflow-y-scroll">
             <div class="font-semibold text-xl text-center">Добавленные материалы:</div>
-            <!--        <div>storeRoomMaterials.length: {{roomMaterials.length}}</div>-->
-
-            <template v-if="!filteredRoomMaterials.length">
-                <div class="mt-2 text-center">Список пуст</div>
-            </template>
-            <template v-else>
                 <div v-for="(room_material, index) in filteredRoomMaterials"
                      :key="room_material.id"
                      class=""
@@ -30,11 +24,8 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
-            </template>
         </div>
 
         <room-materials-sum></room-materials-sum>

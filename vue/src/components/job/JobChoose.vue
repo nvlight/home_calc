@@ -9,7 +9,7 @@
 import JobComponents from "../job"
 
 export default {
-    name: 'job-select',
+    name: 'job-choose',
     props: {
         selectedJob: {
             type: Number,

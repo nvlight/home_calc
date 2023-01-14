@@ -19,7 +19,10 @@
             </div>
 
         </div>
-        <mg-button @click="">Добавить рекомендованные материалы</mg-button>
+
+        <div class="hidden mt-1">
+            <mg-button @click="">Добавить рекомендованные материалы</mg-button>
+        </div>
     </template>
 </template>
 

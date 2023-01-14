@@ -30,10 +30,6 @@
             </option>
         </select>
 
-        <div v-if="this.$store.state.debug" class="border-dotted border-2 p-3 border-red-400">
-            Выбранный элемент select <strong>{{ choosedCeiling.selected_id }}</strong>
-        </div>
-
         <div class="rounded-md shadow-sm flex mt-2">
             <div class="mr-2">
                 <mg-input-labeled v-model="sizes.s1">Сторона 1</mg-input-labeled>
@@ -52,7 +48,7 @@
                 <mg-input-labeled v-model="room.height">Высота</mg-input-labeled>
             </div>
         </div>
-        <div>
+        <div class="mt-2">
             <mg-button @click="setDefaultRoomSizesHandler">установить размеры по умолчанию</mg-button>
         </div>
         <div class="rooms_calc mt-2">

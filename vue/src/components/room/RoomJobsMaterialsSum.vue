@@ -1,16 +1,12 @@
 <template>
-    <div v-if="sum" class="mt-3 mb-3 text-xl text-center">
+    <div v-if="sum" class="mt-3 mb-3 text-xl text-center border-t border-gray-100">
         <span>Сумма материалов и работ: </span>
-        <span class="font-semibold ">{{ sum }}&nbsp;{{ currency }}</span>
-
-<!--        <div>likes: {{likes}}</div>-->
-<!--        <mg-button @click="doubleLike">double like</mg-button>-->
+        <span class="font-semibold">{{ sum }}&nbsp;{{ currency }}</span>
     </div>
 </template>
 
 <script>
 import {mapActions, mapGetters, mapState} from "vuex";
-import {ref} from "vue";
 
 export default {
     name: 'room-jobs-materials-sum',
@@ -48,19 +44,6 @@ export default {
     },
     watch:{
     },
-
-    // setup(props){
-    //     const likes = ref(333);
-    //
-    //     const doubleLike = () => {
-    //         likes.value *= 2;
-    //     }
-    //
-    //     return {
-    //         likes,
-    //         doubleLike,
-    //     }
-    // }
 }
 </script>
 

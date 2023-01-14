@@ -1,31 +1,25 @@
 <template>
-    <div class="pt-4 pb-4 px-2">
-        <div class="max-w-md max-h-72 overflow-y-scroll">
+    <div v-if="addedJobsClone?.length" class="pt-4 pb-4 px-2">
+        <div class="w-full max-h-72 overflow-y-scroll">
             <div class="font-semibold text-xl text-center">Добавленные работы:</div>
 
-            <div v-if="!addedJobsClone?.length">
-                <span class="block text-center">Список пуст</span>
-            </div>
-            <div v-else>
-                <div v-for="(job,index) in addedJobsClone"
-                     :key="job.id">
-                    <div class="flex justify-between mt-2">
-                        <div> {{job.id}}. {{ job.title }} </div>
-                        <div class="flex self-center">
-                            <span class="flex">&nbsp;{{ job.sum }}
-                                <span class="font-semibold">&nbsp;{{ currency }}</span>
-                            </span>
+            <div v-for="(job,index) in addedJobsClone"
+                 :key="job.id">
+                <div class="flex justify-between mt-2">
+                    <div> {{job.id}}. {{ job.title }} </div>
+                    <div class="flex self-center">
+                        <span class="flex">&nbsp;{{ job.sum }}
+                            <span class="font-semibold">&nbsp;{{ currency }}</span>
+                        </span>
 
-                            <mg-trash-icon-button @click="deleteJob(job.id)">
-                            </mg-trash-icon-button>
-                        </div>
-                    </div>
-                    <div v-if="job.main_info">
-                        [{{ job.main_info }}]
+                        <mg-trash-icon-button @click="deleteJob(job.id)">
+                        </mg-trash-icon-button>
                     </div>
                 </div>
+                <div v-if="job.main_info">
+                    [{{ job.main_info }}]
+                </div>
             </div>
-
         </div>
 
         <room-jobs-sum></room-jobs-sum>
