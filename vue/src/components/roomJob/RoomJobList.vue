@@ -5,7 +5,7 @@
 
             <div v-for="(job,index) in addedJobsClone"
                  :key="job.id">
-                <div class="flex justify-between mt-2">
+                <div class="flex flex-wrap justify-between  mt-2">
                     <div> {{job.id}}. {{ job.title }} </div>
                     <div class="flex self-center">
                         <span class="flex">&nbsp;{{ job.sum }}

@@ -16,12 +16,12 @@
             </div>
             <h1 class="font-light text-xl text-center">Шаг 1. Введите размеры комнаты</h1>
 
-            <div class="rounded-md flex justify-around flex-wrap ">
+            <div class="rounded-md flex flex-wrap justify-around flex-wrap ">
                 <mg-input-labeled-2 class="" v-model="room.sizes.s1">Сторона 1</mg-input-labeled-2>
                 <mg-input-labeled-2 class="" v-model="room.sizes.s2">Сторона 2</mg-input-labeled-2>
                 <mg-input-labeled-2 class="" v-model="room.sizes.s3">Сторона 3</mg-input-labeled-2>
                 <mg-input-labeled-2 class="" v-model="room.sizes.s4">Сторона 4</mg-input-labeled-2>
-                <mg-input-labeled-2 class="" v-model="room.height">Высота</mg-input-labeled-2>
+                <mg-input-labeled-2 class="" v-model="room.height">Высотаss</mg-input-labeled-2>
             </div>
 
             <div class="windows_doors_baseboards">

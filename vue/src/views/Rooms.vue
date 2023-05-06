@@ -1,11 +1,7 @@
 <template>
     <div class="min-h-full">
-        <header class="bg-white shadow">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                <h1 class="text-3xl font-bold text-gray-900"
-                >Rooms</h1>
-            </div>
-        </header>
+
+        <nav-item-title-line :title="'Комнаты'"/>
 
         <div class="w-full mx-auto py-6 px-4 sm:px-6 lg:px-8">
 
@@ -42,13 +38,14 @@ import { BellIcon, MenuIcon, XIcon } from '@heroicons/vue/outline'
 import RoomList from "../components/room/RoomList.vue";
 import RoomsJobsMaterialsSum from "../components/room/RoomsJobsMaterialsSum.vue";
 import {mapActions, mapState} from "vuex";
+import NavItemTitleLine from "../components/nav/NavItemTitleLine.vue";
 
 export default {
     name: 'rooms',
     components: {
         Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems,
         BellIcon, MenuIcon, XIcon,
-        RoomList, RoomsJobsMaterialsSum,
+        RoomList, RoomsJobsMaterialsSum, NavItemTitleLine,
     },
     data(){
         return {

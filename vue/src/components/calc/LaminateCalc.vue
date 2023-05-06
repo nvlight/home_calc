@@ -54,7 +54,7 @@
 import {mapState, mapActions} from "vuex";
 import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
 import RoomMaterialForm from "../material/RoomMaterialForm.vue";
-import MainCalc from "../mixins/MainCalc.js"
+import MainCalc from "../../mixins/MainCalc.js"
 
 export default {
     name: "LaminateCalc",

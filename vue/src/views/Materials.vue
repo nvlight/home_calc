@@ -1,11 +1,7 @@
 <template>
     <div class="min-h-full">
-        <header class="bg-white shadow">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                <h1 class="text-3xl font-bold text-gray-900"
-                >Materials</h1>
-            </div>
-        </header>
+
+        <nav-item-title-line :title="'Материалы'"/>
 
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             <div class="flex">
@@ -29,17 +25,16 @@
 
 <script>
 import {mapActions, mapState} from "vuex";
-import store from "../store/index.js";
-import router from "../router/index.js";
 import MaterialList from "../components/material/MaterialList.vue";
 import MaterialCreateForm from "../components/material/MaterialCreateForm.vue";
 import MaterialEditForm from "../components/material/MaterialEditForm.vue";
 import MainLink from "../components/nav/MainLink.vue";
+import NavItemTitleLine from "../components/nav/NavItemTitleLine.vue";
 
 export default {
     name: 'materials',
     components: {
-        MaterialList,MaterialCreateForm, MaterialEditForm, MainLink,
+        MaterialList,MaterialCreateForm, MaterialEditForm, MainLink, NavItemTitleLine,
     },
     data(){
         return {

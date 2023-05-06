@@ -4,7 +4,7 @@
         <div
             v-for="(material, index) in materials"
             :key="index"
-            class="flex justify-between"
+            class="flex flex-wrap justify-between"
         >
             <div>
                 <span>{{index+1}}. </span>

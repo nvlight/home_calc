@@ -7,6 +7,7 @@ import {roomMaterialModule} from "./roomMaterialModule.js";
 
 const store = createStore({
     state: () => ({
+        mainDevSiteUrl: 'https://mgdev.ru',
         debug: true,
         user:{
             data: {},
