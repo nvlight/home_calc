@@ -5,7 +5,7 @@
         <mg-button @click="setDefaultActionsHandler">установить размеры комнаты по умолчанию</mg-button>
     </div>
 
-    <div class="rounded-md shadow-sm flex mt-2 justify-between">
+    <div class="rounded-md shadow-sm flex flex-wrap mt-2 justify-between">
         <div class="mr-2">
             <mg-input-labeled v-model="length" :placeholder="'кв.м.'">Длина</mg-input-labeled>
         </div>
@@ -14,26 +14,18 @@
         </div>
     </div>
 
-    <div class="mt-3 flex flex-wrap items-center">
-        <div class="w-7/12">
-            <div class="mt-3">
-                <div>Периметр: <span class="font-semibold">{{perimeter}} м.</span></div>
-                <div>Площадь потолка: <span class="font-semibold">{{ceiledfullSquareCeiling}} кв.м. ({{fullSquareCeiling}})</span></div>
-            </div>
-        </div>
-        <div class="w-5/12">
-            <div class="">
-                <mg-input-labeled :modelValue="incSquareCount" @input="incSquareCount = $event.target.value"
-                                  :placeholder="'кв.м.'">Прибавить кв.м.</mg-input-labeled>
-                <mg-input-labeled v-model="decSquareCount" :placeholder="'кв.м.'">Убавить кв.м.</mg-input-labeled>
-            </div>
-        </div>
+    <div class="mt-3 ">
+        <div>Периметр: <span class="font-semibold">{{perimeter}} м.</span></div>
+        <div>Площадь: <span class="font-semibold">{{ceiledfullSquareCeiling}} кв.м. ({{fullSquareCeiling}})</span></div>
+    </div>
+    <div class="flex flex-wrap justify-between">
+        <mg-input-labeled :modelValue="incSquareCount" @input="incSquareCount = $event.target.value"
+                          :placeholder="'кв.м.'">Прибавить кв.м.</mg-input-labeled>
+        <mg-input-labeled v-model="decSquareCount" :placeholder="'кв.м.'">Убавить кв.м.</mg-input-labeled>
     </div>
 
-    <div class="mt-3 w-4/12">
-        <div class="mt-2">
-            <mg-input-labeled v-model="price" :placeholder="'кв.м.'">сумма за 1 кв.м.</mg-input-labeled>
-        </div>
+    <div class="mt-3">
+        <mg-input-labeled v-model="price" :placeholder="'кв.м.'">сумма за 1 кв.м.</mg-input-labeled>
     </div>
 
     <div class="mt-2 ">
@@ -44,10 +36,10 @@
     <mg-button @click="addCalced">Добавить сумму</mg-button>
 
     <div class="w-full flex flex-wrap justify-between">
-        <div class="mt-2 w-5/12">
+        <div class="mt-2">
             <mg-input-labeled v-model="profileStep">шаг установки профиля</mg-input-labeled>
         </div>
-        <div class="mt-2 w-5/12">
+        <div class="mt-2">
             <mg-input-labeled v-model="suspensionStep">шаг установки подвеса</mg-input-labeled>
         </div>
     </div>
