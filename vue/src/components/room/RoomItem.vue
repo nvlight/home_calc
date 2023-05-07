@@ -21,7 +21,7 @@
                 <mg-input-labeled-2 class="" v-model="room.sizes.s2">Сторона 2</mg-input-labeled-2>
                 <mg-input-labeled-2 class="" v-model="room.sizes.s3">Сторона 3</mg-input-labeled-2>
                 <mg-input-labeled-2 class="" v-model="room.sizes.s4">Сторона 4</mg-input-labeled-2>
-                <mg-input-labeled-2 class="" v-model="room.height">Высотаss</mg-input-labeled-2>
+                <mg-input-labeled-2 class="" v-model="room.height">Высота</mg-input-labeled-2>
             </div>
 
             <div class="windows_doors_baseboards">

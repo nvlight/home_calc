@@ -69,7 +69,6 @@ const router = createRouter({
 });
 
 router.beforeEach( (to,from, next) => {
-    //console.log(to);
     if( to.name === 'Login' && store.state.user.token){
         next({name: 'Rooms'})
     } else
@@ -79,6 +78,7 @@ router.beforeEach( (to,from, next) => {
     else{
         next();
     }
+    //next();
 })
 
 export default router;

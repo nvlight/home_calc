@@ -3,19 +3,7 @@
 
     <div class="border border-dashed border-2 p-3 rounded-xl">
         <h1 class="text-xl">Выбор типа потолка</h1>
-        <div class="description hidden">
-            <h3 class="text-xl">В наличии имеются несколько видов потолков:</h3>
-            <ol class="">
-                <li>Матовые</li>
-                <li>Глянцевые</li>
-                <li>Сатиновые</li>
-                <li>Тканевые</li>
-                <li>Двухуровневые</li>
-                <li>Фотопечать</li>
-                <li>Фактурные</li>
-                <li>Звездное небо</li>
-            </ol>
-        </div>
+
         <select
             v-model="choosedCeiling.selected_id"
             name="ceiling_type" id="ceiling_type"
@@ -30,7 +18,8 @@
             </option>
         </select>
 
-        <div class="rounded-md shadow-sm flex mt-2">
+
+        <div class="rounded-md shadow-sm flex flex-wrap mt-2">
             <div class="mr-2">
                 <mg-input-labeled v-model="sizes.s1">Сторона 1</mg-input-labeled>
             </div>
@@ -48,6 +37,8 @@
                 <mg-input-labeled v-model="room.height">Высота</mg-input-labeled>
             </div>
         </div>
+
+
         <div class="mt-2">
             <mg-button @click="setDefaultRoomSizesHandler">установить размеры по умолчанию</mg-button>
         </div>
@@ -56,65 +47,76 @@
             <div>Площадь потолка: <span class="font-semibold">{{ squareCeiling }} </span> кв.м.</div>
         </div>
 
-        <div class="flex justify-between mt-3 border-t border-red-100 pt-3">
-            <span>Натяжной потолок + установка</span>
-            <span>
+        <div v-if="1==2">
+            <div class="flex flex-wrap justify-between mt-3 border-t border-red-100 pt-3">
+                <span>Натяжной потолок + установка</span>
+                <span>
                 <strong>{{ ceilingPrice }}</strong> {{ currency }}
             </span>
-        </div>
-        <div class="flex justify-between items-center mt-3">
-            <div class="flex justify-between items-center w-2/3">
-                <span class="w-2/3">Багет (м.)</span>
-                <input
-                    class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+            </div>
+
+            <div class="flex flex-wrap justify-between items-center mt-3">
+                <span class="">Багет (м.)</span>
+                <input class="text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+                       rounded-b-md rounded-t-md
+                       focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                       type="text" v-model="baget.count" placeholder="0">
+                <strong class="">{{ bagetSumm }} {{ currency }}</strong>
+            </div>
+
+            <div class="flex flex-wrap justify-between items-center mt-3">
+                <div class="flex flex-wrap justify-between items-center w-2/3">
+                    <span class="w-1/3">Подлюстренники (шт)</span>
+                    <input
+                        class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                            rounded-b-md rounded-t-md
                            focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    type="text" v-model="baget.count" placeholder="0">
+                        type="text" v-model="chandeliers.count" placeholder="0">
+                </div>
+                <strong class="w-1/3 text-right">{{ chandeliersSumm }} {{ currency }}</strong>
             </div>
-            <strong class="w-1/3 text-right">{{ bagetSumm }} {{ currency }}</strong>
-        </div>
-        <div class="flex justify-between items-center mt-3">
-            <div class="flex justify-between items-center w-2/3">
-                <span class="w-1/3">Подлюстренники (шт)</span>
-                <input
-                    class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+
+            <div class="flex flex-wrap justify-between items-center mt-3">
+                <div class="flex flex-wrap justify-between items-center w-2/3">
+                    <span class="w-1/3">Светильники (шт)</span>
+                    <input
+                        class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                            rounded-b-md rounded-t-md
                            focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    type="text" v-model="chandeliers.count" placeholder="0">
+                        type="text" v-model="luminaire.count" placeholder="0">
+                </div>
+                <strong class="w-1/3 text-right">{{ luminaireSumm }} {{ currency }}</strong>
             </div>
-            <strong class="w-1/3 text-right">{{ chandeliersSumm }} {{ currency }}</strong>
-        </div>
-        <div class="flex justify-between items-center mt-3">
-            <div class="flex justify-between items-center w-2/3">
-                <span class="w-1/3">Светильники (шт)</span>
-                <input
-                    class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
+
+            <div class="flex flex-wrap justify-between items-center mt-3">
+                <div class="flex flex-wrap justify-between items-center w-2/3">
+                    <span class="w-1/3">Трубы (шт)</span>
+                    <input
+                        class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
                            rounded-b-md rounded-t-md
                            focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    type="text" v-model="luminaire.count" placeholder="0">
+                        type="text" v-model.number="pipes.count" placeholder="0">
+                </div>
+                <strong class="w-1/6 text-right">{{ pipesSumm }} {{ currency }}</strong>
             </div>
-            <strong class="w-1/3 text-right">{{ luminaireSumm }} {{ currency }}</strong>
-        </div>
-        <div class="flex justify-between items-center mt-3">
-            <div class="flex justify-between items-center w-2/3">
-                <span class="w-1/3">Трубы (шт)</span>
-                <input
-                    class="w-1/3 text-right appearance-none relative block px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900
-                           rounded-b-md rounded-t-md
-                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    type="text" v-model.number="pipes.count" placeholder="0">
+
+            <div class="flex flex-wrap justify-between mt-3">
+                Доставка <strong>{{ deliveryPrice }} {{ currency }}</strong>
             </div>
-            <strong class="w-1/6 text-right">{{ pipesSumm }} {{ currency }}</strong>
+
+            <div class="flex flex-wrap justify-between mt-3">
+                Итоговая сумма <strong>{{ totalAmount.price }} {{ currency }}</strong>
+            </div>
         </div>
 
-        <div class="flex justify-between mt-3">
-            Доставка <strong>{{ deliveryPrice }} {{ currency }}</strong>
-        </div>
-
+        <ThreeInLine first="Натяжной потолок + установка" :sum="ceilingPrice" :third="currency" />
+        <ThreeInLine v-model="baget.count" first="Багет (м.)" :sum="bagetSumm" :third="currency" />
+        <ThreeInLine v-model="chandeliers.count" first="Подлюстренники (шт)" :sum="chandeliersSumm" :third="currency" />
+        <ThreeInLine v-model="luminaire.count" first="Светильники (шт)" :sum="luminaireSumm" :third="currency" />
+        <ThreeInLine v-model="pipes.count" first="Трубы (шт)" :sum="pipesSumm" :third="currency" />
+        <ThreeInLine first="Доставка" :sum="deliveryPrice" :third="currency" />
         <hr class="mt-3">
-        <div class="flex justify-between mt-3">
-            Итоговая сумма <strong>{{ totalAmount.price }} {{ currency }}</strong>
-        </div>
+        <ThreeInLine first="Итоговая сумма" :sum="totalAmount.price" :third="currency" />
 
         <mg-grid-icon-button @click="addCalcedCeil">Добавить всю сумму</mg-grid-icon-button>
 
@@ -126,7 +128,6 @@
             <span class="pl-1">Показать шаги крепежей</span>
         </label>
         <div class="mt-2" v-if="showFastenersStep">
-<!--            <div>fasteners: {{ fasteners }}</div>-->
             <div class="font-semibold">Установка шага для крепежей</div>
             <div v-for="(fastener,i) in fasteners">
                 <mg-input-labeled v-model="fasteners[i].step">{{ fastener.title }}</mg-input-labeled>
@@ -135,6 +136,7 @@
 
         <materials-for-buy-block :materials="materials" :room="room"/>
         <room-material-form></room-material-form>
+
     </div>
 </template>
 
@@ -142,11 +144,12 @@
 import {mapState, mapGetters, mapActions, mapMutations} from "vuex";
 import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
 import RoomMaterialForm from "../material/RoomMaterialForm.vue";
+import ThreeInLine from "../additional/ThreeInLine.vue";
 
 export default {
     name: 'CeilingCalc',
     props: ['room'],
-    components: { MaterialsForBuyBlock, RoomMaterialForm},
+    components: { MaterialsForBuyBlock, RoomMaterialForm, ThreeInLine},
     data() {
         return {
             title: 'Натяжной потолок',
