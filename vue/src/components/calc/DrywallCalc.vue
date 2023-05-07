@@ -5,7 +5,7 @@
         <mg-button @click="setDefaultRoomSizesHandler">установить размеры комнаты по умолчанию</mg-button>
     </div>
 
-    <div class="flex mt-2">
+    <div class="flex flex-wrap mt-2">
         <div class="mr-2">
             <mg-input-labeled v-model="sizes.s1" :placeholder="'кв.м.'">Сторона 1</mg-input-labeled>
         </div>
@@ -23,14 +23,14 @@
         </div>
     </div>
 
-    <div class="mt-3 flex items-center">
-        <div class="w-7/12">
+    <div class="mt-3 flex flex-wrap items-center">
+        <div class="">
             <div class="mt-3">
                 <div>Периметр: <span class="font-semibold">{{perimeter}} м.</span></div>
-                <div>Площадь стен: <span class="font-semibold">{{squareWalls}} кв.м.</span></div>
+                <div>Площадь: <span class="font-semibold">{{squareWalls}} кв.м.</span></div>
             </div>
         </div>
-        <div class="w-5/12">
+        <div class="">
             <div class="">
                 <mg-input-labeled :modelValue="incSquareCount" @input="incSquareCount = $event.target.value"
                                   :placeholder="'кв.м.'">Прибавить кв.м.</mg-input-labeled>
@@ -38,14 +38,6 @@
             </div>
         </div>
     </div>
-
-<!--    <div v-if="this.$store.state.debug" class="mt-3 border-dotted border-2 p-3 border-red-400">-->
-<!--        <div>{{ windows }}</div>-->
-<!--        <div>{{ doors }}</div>-->
-<!--        <div>windowsSquare: {{ windowsSquare }}</div>-->
-<!--        <div>doorsSquare:   {{ doorsSquare }}</div>-->
-<!--        <div>fullSquareWalls: {{ fullSquareWalls }}</div>-->
-<!--    </div>-->
 
     <div class="mt-2">Площадь с учетом дверей и окон:</div>
     <div><span class="font-semibold">{{ ceiledFullSquareWalls }} кв.м. ({{ fullSquareWalls }}) кв.м.</span></div>
@@ -63,13 +55,9 @@
 
     <mg-button @click="addCalced">Добавить сумму</mg-button>
 
-    <div class="w-full flex justify-between">
-        <div class="mt-2 w-5/12">
-            <mg-input-labeled v-model="profileStep">шаг установки профиля</mg-input-labeled>
-        </div>
-        <div class="mt-2 w-5/12">
-            <mg-input-labeled v-model="suspensionStep">шаг установки подвеса</mg-input-labeled>
-        </div>
+    <div class="mt-2 flex flex-wrap justify-between">
+        <mg-input-labeled v-model="profileStep">шаг установки профиля</mg-input-labeled>
+        <mg-input-labeled v-model="suspensionStep">шаг установки подвеса</mg-input-labeled>
     </div>
 
     <materials-for-buy-block :materials="materials" :room="room"/>
