@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col h-screen justify-between">
-        <navbar/>
+        <Navbar/>
 
         <main class="mb-auto">
 

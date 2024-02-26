@@ -7,6 +7,7 @@ import store from "../store/index.js";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Materials from "../views/Materials.vue";
+import Projects from "../views/Projects.vue";
 
 const routes = [
     {
@@ -34,6 +35,12 @@ const routes = [
                 name: 'Materials',
                 component: Materials,
             },
+            {
+                path: '/projects',
+                name: 'Projects',
+                meta: { requiresAuth: true },
+                component: Projects,
+            },
         ],
     },
     {
@@ -55,12 +62,7 @@ const routes = [
             },
         ],
     },
-    // {
-    //     path: '/projects',
-    //     name: 'Projects',
-    //     meta: { requiresAuth: true },
-    //     component: Projects,
-    // },
+
 ];
 
 const router = createRouter({

@@ -1,9 +1,5 @@
 <template>
-<!--    <div>-->
-<!--        {{options}}-->
-<!--    </div>-->
-<!--    <div>{{modelValue}}</div>-->
-    <select v-model="modelValue"
+    <select
         multiple
         @change="changeOption"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
@@ -24,7 +20,7 @@
 
 <script>
 export default {
-    name: "mg-checkbox",
+    name: "MgCheckbox",
     props:{
         modelValue: {
             type: [ Array ]

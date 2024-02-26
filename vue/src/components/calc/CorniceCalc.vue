@@ -33,7 +33,7 @@
     </div>
 
     <div class="mt-2">
-        <mg-checkbox v-model="select" :options="options"></mg-checkbox>
+        <MgCheckbox v-model="select" :options="options"></MgCheckbox>
     </div>
 
     <div class="mt-2 ">
@@ -54,7 +54,7 @@ import MaterialsForBuyBlock from "../additional/MaterialsForBuyBlock.vue";
 
 export default {
     name: 'cornice-calc',
-    components: { RoomMaterialForm, MaterialsForBuyBlock},
+    components: { RoomMaterialForm, MaterialsForBuyBlock, },
     props: {
         'room':{
             type: [Object],
