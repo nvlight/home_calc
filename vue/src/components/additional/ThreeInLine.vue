@@ -8,7 +8,6 @@
                    w-16
                    focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
            type="text"
-           v-model="modelValue"
            @input="updateModelValue($event)"
            placeholder="0"
         >
@@ -18,7 +17,6 @@
 
 <script>
 export default {
-
     props:{
         first: {
             type: String,
