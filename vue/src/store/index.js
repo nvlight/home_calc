@@ -11,7 +11,7 @@ const store = createStore({
         debug: true,
         user:{
             data: {},
-            token: sessionStorage.getItem('TOKEN'),
+            token: localStorage.getItem('TOKEN'),
         },
         currency: "₽",
     }),
@@ -48,12 +48,12 @@ const store = createStore({
         setUser: (state, userData) => {
             state.user.token = userData.token;
             state.user.data  = userData.user;
-            sessionStorage.setItem('TOKEN', userData.token);
+            localStorage.setItem('TOKEN', userData.token);
         },
         logout: (state) => {
             state.user.data  = {};
             state.user.token = null;
-            sessionStorage.removeItem('TOKEN');
+            localStorage.removeItem('TOKEN');
         },
     },
     modules:{

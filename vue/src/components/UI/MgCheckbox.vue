@@ -1,6 +1,7 @@
 <template>
     <select
         multiple
+        v-model="modelValue"
         @change="changeOption"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
         focus:ring-blue-500 focus:border-blue-500
@@ -16,6 +17,7 @@
             {{option.name}}
         </option>
     </select>
+    <div>{{ modelValue }}</div>
 </template>
 
 <script>
@@ -23,11 +25,16 @@ export default {
     name: "MgCheckbox",
     props:{
         modelValue: {
-            type: [ Array ]
+            type: Array,
         },
         options: {
             type: Array,
             default: () => [],
+        }
+    },
+    data(){
+        return {
+            selected: [],
         }
     },
     methods: {
@@ -35,6 +42,9 @@ export default {
             //console.log(event.target)
             this.$emit('update:modelValue', this.modelValue);
         },
+    },
+    mounted() {
+        //this.selected = this.modelValue;
     }
 }
 </script>
