@@ -1,7 +1,7 @@
 <template>
     <select
         multiple
-        v-model="modelValue"
+        v-model="selected"
         @change="changeOption"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
         focus:ring-blue-500 focus:border-blue-500
@@ -40,11 +40,11 @@ export default {
     methods: {
         changeOption(event){
             //console.log(event.target)
-            this.$emit('update:modelValue', this.modelValue);
+            this.$emit('update:modelValue', this.selected);
         },
     },
     mounted() {
-        //this.selected = this.modelValue;
+        this.selected = this.modelValue;
     }
 }
 </script>
