@@ -13,11 +13,11 @@
                     <material-create-form v-show="!editFormShow" class="border border p-3" ></material-create-form>
                 </div>
 
-                <material-list class="w-8/12 w-full ml-5 border border-dotted border p-3"
+                <MaterialList class="w-8/12 w-full ml-5 border border-dotted border p-3"
                                :materials="materials"
                                :title="'Список материалов'"
                                @editBtnClicked="editFormShow = true"
-                ></material-list>
+                ></MaterialList>
             </div>
         </div>
     </div>
@@ -25,7 +25,8 @@
 
 <script>
 import {mapActions, mapState} from "vuex";
-import MaterialList from "../components/material/MaterialList.vue";
+// import MaterialList from "../components/material/MaterialList.vue";
+import MaterialList from "@/components/material/MaterialList.vue";
 import MaterialCreateForm from "../components/material/MaterialCreateForm.vue";
 import MaterialEditForm from "../components/material/MaterialEditForm.vue";
 import MainLink from "../components/nav/MainLink.vue";

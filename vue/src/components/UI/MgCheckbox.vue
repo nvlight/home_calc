@@ -17,7 +17,6 @@
             {{option.name}}
         </option>
     </select>
-    <div>{{ modelValue }}</div>
 </template>
 
 <script>
