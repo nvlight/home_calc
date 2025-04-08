@@ -16,32 +16,30 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.0.1' # Должно совпадать с версией в composer.json
-          extensions: mbstring, ctype, xml, tokenizer, json, pdo, sqlite
+          php-version: '8.2'
+          extensions: mbstring, ctype, xml, tokenizer, json, pdo, sqlite, openssl, pcntl
           tools: composer:v2
+          coverage: none
 
-      - name: Install SQLite system dependencies
-        run: sudo apt-get install -y sqlite3
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sqlite3 libsqlite3-dev
 
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-
-      - name: Debug versions
-        run: |
-          php -v
-          composer --version
-          sqlite3 --version
 
       - name: Clear Composer cache
         run: composer clear-cache
 
       - name: Install Dependencies
-        run: |
-          composer install --no-ansi --no-interaction --prefer-dist --no-progress --optimize-autoloader
-          composer dump-autoload
+        run: composer install --no-ansi --no-interaction --prefer-dist --no-progress --optimize-autoloader
 
       - name: Generate key
         run: php artisan key:generate
+
+      - name: Clear config cache
+        run: php artisan config:clear
 
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
