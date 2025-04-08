@@ -11,20 +11,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.1'  # Убедитесь, что версия совпадает с composer.json
-
       - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0.1' # Должно совпадать с версией в composer.json
+          extensions: mbstring, ctype, xml, tokenizer, json, pdo, sqlite
+          tools: composer:v2
+
+      - name: Install SQLite system dependencies
+        run: sudo apt-get install -y sqlite3
 
       - name: Copy .env
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Debug versions
+        run: |
+          php -v
+          composer --version
+          sqlite3 --version
 
       - name: Clear Composer cache
         run: composer clear-cache
 
       - name: Install Dependencies
-        run: composer install -q --no-ansi --no-interaction --no-progress --prefer-dist
+        run: |
+          composer install --no-ansi --no-interaction --prefer-dist --no-progress --optimize-autoloader
+          composer dump-autoload
 
       - name: Generate key
         run: php artisan key:generate
