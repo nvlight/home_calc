@@ -1,0 +1,8 @@
+# .github/actions/hello-world-action/action.yml
+name: 'Hello World Action'
+description: 'A simple action to print hello world'
+runs:
+  using: 'composite'
+  steps:
+    - run: echo "Hello, World!"
+      shell: bash
