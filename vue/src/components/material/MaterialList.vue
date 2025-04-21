@@ -2,6 +2,7 @@
     <div>
         <h1 class="font-semibold text-2xl">{{ title }}</h1>
 <!--        <div>materials: {{materials}}</div>-->
+        <h3>Hey hey hey, where you are?</h3>
 
         <div v-for="material in materials"
             :key="material.id"
